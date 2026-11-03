@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg-dev-crest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 896" width="100%" height="100%">
+                        <defs>
+                            <!-- =============================================================== -->
+                            <!-- 1. SOMBRAS E FILTROS                                            -->
+                            <!-- =============================================================== -->
+                            <filter id="drop-shadow-crest" x="-20%" y="-20%" width="140%" height="145%">
+                                <feDropShadow dx="0" dy="22" stdDeviation="18" flood-color="#090b10" flood-opacity="0.65"></feDropShadow>
+                            </filter>
+                            <filter id="drop-shadow-star" x="-15%" y="-15%" width="130%" height="135%">
+                                <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#0b0e17" flood-opacity="0.55"></feDropShadow>
+                            </filter>
+                            <filter id="drop-shadow-element" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#0b132b" flood-opacity="0.58"></feDropShadow>
+                            </filter>
+                            <filter id="drop-shadow-code" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#380412" flood-opacity="0.7"></feDropShadow>
+                            </filter>
+                            <filter id="soft-inner-blur" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="4"></feGaussianBlur>
+                            </filter>
+
+                            <!-- =============================================================== -->
+                            <!-- 2. GRADIENTES DE OURO, PRATA, CARMESIM E AZUL REAL              -->
+                            <!-- =============================================================== -->
+                            <!-- Ouro Iluminado (Facetas Superiores Esquerda) -->
+                            <linearGradient id="gold-bright-tl" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fff6b8"></stop>
+                                <stop offset="45%" stop-color="#fce07c"></stop>
+                                <stop offset="100%" stop-color="#eab548"></stop>
+                            </linearGradient>
+
+                            <!-- Ouro Médio Quente -->
+                            <linearGradient id="gold-mid-warm" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f7ca65"></stop>
+                                <stop offset="50%" stop-color="#df9b3b"></stop>
+                                <stop offset="100%" stop-color="#c27826"></stop>
+                            </linearGradient>
+
+                            <!-- Ouro Cobre / Âmbar (Facetas Direitas) -->
+                            <linearGradient id="gold-amber-right" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#e39d46"></stop>
+                                <stop offset="55%" stop-color="#c4782b"></stop>
+                                <stop offset="100%" stop-color="#9e581b"></stop>
+                            </linearGradient>
+
+                            <!-- Bronze Sombra Profunda (Facetas Inferiores) -->
+                            <linearGradient id="gold-dark-shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#b56824"></stop>
+                                <stop offset="60%" stop-color="#8c4814"></stop>
+                                <stop offset="100%" stop-color="#6b330b"></stop>
+                            </linearGradient>
+
+                            <!-- Moldura Interna Dourada da Estrela -->
+                            <linearGradient id="gold-inner-rim" x1="15%" y1="10%" x2="85%" y2="90%">
+                                <stop offset="0%" stop-color="#fff4ad"></stop>
+                                <stop offset="35%" stop-color="#f5c256"></stop>
+                                <stop offset="70%" stop-color="#d4892a"></stop>
+                                <stop offset="100%" stop-color="#f0b84d"></stop>
+                            </linearGradient>
+
+                            <!-- Escudo Carmesim / Borgonha -->
+                            <linearGradient id="crimson-shield-grad" x1="20%" y1="0%" x2="80%" y2="100%">
+                                <stop offset="0%" stop-color="#a81d46"></stop>
+                                <stop offset="50%" stop-color="#851235"></stop>
+                                <stop offset="100%" stop-color="#590922"></stop>
+                            </linearGradient>
+
+                            <!-- Pena Prateada Superior (Face Clara) -->
+                            <linearGradient id="wing-silver-light" x1="0%" y1="0%" x2="90%" y2="90%">
+                                <stop offset="0%" stop-color="#ffffff"></stop>
+                                <stop offset="55%" stop-color="#dce2ec"></stop>
+                                <stop offset="100%" stop-color="#b5bfce"></stop>
+                            </linearGradient>
+
+                            <!-- Pena Prateada Superior (Face Sombra) -->
+                            <linearGradient id="wing-silver-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#98a2b3"></stop>
+                                <stop offset="60%" stop-color="#6e7787"></stop>
+                                <stop offset="100%" stop-color="#49505e"></stop>
+                            </linearGradient>
+
+                            <!-- Pena Dourada Champanhe (Face Clara) -->
+                            <linearGradient id="wing-gold-light" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ffebb3"></stop>
+                                <stop offset="55%" stop-color="#e8c27a"></stop>
+                                <stop offset="100%" stop-color="#c9984e"></stop>
+                            </linearGradient>
+
+                            <!-- Pena Dourada Bronze (Face Sombra) -->
+                            <linearGradient id="wing-gold-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#b88449"></stop>
+                                <stop offset="60%" stop-color="#8c5c2b"></stop>
+                                <stop offset="100%" stop-color="#5e3a18"></stop>
+                            </linearGradient>
+
+                            <!-- Azul Real Base do Interior da Estrela -->
+                            <radialGradient id="blue-royal-base" cx="44%" cy="38%" r="60%">
+                                <stop offset="0%" stop-color="#3a6ee8"></stop>
+                                <stop offset="45%" stop-color="#264bb0"></stop>
+                                <stop offset="85%" stop-color="#19317a"></stop>
+                                <stop offset="100%" stop-color="#122359"></stop>
+                            </radialGradient>
+
+                            <!-- Face Frontal da Engrenagem Central Dourada -->
+                            <linearGradient id="gear-main-face" x1="18%" y1="12%" x2="82%" y2="88%">
+                                <stop offset="0%" stop-color="#fff094"></stop>
+                                <stop offset="28%" stop-color="#fbd060"></stop>
+                                <stop offset="68%" stop-color="#e39630"></stop>
+                                <stop offset="100%" stop-color="#bf6c19"></stop>
+                            </linearGradient>
+
+                            <!-- Bisel Dourado Circular Central -->
+                            <linearGradient id="gear-inner-ring" x1="15%" y1="15%" x2="85%" y2="85%">
+                                <stop offset="0%" stop-color="#c4741d"></stop>
+                                <stop offset="50%" stop-color="#f5be4f"></stop>
+                                <stop offset="100%" stop-color="#ffe98a"></stop>
+                            </linearGradient>
+
+                            <!-- Disco Central Carmesim do Código -->
+                            <radialGradient id="code-disc-crimson" cx="45%" cy="40%" r="62%">
+                                <stop offset="0%" stop-color="#a81843"></stop>
+                                <stop offset="65%" stop-color="#7d0d2e"></stop>
+                                <stop offset="100%" stop-color="#4f051b"></stop>
+                            </radialGradient>
+
+                            <!-- Gradiente do Símbolo </> -->
+                            <linearGradient id="code-symbol-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fff4a3"></stop>
+                                <stop offset="50%" stop-color="#f7c852"></stop>
+                                <stop offset="100%" stop-color="#d98a26"></stop>
+                            </linearGradient>
+
+                            <!-- Gradiente Metálico da Chave Inglesa -->
+                            <linearGradient id="wrench-silver-grad" x1="10%" y1="10%" x2="90%" y2="90%">
+                                <stop offset="0%" stop-color="#f8fafc"></stop>
+                                <stop offset="45%" stop-color="#cbd5e1"></stop>
+                                <stop offset="85%" stop-color="#94a3b8"></stop>
+                                <stop offset="100%" stop-color="#64748b"></stop>
+                            </linearGradient>
+
+                            <!-- Gradiente Metálico da Cabeça do Martelo -->
+                            <linearGradient id="hammer-steel-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#f1f5f9"></stop>
+                                <stop offset="50%" stop-color="#bfd0e3"></stop>
+                                <stop offset="100%" stop-color="#7c93ad"></stop>
+                            </linearGradient>
+
+                            <!-- Gradiente dos Brilhos Exteriores (Sparkles) -->
+                            <linearGradient id="sparkle-gold-grad" x1="20%" y1="10%" x2="80%" y2="90%">
+                                <stop offset="0%" stop-color="#fff7b2"></stop>
+                                <stop offset="55%" stop-color="#ffd24c"></stop>
+                                <stop offset="100%" stop-color="#e0961f"></stop>
+                            </linearGradient>
+
+                            <!-- Máscara do Interior Azul da Estrela -->
+                            <clipPath id="clip-inner-star">
+                                <polygon points="484,174 406,302 254,334 306,456 256,590 404,612 484,734 564,612 712,590 660,456 712,334 562,302"></polygon>
+                            </clipPath>
+                        </defs>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 1: ESCUDO CARMESIM TRASEIRO (OMBROS EM ARCO E PONTAS INFERIORES) -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-back-shield" class="svg-toggle-layer" filter="url(#drop-shadow-crest)">
+                            <!-- = OMBRO SUPERIOR ESQUERDO = -->
+                            <!-- Rebordo Exterior 3D Dourado Escuro -->
+                            <path d="M 236,312 L 236,246 Q 236,225 258,223 C 304,221 324,209 354,187 C 384,165 418,154 460,152 L 460,260 Z" fill="#b56c24" stroke="#7d4310" stroke-width="2" stroke-linejoin="round"></path>
+                            <!-- Face Biselada Dourada Clara -->
+                            <path d="M 244,308 L 244,248 Q 244,232 260,230 C 306,228 326,216 356,194 C 385,173 418,162 456,160 L 456,256 Z" fill="url(#gold-bright-tl)"></path>
+                            <!-- Preenchimento Carmesim Interno Superior Esquerdo -->
+                            <path d="M 255,304 L 255,253 Q 255,243 266,242 C 310,240 330,228 360,206 C 388,185 418,175 450,173 L 450,255 Z" fill="url(#crimson-shield-grad)" stroke="#4a071c" stroke-width="2"></path>
+
+                            <!-- = OMBRO SUPERIOR DIREITO = -->
+                            <!-- Rebordo Exterior 3D Dourado Escuro -->
+                            <path d="M 732,312 L 732,246 Q 732,225 710,223 C 664,221 644,209 614,187 C 584,165 550,154 508,152 L 508,260 Z" fill="#965317" stroke="#663409" stroke-width="2" stroke-linejoin="round"></path>
+                            <!-- Face Biselada Dourada Média -->
+                            <path d="M 724,308 L 724,248 Q 724,232 708,230 C 662,228 642,216 612,194 C 583,173 550,162 512,160 L 512,256 Z" fill="url(#gold-mid-warm)"></path>
+                            <!-- Preenchimento Carmesim Interno Superior Direito -->
+                            <path d="M 713,304 L 713,253 Q 713,243 702,242 C 658,240 638,228 608,206 C 580,185 550,175 518,173 L 518,255 Z" fill="url(#crimson-shield-grad)" stroke="#4a071c" stroke-width="2"></path>
+
+                            <!-- = PONTA CARMESIM INFERIOR ESQUERDA = -->
+                            <!-- Estrutura Exterior Dourada Escura -->
+                            <path d="M 242,616 L 242,652 C 292,672 332,714 352,775 L 424,724 L 400,620 Z" fill="#8f4c15" stroke="#5e2e07" stroke-width="2" stroke-linejoin="round"></path>
+                            <!-- Bisel Dourado Médio -->
+                            <path d="M 250,620 L 250,645 C 298,665 336,706 355,760 L 416,717 L 395,625 Z" fill="url(#gold-mid-warm)"></path>
+                            <!-- Interior Carmesim Inferior Esquerdo -->
+                            <path d="M 262,624 L 262,638 C 306,658 340,696 358,742 L 406,708 L 388,628 Z" fill="url(#crimson-shield-grad)" stroke="#47061a" stroke-width="2"></path>
+
+                            <!-- = PONTA CARMESIM INFERIOR DIREITA = -->
+                            <!-- Estrutura Exterior Dourada Escura -->
+                            <path d="M 726,616 L 726,652 C 676,672 636,714 616,775 L 544,724 L 568,620 Z" fill="#854411" stroke="#572906" stroke-width="2" stroke-linejoin="round"></path>
+                            <!-- Bisel Dourado Médio -->
+                            <path d="M 718,620 L 718,645 C 670,665 632,706 613,760 L 552,717 L 573,625 Z" fill="url(#gold-amber-right)"></path>
+                            <!-- Interior Carmesim Inferior Direito -->
+                            <path d="M 706,624 L 706,638 C 662,658 628,696 610,742 L 562,708 L 580,628 Z" fill="url(#crimson-shield-grad)" stroke="#47061a" stroke-width="2"></path>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 2A: ASAS METÁLICAS ESQUERDAS (3 PENAS FACETADAS)                 -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-wings-left" class="svg-toggle-layer" filter="url(#drop-shadow-crest)">
+                            <!-- 3.ª Pena (Inferior - Bronze/Ouro) -->
+                            <g>
+                                <!-- Metade Superior Clara -->
+                                <path d="M 183,466 C 202,474 228,484 258,492 L 245,518 C 214,502 192,484 183,466 Z" fill="url(#wing-gold-light)"></path>
+                                <!-- Metade Inferior Sombra -->
+                                <path d="M 183,466 C 188,502 208,532 238,554 L 248,514 C 216,500 195,484 183,466 Z" fill="url(#wing-gold-dark)"></path>
+                                <!-- Linha de Crista Central -->
+                                <path d="M 183,466 C 206,484 226,498 247,515" fill="none" stroke="#ffefc2" stroke-width="1.5" opacity="0.7"></path>
+                            </g>
+
+                            <!-- 2.ª Pena (Média - Ouro Champanhe) -->
+                            <g>
+                                <!-- Metade Superior Clara -->
+                                <path d="M 150,368 C 182,385 218,400 256,410 L 252,442 C 205,420 172,396 150,368 Z" fill="url(#wing-gold-light)"></path>
+                                <!-- Metade Inferior Sombra -->
+                                <path d="M 150,368 C 154,418 182,456 232,482 L 254,438 C 206,418 174,395 150,368 Z" fill="url(#wing-gold-dark)"></path>
+                                <!-- Crista Brilhante -->
+                                <path d="M 150,368 C 180,396 214,418 253,439" fill="none" stroke="#fff5d6" stroke-width="1.8" opacity="0.8"></path>
+                            </g>
+
+                            <!-- 1.ª Pena (Superior - Prata Brilhante e Aço) -->
+                            <g>
+                                <!-- Metade Superior Prata Branca -->
+                                <path d="M 136,247 C 166,278 206,305 245,326 L 236,374 C 190,342 156,298 136,247 Z" fill="url(#wing-silver-light)"></path>
+                                <!-- Metade Inferior Cinza-Ardósia -->
+                                <path d="M 136,247 C 134,312 162,366 218,402 L 239,368 C 192,338 156,296 136,247 Z" fill="url(#wing-silver-dark)"></path>
+                                <!-- Crista Metálica Prateada -->
+                                <path d="M 136,247 C 162,296 196,338 238,370" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.9"></path>
+                                <!-- Rebordo Superior Branco Puro -->
+                                <path d="M 136,247 C 166,278 206,305 245,326" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"></path>
+                            </g>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 2B: ASAS METÁLICAS DIREITAS (3 PENAS SIMÉTRICAS)                 -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-wings-right" class="svg-toggle-layer" filter="url(#drop-shadow-crest)">
+                            <!-- 3.ª Pena (Inferior - Bronze/Ouro) -->
+                            <g>
+                                <path d="M 803,466 C 784,474 758,484 728,492 L 741,518 C 772,502 794,484 803,466 Z" fill="url(#wing-gold-light)"></path>
+                                <path d="M 803,466 C 798,502 778,532 748,554 L 738,514 C 770,500 791,484 803,466 Z" fill="url(#wing-gold-dark)"></path>
+                                <path d="M 803,466 C 780,484 760,498 739,515" fill="none" stroke="#ffefc2" stroke-width="1.5" opacity="0.7"></path>
+                            </g>
+
+                            <!-- 2.ª Pena (Média - Ouro Champanhe) -->
+                            <g>
+                                <path d="M 836,368 C 804,385 768,400 730,410 L 734,442 C 781,420 814,396 836,368 Z" fill="url(#wing-gold-light)"></path>
+                                <path d="M 836,368 C 832,418 804,456 754,482 L 732,438 C 780,418 812,395 836,368 Z" fill="url(#wing-gold-dark)"></path>
+                                <path d="M 836,368 C 806,396 772,418 733,439" fill="none" stroke="#fff5d6" stroke-width="1.8" opacity="0.8"></path>
+                            </g>
+
+                            <!-- 1.ª Pena (Superior - Prata Brilhante e Aço) -->
+                            <g>
+                                <path d="M 850,247 C 820,278 780,305 741,326 L 750,374 C 796,342 830,298 850,247 Z" fill="url(#wing-silver-light)"></path>
+                                <path d="M 850,247 C 852,312 824,366 768,402 L 747,368 C 794,338 830,296 850,247 Z" fill="url(#wing-silver-dark)"></path>
+                                <path d="M 850,247 C 824,296 790,338 748,370" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.9"></path>
+                                <path d="M 850,247 C 820,278 780,305 741,326" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"></path>
+                            </g>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 3: CAMPO INTERIOR AZUL REAL FACETADO                             -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-blue-field" class="svg-toggle-layer">
+                            <!-- Base Azul Real -->
+                            <polygon points="484,174 406,302 254,334 306,456 256,590 404,612 484,734 564,612 712,590 660,456 712,334 562,302" fill="url(#blue-royal-base)"></polygon>
+
+                            <!-- 12 Facetas Triangulares Subtis de Luz/Sombra irradiando do centro (484, 456) -->
+                            <g clip-path="url(#clip-inner-star)">
+                                <!-- Ponta Superior (Esquerda clara / Direita média) -->
+                                <polygon points="484,456 484,174 406,302" fill="#467df2" opacity="0.42"></polygon>
+                                <polygon points="484,456 562,302 484,174" fill="#2952ba" opacity="0.35"></polygon>
+
+                                <!-- Ponta Superior Esquerda -->
+                                <polygon points="484,456 406,302 254,334" fill="#4c83f7" opacity="0.38"></polygon>
+                                <polygon points="484,456 254,334 306,456" fill="#2348a6" opacity="0.35"></polygon>
+
+                                <!-- Ponta Inferior Esquerda -->
+                                <polygon points="484,456 306,456 256,590" fill="#3563d4" opacity="0.32"></polygon>
+                                <polygon points="484,456 256,590 404,612" fill="#172d73" opacity="0.45"></polygon>
+
+                                <!-- Ponta Inferior -->
+                                <polygon points="484,456 404,612 484,734" fill="#2447a6" opacity="0.35"></polygon>
+                                <polygon points="484,456 484,734 564,612" fill="#102054" opacity="0.55"></polygon>
+
+                                <!-- Ponta Inferior Direita -->
+                                <polygon points="484,456 564,612 712,590" fill="#12235c" opacity="0.55"></polygon>
+                                <polygon points="484,456 712,590 660,456" fill="#1c3582" opacity="0.4"></polygon>
+
+                                <!-- Ponta Superior Direita -->
+                                <polygon points="484,456 660,456 712,334" fill="#162b6e" opacity="0.48"></polygon>
+                                <polygon points="484,456 712,334 562,302" fill="#315fd1" opacity="0.32"></polygon>
+
+                                <!-- Sombra Interna Projetada pela Moldura Dourada sobre o Azul -->
+                                <polygon points="484,174 406,302 254,334 306,456 256,590 404,612 484,734 564,612 712,590 660,456 712,334 562,302" fill="none" stroke="#09153b" stroke-width="16" opacity="0.65" filter="url(#soft-inner-blur)"></polygon>
+                            </g>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 4: MOLDURA DA ESTRELA DE 6 PONTAS DOURADA (12 FACETAS BISELADAS) -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-star-frame" class="svg-toggle-layer" filter="url(#drop-shadow-star)">
+                            <!-- 1. Faceta Topo-Esquerda (Luz Máxima) -->
+                            <polygon points="484,98 380,266 406,302 484,174" fill="url(#gold-bright-tl)"></polygon>
+                            <!-- 2. Faceta Topo-Direita (Âmbar Quente) -->
+                            <polygon points="484,98 586,266 562,302 484,174" fill="url(#gold-amber-right)"></polygon>
+
+                            <!-- 3. Faceta Ombro Superior-Esquerdo (Luz Máxima) -->
+                            <polygon points="380,266 204,304 254,334 406,302" fill="url(#gold-bright-tl)"></polygon>
+                            <!-- 4. Faceta Flanco Superior-Esquerdo (Ouro Médio) -->
+                            <polygon points="204,304 268,456 306,456 254,334" fill="url(#gold-mid-warm)"></polygon>
+
+                            <!-- 5. Faceta Flanco Inferior-Esquerdo (Ouro Claro/Médio) -->
+                            <polygon points="268,456 204,622 256,590 306,456" fill="url(#gold-bright-tl)"></polygon>
+                            <!-- 6. Faceta Base Inferior-Esquerda (Bronze Sombra) -->
+                            <polygon points="204,622 380,646 404,612 256,590" fill="url(#gold-dark-shadow)"></polygon>
+
+                            <!-- 7. Faceta Ponta Inferior-Esquerda (Ouro Médio) -->
+                            <polygon points="380,646 484,804 484,734 404,612" fill="url(#gold-mid-warm)"></polygon>
+                            <!-- 8. Faceta Ponta Inferior-Direita (Bronze Escuro) -->
+                            <polygon points="484,804 586,646 564,612 484,734" fill="url(#gold-dark-shadow)"></polygon>
+
+                            <!-- 9. Faceta Base Inferior-Direita (Bronze Escuro) -->
+                            <polygon points="586,646 762,622 712,590 564,612" fill="url(#gold-dark-shadow)"></polygon>
+                            <!-- 10. Faceta Flanco Inferior-Direito (Ouro Médio) -->
+                            <polygon points="762,622 698,456 660,456 712,590" fill="url(#gold-mid-warm)"></polygon>
+
+                            <!-- 11. Faceta Flanco Superior-Direito (Bronze Sombra) -->
+                            <polygon points="698,456 762,304 712,334 660,456" fill="url(#gold-dark-shadow)"></polygon>
+                            <!-- 12. Faceta Ombro Superior-Direito (Ouro Quente) -->
+                            <polygon points="762,304 586,266 562,302 712,334" fill="url(#gold-mid-warm)"></polygon>
+
+                            <!-- Arestas de Crista dos 6 Vértices e Vales (Bisel 3D Nítido) -->
+                            <g stroke-linecap="round">
+                                <line x1="484" y1="98" x2="484" y2="174" stroke="#fff9c4" stroke-width="2.2"></line>
+                                <line x1="380" y1="266" x2="406" y2="302" stroke="#fff9c4" stroke-width="2"></line>
+                                <line x1="204" y1="304" x2="254" y2="334" stroke="#fff7b8" stroke-width="2"></line>
+                                <line x1="268" y1="456" x2="306" y2="456" stroke="#ffeb99" stroke-width="2"></line>
+                                <line x1="204" y1="622" x2="256" y2="590" stroke="#d4882a" stroke-width="2"></line>
+                                <line x1="380" y1="646" x2="404" y2="612" stroke="#9e5414" stroke-width="2"></line>
+                                <line x1="484" y1="804" x2="484" y2="734" stroke="#753808" stroke-width="2.2"></line>
+                                <line x1="586" y1="646" x2="564" y2="612" stroke="#6e3306" stroke-width="2"></line>
+                                <line x1="762" y1="622" x2="712" y2="590" stroke="#8f4912" stroke-width="2"></line>
+                                <line x1="698" y1="456" x2="660" y2="456" stroke="#b56822" stroke-width="2"></line>
+                                <line x1="762" y1="304" x2="712" y2="334" stroke="#d98e32" stroke-width="2"></line>
+                                <line x1="586" y1="266" x2="562" y2="302" stroke="#e6a240" stroke-width="2"></line>
+                            </g>
+
+                            <!-- Filete Dourado Luminoso no Rebordo Interior da Estrela -->
+                            <polygon points="484,174 406,302 254,334 306,456 256,590 404,612 484,734 564,612 712,590 660,456 712,334 562,302" fill="none" stroke="url(#gold-inner-rim)" stroke-width="4.5" stroke-linejoin="round"></polygon>
+
+                            <!-- Contorno Exterior Fino da Estrela -->
+                            <polygon points="484,98 380,266 204,304 268,456 204,622 380,646 484,804 586,646 762,622 698,456 762,304 586,266" fill="none" stroke="#783d0d" stroke-width="2" stroke-linejoin="round"></polygon>
+
+                            <!-- Brilho Especular na Aresta Superior Esquerda da Estrela -->
+                            <polyline points="206,304 380,266 484,100" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"></polyline>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 5: ENGRENAGENS DOURADAS (3) E DISCO DE CÓDIGO </>                -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-gears-code" class="svg-toggle-layer">
+
+                            <!-- = 1. ENGRENAGEM GRANDE CENTRAL (cx=478, cy=458) = -->
+                            <g filter="url(#drop-shadow-element)">
+                                <!-- Extrusão 3D Traseira/Inferior em Bronze Escuro (Deslocada +7px em Y) -->
+                                <g transform="translate(478, 467)" fill="#854310" stroke="#592905" stroke-width="2" stroke-linejoin="round">
+                                    <circle cx="0" cy="0" r="122"></circle>
+                                    <g id="main-gear-teeth-shape">
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(45)"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(90)"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(135)"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(180)"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(225)"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(270)"></rect>
+                                        <rect x="-28" y="-154" width="56" height="44" rx="9" transform="rotate(315)"></rect>
+                                    </g>
+                                </g>
+
+                                <!-- Face Principal Dourada da Engrenagem Grande -->
+                                <g transform="translate(478, 456)">
+                                    <!-- Dentes + Corpo Unido -->
+                                    <g fill="url(#gear-main-face)" stroke="#9e5616" stroke-width="2">
+                                        <use href="#main-gear-teeth-shape"></use>
+                                        <circle cx="0" cy="0" r="123" stroke="none"></circle>
+                                    </g>
+
+                                    <!-- Divisão Subtil de Luz/Sombra Vertical-Diagonal na Engrenagem -->
+                                    <path d="M 0,-154 L 0,154 A 154,154 0 0,0 154,0 A 154,154 0 0,0 0,-154 Z" fill="#bd6815" opacity="0.18"></path>
+
+                                    <!-- Brilho Superior Esquerdo nos Dentes da Engrenagem -->
+                                    <path d="M -25,-152 L 25,-152" stroke="#fff8c2" stroke-width="3" stroke-linecap="round"></path>
+                                    <path d="M -25,-152 L 25,-152" stroke="#fff8c2" stroke-width="3" stroke-linecap="round" transform="rotate(-45)"></path>
+                                    <path d="M -25,-152 L 25,-152" stroke="#fff8c2" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90)"></path>
+
+                                    <!-- Anel Biselado Dourado em Redor do Disco Carmesim -->
+                                    <circle cx="0" cy="0" r="99" fill="url(#gear-inner-ring)" stroke="#8c4812" stroke-width="2.5"></circle>
+                                    <circle cx="0" cy="0" r="91" fill="url(#code-disc-crimson)" stroke="#4a0519" stroke-width="3"></circle>
+
+                                    <!-- Sombra Interna no Topo do Disco Carmesim -->
+                                    <path d="M -88,12 A 89,89 0 0,1 88,-12 A 91,91 0 0,0 -88,12 Z" fill="#380211" opacity="0.55"></path>
+
+                                    <!-- SÍMBOLO DE CÓDIGO </> EM RELEVO 3D -->
+                                    <g filter="url(#drop-shadow-code)">
+                                        <!-- Sinal Menor (<) -->
+                                        <path d="M -36,-22 L -68,2 L -36,26" fill="none" stroke="url(#code-symbol-grad)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <!-- Barra Diagonal (/) -->
+                                        <line x1="13" y1="-44" x2="-13" y2="46" stroke="url(#code-symbol-grad)" stroke-width="15" stroke-linecap="round"></line>
+                                        <!-- Sinal Maior (>) -->
+                                        <path d="M 36,-22 L 68,2 L 36,26" fill="none" stroke="url(#code-symbol-grad)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"></path>
+
+                                        <!-- Fio de Brilho Superior nas Barras </> -->
+                                        <path d="M -36,-22 L -68,2" fill="none" stroke="#fffbe0" stroke-width="2.5" stroke-linecap="round" opacity="0.8"></path>
+                                        <line x1="11" y1="-44" x2="-15" y2="44" stroke="#fffbe0" stroke-width="2.2" stroke-linecap="round" opacity="0.75"></line>
+                                        <path d="M 36,-22 L 68,2" fill="none" stroke="#fffbe0" stroke-width="2.5" stroke-linecap="round" opacity="0.8"></path>
+                                    </g>
+                                </g>
+                            </g>
+
+                            <!-- = 2. ENGRENAGEM MÉDIA SUPERIOR DIREITA (cx=596, cy=336) = -->
+                            <g filter="url(#drop-shadow-element)">
+                                <!-- Sombra/Extrusão 3D Escura da Engrenagem Média -->
+                                <g transform="translate(592, 342)" fill="#783909" stroke="#4f2202" stroke-width="2" stroke-linejoin="round">
+                                    <circle cx="0" cy="0" r="46"></circle>
+                                    <g id="med-gear-teeth">
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(45)"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(90)"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(135)"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(180)"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(225)"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(270)"></rect>
+                                        <rect x="-11" y="-58" width="22" height="20" rx="4" transform="rotate(315)"></rect>
+                                    </g>
+                                </g>
+
+                                <!-- Face Dourada da Engrenagem Média -->
+                                <g transform="translate(596, 336)">
+                                    <g fill="url(#gear-main-face)" stroke="#8c4812" stroke-width="1.8">
+                                        <use href="#med-gear-teeth"></use>
+                                        <circle cx="0" cy="0" r="46" stroke="none"></circle>
+                                    </g>
+                                    <!-- Rebordo Interno e Furo Azul -->
+                                    <circle cx="0" cy="0" r="28" fill="#b86719" stroke="#ffdf7d" stroke-width="1.8"></circle>
+                                    <circle cx="2" cy="2" r="22" fill="#234299" stroke="#142763" stroke-width="2"></circle>
+                                </g>
+                            </g>
+
+                            <!-- = 3. ENGRENAGEM PEQUENA SUPERIOR ESQUERDA (cx=318, cy=360) = -->
+                            <g filter="url(#drop-shadow-element)" transform="translate(318, 360)">
+                                <!-- Extrusão Traseira -->
+                                <g transform="translate(0, 4)" fill="#7a3b0b">
+                                    <circle cx="0" cy="0" r="19"></circle>
+                                    <g id="small-gear-teeth">
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(45)"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(90)"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(135)"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(180)"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(225)"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(270)"></rect>
+                                        <rect x="-5" y="-25" width="10" height="10" rx="2.5" transform="rotate(315)"></rect>
+                                    </g>
+                                </g>
+                                <!-- Face Dourada -->
+                                <g fill="url(#gold-bright-tl)" stroke="#8f4c14" stroke-width="1.2">
+                                    <use href="#small-gear-teeth"></use>
+                                    <circle cx="0" cy="0" r="19.5" stroke="none"></circle>
+                                </g>
+                                <!-- Furo Central Azul -->
+                                <circle cx="0" cy="0" r="9.5" fill="#22439c" stroke="#8f4c14" stroke-width="1.8"></circle>
+                            </g>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 6: FERRAMENTAS (CHAVE INGLESA E MARTELO)                         -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-tools" class="svg-toggle-layer">
+
+                            <!-- = 1. CHAVE INGLESA PRATEADA (Inferior Esquerda) = -->
+                            <g filter="url(#drop-shadow-element)" transform="translate(356, 578) rotate(42)">
+                                <!-- Sombra/Espessura Inferior Metálica Escura -->
+                                <g transform="translate(0, 5)" fill="#525d6e">
+                                    <rect x="-13" y="10" width="26" height="72" rx="13"></rect>
+                                    <path d="M -32,-20 A 33,33 0 1,0 32,-20 C 32,-34 22,-45 12,-48 L 14,-18 C 14,-10 -14,-10 -14,-18 L -12,-48 C -22,-45 -32,-34 -32,-20 Z"></path>
+                                </g>
+
+                                <!-- Cabo Cilíndrico Prateado -->
+                                <rect x="-13" y="10" width="26" height="72" rx="13" fill="url(#wrench-silver-grad)" stroke="#64748b" stroke-width="1.5"></rect>
+                                <!-- Borda de Luz no Cabo -->
+                                <line x1="-6" y1="22" x2="-6" y2="72" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.65"></line>
+
+                                <!-- Cabeça em «C» da Chave Inglesa -->
+                                <path d="M -32,-20 A 33,33 0 1,0 32,-20 C 32,-34 22,-45 12,-48 L 14,-18 C 14,-10 -14,-10 -14,-18 L -12,-48 C -22,-45 -32,-34 -32,-20 Z" fill="url(#wrench-silver-grad)" stroke="#64748b" stroke-width="1.5" stroke-linejoin="round"></path>
+
+                                <!-- Brilho Especular na Garra da Chave -->
+                                <path d="M 14,-44 C 22,-40 27,-31 27,-20 A 27,27 0 0,1 0,7" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.85"></path>
+                            </g>
+
+                            <!-- = 2. MARTELO DE ORELHAS (Inferior Direita) = -->
+                            <g filter="url(#drop-shadow-element)" transform="translate(604, 566) rotate(40)">
+                                <!-- Cabo de Madeira Dourada (Espessura 3D + Face) -->
+                                <rect x="-9" y="-4" width="22" height="78" rx="9" fill="#8f4910"></rect>
+                                <rect x="-11" y="-6" width="21" height="76" rx="9" fill="url(#gear-main-face)" stroke="#7a3b08" stroke-width="1.5"></rect>
+                                <line x1="-5" y1="6" x2="-5" y2="62" stroke="#fff4b8" stroke-width="2.5" stroke-linecap="round" opacity="0.75"></line>
+
+                                <!-- Cabeça de Aço do Martelo (Espessura Traseira Escura) -->
+                                <path d="M -42,-12 C -26,-28 -6,-32 14,-28 L 24,-22 L 32,-28 L 42,-18 L 28,2 L 18,-6 L 8,-2 C -8,-4 -24,-2 -42,-12 Z" transform="translate(2, 5)" fill="#556982"></path>
+
+                                <!-- Cabeça de Aço Principal (Orelha Curva à Esquerda + Batente à Direita) -->
+                                <path d="M -44,-14 C -26,-30 -4,-33 14,-28 C 20,-26 22,-20 27,-23 L 32,-28 Q 36,-31 40,-27 L 45,-19 Q 48,-15 43,-11 L 31,2 Q 27,6 23,2 L 19,-4 C 14,-8 10,-3 4,-3 C -12,-3 -26,-4 -44,-14 Z" fill="url(#hammer-steel-grad)" stroke="#5c718a" stroke-width="1.5" stroke-linejoin="round"></path>
+
+                                <!-- Bisel Luminoso no Topo da Cabeça do Martelo -->
+                                <path d="M -38,-15 C -22,-26 -4,-29 13,-25" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" opacity="0.9"></path>
+                            </g>
+                        </g>
+
+                        <!-- ======================================================================= -->
+                        <!-- CAMADA 7: ESTRELAS INTERIORES (2) E BRILHOS EXTERIORES (5 SPARKLES)     -->
+                        <!-- ======================================================================= -->
+                        <g id="layer-sparkles" class="svg-toggle-layer">
+
+                            <!-- = 1. ESTRELA DOURADA INTERNA SUPERIOR (cx=484, cy=236) = -->
+                            <g filter="url(#drop-shadow-element)" transform="translate(484, 236)">
+                                <polygon points="0,-31 9,-10 31,-7 15,9 19,30 0,19 -19,30 -15,9 -31,-7 -9,-10" fill="url(#sparkle-gold-grad)" stroke="#9e5614" stroke-width="1.5" stroke-linejoin="round"></polygon>
+                                <!-- Facetas 3D da Estrela Superior -->
+                                <polygon points="0,0 0,-31 -9,-10" fill="#fff8c4" opacity="0.7"></polygon>
+                                <polygon points="0,0 -31,-7 -15,9" fill="#fff8c4" opacity="0.5"></polygon>
+                                <polygon points="0,0 19,30 0,19" fill="#b86818" opacity="0.45"></polygon>
+                                <polygon points="0,0 31,-7 15,9" fill="#b86818" opacity="0.35"></polygon>
+                            </g>
+
+                            <!-- = 2. ESTRELA DOURADA INTERNA INFERIOR (cx=484, cy=668) = -->
+                            <g filter="url(#drop-shadow-element)" transform="translate(484, 668)">
+                                <polygon points="0,-33 10,-11 33,-8 16,9 20,32 0,20 -20,32 -16,9 -33,-8 -10,-11" fill="url(#sparkle-gold-grad)" stroke="#914c0f" stroke-width="1.5" stroke-linejoin="round"></polygon>
+                                <!-- Facetas 3D da Estrela Inferior -->
+                                <polygon points="0,0 0,-33 -10,-11" fill="#fff8c4" opacity="0.65"></polygon>
+                                <polygon points="0,0 -33,-8 -16,9" fill="#fff8c4" opacity="0.45"></polygon>
+                                <polygon points="0,0 20,32 0,20" fill="#a85b10" opacity="0.5"></polygon>
+                            </g>
+
+                            <!-- = 3. 5 BRILHOS EXTERIORES DE 4 PONTAS (SPARKLES) = -->
+                            <!-- Brilho Grande Superior Direito (674, 152) -->
+                            <g transform="translate(674, 152)">
+                                <path d="M 0,-46 Q 8,-8 44,0 Q 8,8 0,46 Q -8,8 -44,0 Q -8,-8 0,-46 Z" fill="url(#sparkle-gold-grad)" stroke="#b8741a" stroke-width="1.5"></path>
+                                <path d="M 0,-42 Q 4,-6 38,0 L 0,0 Z" fill="#fffbe0" opacity="0.6"></path>
+                            </g>
+
+                            <!-- Brilho Médio Superior Esquerdo (284, 174) -->
+                            <g transform="translate(284, 174)">
+                                <path d="M 0,-23 Q 5,-5 22,0 Q 5,5 0,23 Q -5,5 -22,0 Q -5,-5 0,-23 Z" fill="url(#sparkle-gold-grad)" stroke="#b8741a" stroke-width="1.2"></path>
+                            </g>
+
+                            <!-- Brilho Pequeno Topo Esquerdo (370, 126) -->
+                            <g transform="translate(370, 126)">
+                                <path d="M 0,-15 Q 4,-4 14,0 Q 4,4 0,15 Q -4,4 -14,0 Q -4,-4 0,-15 Z" fill="url(#sparkle-gold-grad)" stroke="#b8741a" stroke-width="1"></path>
+                            </g>
+
+                            <!-- Brilho Pequeno Inferior Esquerdo (178, 560) -->
+                            <g transform="translate(178, 560)">
+                                <path d="M 0,-18 Q 4,-4 17,0 Q 4,4 0,18 Q -4,4 -17,0 Q -4,-4 0,-18 Z" fill="url(#sparkle-gold-grad)" stroke="#b8741a" stroke-width="1.2"></path>
+                            </g>
+
+                            <!-- Brilho Médio Inferior Direito (788, 558) -->
+                            <g transform="translate(788, 558)">
+                                <path d="M 0,-24 Q 6,-6 24,0 Q 6,6 0,24 Q -6,6 -24,0 Q -6,-6 0,-24 Z" fill="url(#sparkle-gold-grad)" stroke="#b8741a" stroke-width="1.2"></path>
+                            </g>
+                        </g>
+                    </svg>

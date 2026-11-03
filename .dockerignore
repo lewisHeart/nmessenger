@@ -1,0 +1,9 @@
+.git
+target
+**/target
+escargot
+docs
+scripts
+.nmessenger
+.env
+data

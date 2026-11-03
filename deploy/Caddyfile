@@ -1,0 +1,29 @@
+{
+    servers {
+        timeouts {
+            read_header 10s
+            read_body 60s
+            idle 60s
+        }
+    }
+}
+
+{$NM_DOMAIN} {
+    request_body {
+        max_size 26MB
+    }
+    header {
+        Strict-Transport-Security "max-age=31536000"
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy no-referrer
+        -Server
+    }
+    reverse_proxy backend:8080 {
+        transport http {
+            versions 1.1
+            dial_timeout 5s
+            response_header_timeout 30s
+        }
+    }
+}

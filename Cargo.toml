@@ -1,0 +1,25 @@
+[workspace]
+members = ["nm-protocol", "nm-servo", "nmessenger-client"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0-alpha"
+edition = "2024"
+license = "MIT"
+
+[workspace.dependencies]
+nm-protocol = { path = "nm-protocol" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+uuid = { version = "1.29.0", features = ["serde", "v4"] }
+chrono = { version = "0.4.45", features = ["serde"] }
+tokio = { version = "1.54.1", features = ["full"] }
+tracing = "0.1.44"
+thiserror = "2.0.21"
+
+[profile.dev]
+debug = 1
+
+[profile.release]
+lto = "thin"
+strip = true

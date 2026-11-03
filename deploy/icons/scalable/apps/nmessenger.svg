@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="856.31683"
+   height="856.31683"
+   viewBox="0 0 856.31683 856.31683"
+   version="1.1"
+   id="svg56"
+   sodipodi:docname="baloes-conversa-frutiger-aero.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview56"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.49264706"
+     inkscape:cx="810.92537"
+     inkscape:cy="864.71642"
+     inkscape:window-width="2880"
+     inkscape:window-height="1551"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer-gloss" />
+  <defs
+     id="defs34">
+    <filter
+       id="filter-1"
+       filterUnits="userSpaceOnUse"
+       x="126.25"
+       y="64.25"
+       width="541.5"
+       height="521.07703"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceAlpha"
+         stdDeviation="12"
+         id="feGaussianBlur1" />
+      <feOffset
+         dx="0"
+         dy="14"
+         result="shadow"
+         id="feOffset1" />
+      <feFlood
+         flood-color="#026aa7"
+         flood-opacity="0.32"
+         id="feFlood1" />
+      <feComposite
+         in2="shadow"
+         operator="in"
+         result="paint"
+         id="feComposite1" />
+      <feMerge
+         id="feMerge2">
+        <feMergeNode
+           in="paint"
+           id="feMergeNode1" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode2" />
+      </feMerge>
+    </filter>
+    <radialGradient
+       id="radial-gradient-1"
+       cx="0"
+       cy="0"
+       r="251.72"
+       fx="-17.360001"
+       fy="26.040001"
+       gradientTransform="matrix(1,0,0,0.953,370.96,349.603)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#8cf8ff"
+         id="stop2" />
+      <stop
+         offset="0.32"
+         stop-color="#45e3ff"
+         id="stop3" />
+      <stop
+         offset="0.68"
+         stop-color="#11b5eb"
+         id="stop4" />
+      <stop
+         offset="0.9"
+         stop-color="#0587c7"
+         id="stop5" />
+      <stop
+         offset="1"
+         stop-color="#0468a3"
+         id="stop6" />
+    </radialGradient>
+    <clipPath
+       id="clip-path-1">
+      <path
+         d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+         id="path6" />
+    </clipPath>
+    <radialGradient
+       id="radial-gradient-2"
+       cx="0"
+       cy="0"
+       r="187.2"
+       gradientTransform="matrix(1,0,0,0.487,389.4,499.6)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#d8ffff"
+         stop-opacity="0.85"
+         id="stop7" />
+      <stop
+         offset="0.45"
+         stop-color="#6df2ff"
+         stop-opacity="0.4"
+         id="stop8" />
+      <stop
+         offset="1"
+         stop-color="#0099dd"
+         stop-opacity="0"
+         id="stop9" />
+    </radialGradient>
+    <filter
+       id="filter-2"
+       filterUnits="userSpaceOnUse"
+       x="141"
+       y="79"
+       width="512"
+       height="491.577"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="8"
+         id="feGaussianBlur9" />
+    </filter>
+    <filter
+       id="filter-3"
+       filterUnits="userSpaceOnUse"
+       x="177.642"
+       y="273.75"
+       width="414.608"
+       height="263.70801"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="4.5"
+         id="feGaussianBlur10" />
+    </filter>
+    <filter
+       id="filter-4"
+       filterUnits="userSpaceOnUse"
+       x="320"
+       y="222"
+       width="336"
+       height="312"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="8"
+         id="feGaussianBlur11" />
+    </filter>
+    <linearGradient
+       id="linear-gradient-1"
+       x1="245.10001"
+       y1="138.679"
+       x2="530.88"
+       y2="524.25403"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#38bdf8"
+         id="stop11" />
+      <stop
+         offset="0.5"
+         stop-color="#0284c7"
+         id="stop12" />
+      <stop
+         offset="1"
+         stop-color="#075985"
+         id="stop13" />
+    </linearGradient>
+    <filter
+       id="filter-5"
+       filterUnits="userSpaceOnUse"
+       x="309"
+       y="199"
+       width="430"
+       height="439.63901"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceAlpha"
+         stdDeviation="11"
+         id="feGaussianBlur13" />
+      <feOffset
+         dx="0"
+         dy="14"
+         result="shadow"
+         id="feOffset13" />
+      <feFlood
+         flood-color="#2e7d06"
+         flood-opacity="0.34"
+         id="feFlood13" />
+      <feComposite
+         in2="shadow"
+         operator="in"
+         result="paint"
+         id="feComposite13" />
+      <feMerge
+         id="feMerge14">
+        <feMergeNode
+           in="paint"
+           id="feMergeNode13" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode14" />
+      </feMerge>
+    </filter>
+    <radialGradient
+       id="radial-gradient-3"
+       cx="0"
+       cy="0"
+       r="199.2"
+       fx="0"
+       fy="19.92"
+       gradientTransform="matrix(1,0,0,1.029,530.64,480.314)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#e3ff6b"
+         stop-opacity="0.92"
+         id="stop14" />
+      <stop
+         offset="0.35"
+         stop-color="#a8f230"
+         stop-opacity="0.86"
+         id="stop15" />
+      <stop
+         offset="0.72"
+         stop-color="#5ec715"
+         stop-opacity="0.88"
+         id="stop16" />
+      <stop
+         offset="0.92"
+         stop-color="#359907"
+         stop-opacity="0.94"
+         id="stop17" />
+      <stop
+         offset="1"
+         stop-color="#1f7503"
+         stop-opacity="0.97"
+         id="stop18" />
+    </radialGradient>
+    <clipPath
+       id="clip-path-2">
+      <path
+         d="m 526,248 c 92,0 164,60 164,142 0,51 -24,92 -58,118 -3,3 -5,7 -4,13 2,17 11,38 21,53 7,10 1,18 -12,15 -28,-6 -55,-23 -72,-43 -15,3 -30,5 -46,5 -95,0 -161,-67 -161,-152 0,-87 74,-151 168,-151 z"
+         id="path18" />
+    </clipPath>
+    <filter
+       id="filter-6"
+       filterUnits="userSpaceOnUse"
+       x="320"
+       y="210"
+       width="408"
+       height="417.63901"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="8"
+         id="feGaussianBlur18" />
+    </filter>
+    <filter
+       id="filter-7"
+       filterUnits="userSpaceOnUse"
+       x="384"
+       y="399"
+       width="322"
+       height="192"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="8"
+         id="feGaussianBlur19" />
+    </filter>
+    <filter
+       id="filter-8"
+       filterUnits="userSpaceOnUse"
+       x="354"
+       y="372"
+       width="342"
+       height="228.53799"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="4.5"
+         id="feGaussianBlur20" />
+    </filter>
+    <clipPath
+       id="clip-path-3">
+      <path
+         d="m 526,248 c 92,0 164,60 164,142 0,51 -24,92 -58,118 -3,3 -5,7 -4,13 2,17 11,38 21,53 7,10 1,18 -12,15 -28,-6 -55,-23 -72,-43 -15,3 -30,5 -46,5 -95,0 -161,-67 -161,-152 0,-87 74,-151 168,-151 z"
+         id="path20" />
+    </clipPath>
+    <clipPath
+       id="clip-path-4">
+      <path
+         d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+         id="path21" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient-2"
+       x1="400"
+       y1="270.5"
+       x2="573.18597"
+       y2="477.73099"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#2bb88a"
+         stop-opacity="0.72"
+         id="stop21" />
+      <stop
+         offset="0.55"
+         stop-color="#3ec96d"
+         stop-opacity="0.62"
+         id="stop22" />
+      <stop
+         offset="1"
+         stop-color="#62d645"
+         stop-opacity="0.45"
+         id="stop23" />
+    </linearGradient>
+    <filter
+       id="filter-9"
+       filterUnits="userSpaceOnUse"
+       x="327.5"
+       y="212.5"
+       width="305.33401"
+       height="285.064"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="4.5"
+         id="feGaussianBlur23" />
+    </filter>
+    <filter
+       id="filter-10"
+       filterUnits="userSpaceOnUse"
+       x="161"
+       y="99"
+       width="472"
+       height="451.577"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         in="SourceGraphic"
+         stdDeviation="4.5"
+         id="feGaussianBlur24" />
+    </filter>
+    <linearGradient
+       id="linear-gradient-3"
+       x1="407.79999"
+       y1="282.164"
+       x2="648.16803"
+       y2="565.80402"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#65a30d"
+         id="stop24" />
+      <stop
+         offset="0.5"
+         stop-color="#3f8f06"
+         id="stop25" />
+      <stop
+         offset="1"
+         stop-color="#266302"
+         id="stop26" />
+    </linearGradient>
+    <linearGradient
+       id="linear-gradient-4"
+       x1="297.30099"
+       y1="145.97099"
+       x2="363.22198"
+       y2="327.11499"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#ffffff"
+         stop-opacity="0.92"
+         id="stop27" />
+      <stop
+         offset="0.28"
+         stop-color="#e8fbff"
+         stop-opacity="0.65"
+         id="stop28" />
+      <stop
+         offset="0.68"
+         stop-color="#88ebff"
+         stop-opacity="0.22"
+         id="stop29" />
+      <stop
+         offset="1"
+         stop-color="#2cd5ff"
+         stop-opacity="0"
+         id="stop30" />
+    </linearGradient>
+    <clipPath
+       id="clip-path-6">
+      <path
+         d="m 526,248 c 92,0 164,60 164,142 0,51 -24,92 -58,118 -3,3 -5,7 -4,13 2,17 11,38 21,53 7,10 1,18 -12,15 -28,-6 -55,-23 -72,-43 -15,3 -30,5 -46,5 -95,0 -161,-67 -161,-152 0,-87 74,-151 168,-151 z"
+         id="path30" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient-5"
+       x1="460.345"
+       y1="276.29599"
+       x2="511.24701"
+       y2="414.53601"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#ffffff"
+         stop-opacity="0.88"
+         id="stop31" />
+      <stop
+         offset="0.35"
+         stop-color="#f2ffe0"
+         stop-opacity="0.56"
+         id="stop32" />
+      <stop
+         offset="0.75"
+         stop-color="#b8f56e"
+         stop-opacity="0.18"
+         id="stop33" />
+      <stop
+         offset="1"
+         stop-color="#7cd926"
+         stop-opacity="0"
+         id="stop34" />
+    </linearGradient>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath56">
+      <path
+         d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+         id="path57" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath57">
+      <path
+         d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+         id="path58" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath58">
+      <path
+         d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+         id="path59" />
+    </clipPath>
+  </defs>
+  <title
+     id="title34">baloes-conversa-frutiger-aero.svg</title>
+  <g
+     id="svg-aero-bubbles"
+     transform="translate(-195.00576,111.5017)">
+    <g
+       id="layer-gloss">
+      <g
+         id="g1"
+         transform="matrix(1.331269,0,0,1.331269,47.223933,-151.21045)">
+        <g
+           filter="url(#filter-1)"
+           id="g40">
+          <g
+             id="layer-blue-bubble">
+            <path
+               d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+               fill="url(#radial-gradient-1)"
+               id="path34"
+               style="fill:url(#radial-gradient-1)" />
+            <g
+               clip-path="url(#clip-path-1)"
+               id="g39">
+              <ellipse
+                 cx="405"
+                 cy="435"
+                 rx="195"
+                 ry="95"
+                 fill="url(#radial-gradient-2)"
+                 id="ellipse34"
+                 style="fill:url(#radial-gradient-2)" />
+              <g
+                 filter="url(#filter-2)"
+                 id="g35">
+                <path
+                   d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+                   fill="none"
+                   stroke="#035d96"
+                   stroke-width="26"
+                   opacity="0.65"
+                   id="path35" />
+              </g>
+              <g
+                 filter="url(#filter-3)"
+                 id="g36">
+                <path
+                   d="m 196,292 c -2,58 24,100 66,126 14,24 4,64 -16,100 42,-9 79,-34 106,-62 83,16 170,-4 222,-64"
+                   fill="none"
+                   stroke="#c4f9ff"
+                   stroke-width="5.5"
+                   stroke-linecap="round"
+                   opacity="0.8"
+                   id="path36" />
+              </g>
+              <path
+                 d="m 255,428 c 19,24 9,60 -11,92 40,-8 77,-30 109,-61 39,8 85,9 129,-4"
+                 fill="none"
+                 stroke="#ffffff"
+                 stroke-width="2.5"
+                 stroke-linecap="round"
+                 opacity="0.75"
+                 id="path37" />
+              <g
+                 filter="url(#filter-4)"
+                 id="g38">
+                <path
+                   d="m 526,248 c -101,0 -180,67 -180,157 0,40 19,77 50,103 L 630,490 V 248 Z"
+                   fill="#024b7a"
+                   opacity="0.28"
+                   id="path38" />
+              </g>
+            </g>
+            <path
+               d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+               fill="none"
+               stroke="url(#linear-gradient-1)"
+               stroke-width="3.5"
+               id="path39"
+               style="stroke:url(#linear-gradient-1)" />
+          </g>
+        </g>
+        <g
+           filter="url(#filter-5)"
+           id="g45">
+          <g
+             id="layer-green-bubble">
+            <path
+               d="m 526,248 c 92,0 164,60 164,142 0,51 -24,92 -58,118 -3,3 -5,7 -4,13 2,17 11,38 21,53 7,10 1,18 -12,15 -28,-6 -55,-23 -72,-43 -15,3 -30,5 -46,5 -95,0 -161,-67 -161,-152 0,-87 74,-151 168,-151 z"
+               fill="url(#radial-gradient-3)"
+               id="path40"
+               style="fill:url(#radial-gradient-3)" />
+            <g
+               clip-path="url(#clip-path-2)"
+               id="g44">
+              <g
+                 filter="url(#filter-6)"
+                 id="g41">
+                <path
+                   d="m 526,248 c 92,0 164,60 164,142 0,51 -24,92 -58,118 -3,3 -5,7 -4,13 2,17 11,38 21,53 7,10 1,18 -12,15 -28,-6 -55,-23 -72,-43 -15,3 -30,5 -46,5 -95,0 -161,-67 -161,-152 0,-87 74,-151 168,-151 z"
+                   fill="none"
+                   stroke="#1b6902"
+                   stroke-width="24"
+                   opacity="0.6"
+                   id="path41" />
+              </g>
+              <g
+                 filter="url(#filter-7)"
+                 id="g42">
+                <ellipse
+                   cx="545"
+                   cy="495"
+                   rx="135"
+                   ry="70"
+                   fill="#ebff75"
+                   opacity="0.45"
+                   id="ellipse41" />
+              </g>
+              <g
+                 filter="url(#filter-8)"
+                 id="g43">
+                <path
+                   d="m 372,402 c 2,80 70,138 154,138 16,0 29,-2 42,-5 17,21 44,38 74,46 -13,-21 -24,-47 -23,-69 36,-26 59,-70 59,-122"
+                   fill="none"
+                   stroke="#efffb5"
+                   stroke-width="5"
+                   stroke-linecap="round"
+                   opacity="0.75"
+                   id="path42" />
+              </g>
+              <path
+                 d="m 382,438 c 24,64 83,103 150,102 14,0 24,-2 35,-4 17,20 43,36 75,45 -14,-22 -23,-46 -22,-70 32,-25 54,-63 57,-109"
+                 fill="none"
+                 stroke="#ffffff"
+                 stroke-width="2.2"
+                 stroke-linecap="round"
+                 opacity="0.65"
+                 id="path43" />
+            </g>
+          </g>
+        </g>
+        <g
+           id="layer-intersection"
+           clip-path="url(#clip-path-3)">
+          <g
+             clip-path="url(#clip-path-4)"
+             id="g48">
+            <rect
+               x="340"
+               y="230"
+               width="300"
+               height="270"
+               fill="url(#linear-gradient-2)"
+               id="rect45"
+               style="fill:url(#linear-gradient-2)" />
+            <g
+               filter="url(#filter-9)"
+               id="g46">
+              <path
+                 d="m 520,235 c 62,23 94,75 90,133 -5,57 -58,100 -135,106 -50,4 -95,-4 -125,-12"
+                 fill="none"
+                 stroke="#0d7a68"
+                 stroke-width="14"
+                 opacity="0.45"
+                 id="path45" />
+            </g>
+            <g
+               filter="url(#filter-10)"
+               id="g47">
+              <path
+                 d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+                 fill="none"
+                 stroke="#a8ffdb"
+                 stroke-width="7"
+                 opacity="0.6"
+                 id="path46" />
+            </g>
+            <path
+               d="m 412,118 c 116,0 202,75 202,178 0,102 -89,178 -202,178 -20,0 -39,-3 -57,-7 -29,32 -69,56 -103,64 -15,3 -21,-6 -13,-20 15,-24 26,-54 22,-76 -1,-6 -6,-11 -13,-16 -49,-35 -68,-83 -68,-134 0,-97 102,-167 232,-167 z"
+               fill="none"
+               stroke="#e0fff4"
+               stroke-width="2.5"
+               opacity="0.7"
+               id="path47" />
+          </g>
+          <path
+             d="m 526,248 c 92,0 164,60 164,142 0,51 -24,92 -58,118 -3,3 -5,7 -4,13 2,17 11,38 21,53 7,10 1,18 -12,15 -28,-6 -55,-23 -72,-43 -15,3 -30,5 -46,5 -95,0 -161,-67 -161,-152 0,-87 74,-151 168,-151 z"
+             fill="none"
+             stroke="url(#linear-gradient-3)"
+             stroke-width="3.5"
+             id="path48"
+             style="stroke:url(#linear-gradient-3)" />
+        </g>
+        <path
+           d="m 196,296 c -4,-104 90,-166 216,-166 84,0 150,38 172,94 6,15 -2,24 -20,26 -102,12 -199,64 -292,140 -30,24 -70,-25 -76,-94 z"
+           fill="url(#linear-gradient-4)"
+           id="path49"
+           style="fill:url(#linear-gradient-4)"
+           clip-path="url(#clipPath58)" />
+        <path
+           d="m 238.8209,207.28358 c 25.92993,-32.25238 54,-51 94,-61 l 14,22 c -36,10 -62.17387,25.89648 -86.48921,56.70663 z"
+           fill="#ffffff"
+           opacity="0.62"
+           id="path51"
+           clip-path="url(#clipPath57)"
+           transform="rotate(4.5382254,278.41045,218.14179)"
+           sodipodi:nodetypes="ccccc" />
+        <path
+           d="m 210,278 c 4,-26 12,-48 26,-66 l 22,18 c -13,17 -20,36 -24,60 z"
+           fill="#ffffff"
+           opacity="0.45"
+           id="path52"
+           clip-path="url(#clipPath56)"
+           transform="rotate(4.5382254,278.41045,218.14179)" />
+        <g
+           clip-path="url(#clip-path-6)"
+           id="g56">
+          <path
+             d="m 372,402 c -4,-88 64,-142 154,-142 72,0 126,34 140,86 4,16 -6,26 -24,24 -84,-8 -164,32 -230,88 -24,20 -38,-16 -40,-56 z"
+             fill="url(#linear-gradient-5)"
+             id="path53"
+             style="fill:url(#linear-gradient-5)" />
+          <path
+             d="m 408.45761,318.35232 c 17.1705,-22.13987 44.0166,-37.76956 76.3882,-44.10037 l 11.05101,18.59772 c -28.37698,6.53812 -53.68638,19.32731 -69.80639,40.52036 z"
+             fill="#ffffff"
+             opacity="0.58"
+             id="path55"
+             sodipodi:nodetypes="ccccc" />
+          <path
+             d="m 383.68858,371.13958 c 4.03248,-19.81764 10.90546,-36.48384 21.61758,-49.94677 l 18.19708,15.96454 c -9.66164,12.51609 -16.43097,27.18498 -20.3598,45.00531 z"
+             fill="#ffffff"
+             opacity="0.42"
+             id="path56" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

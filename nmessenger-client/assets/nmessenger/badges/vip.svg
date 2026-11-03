@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+  <defs>
+    <linearGradient id="vip_rim" x1="120" y1="80" x2="380" y2="440" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffe259"/>
+      <stop offset="50%" stop-color="#ffa751"/>
+      <stop offset="100%" stop-color="#d4af37"/>
+    </linearGradient>
+    <linearGradient id="vip_bg" x1="140" y1="120" x2="360" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3b0764"/>
+      <stop offset="50%" stop-color="#240046"/>
+      <stop offset="100%" stop-color="#10002b"/>
+    </linearGradient>
+    <linearGradient id="vip_gold" x1="160" y1="180" x2="340" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff6a3"/>
+      <stop offset="40%" stop-color="#ffd700"/>
+      <stop offset="80%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="vip_crown" x1="200" y1="160" x2="300" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#ffd54f"/>
+      <stop offset="100%" stop-color="#ff8f00"/>
+    </linearGradient>
+    <filter id="vip_glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <circle cx="250" cy="256" r="186" fill="url(#vip_rim)"/>
+  <circle cx="250" cy="256" r="160" fill="url(#vip_bg)"/>
+  <path fill="#0d001a" opacity="0.4" d="M106.1 373.9 L367.9 112.1 C400.1 138.5 423.3 175.6 432.1 217.9 L211.9 438.1 C169.6 429.3 132.5 406.1 106.1 373.9 Z"/>
+  
+  <!-- Crown -->
+  <g filter="url(#vip_glow)">
+    <polygon points="160,230 190,170 230,215 250,150 270,215 310,170 340,230 325,250 175,250" fill="url(#vip_crown)"/>
+    <circle cx="190" cy="165" r="7" fill="#ffffff"/>
+    <circle cx="250" cy="144" r="9" fill="#ffffff"/>
+    <circle cx="310" cy="165" r="7" fill="#ffffff"/>
+    <polygon points="215,225 250,195 285,225 270,240 230,240" fill="#ffffff" opacity="0.4"/>
+  </g>
+  
+  <!-- VIP Plaque / Text -->
+  <rect x="150" y="270" width="200" height="64" rx="32" fill="url(#vip_gold)" stroke="#fff" stroke-width="3"/>
+  <text x="250" y="318" font-family="Inter, Impact, sans-serif" font-size="44" font-weight="900" fill="#3b0764" text-anchor="middle" letter-spacing="6">VIP</text>
+  
+  <!-- Little Stars -->
+  <polygon points="135,280 138,288 146,289 140,295 142,303 135,299 128,303 130,295 124,289 132,288" fill="#ffd700"/>
+  <polygon points="365,280 368,288 376,289 370,295 372,303 365,299 358,303 360,295 354,289 362,288" fill="#ffd700"/>
+</svg>

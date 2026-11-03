@@ -1,0 +1,32 @@
+[package]
+name = "nm-servo"
+version.workspace = true
+edition = "2024"
+license.workspace = true
+
+[dependencies]
+nm-protocol.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+actix-web = { version = "4.18.1", default-features = false, features = ["macros", "unicode", "ws"] }
+actix-ws = "0.4.0"
+actix-multipart = "0.8.5"
+actix-files = "0.7.2"
+argon2 = "0.6.0"
+base64 = "0.23.1"
+futures-util = "0.3"
+hex = "0.4.3"
+hmac = "0.13"
+rand = "0.10.3"
+redis = { version = "1.8.1", features = ["tokio-comp", "connection-manager"] }
+sha2 = "0.11.1"
+sqlx = { version = "0.9.0", features = ["runtime-tokio", "tls-rustls-ring-webpki", "postgres", "uuid", "chrono", "json", "migrate"] }
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+
+[dev-dependencies]
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "multipart", "query", "rustls"] }
+tokio-tungstenite = "0.30.0"

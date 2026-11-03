@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=NMessenger
+GenericName=Mensageiro Instantâneo
+Comment=Mensageiro clássico com visual Frutiger Aero
+Exec=cargo run -p nmessenger-client --features native-audio
+Path=/home/lewis/Projetos/nmessenger
+Icon=nmessenger
+Terminal=false
+Categories=Network;InstantMessaging;Chat;
+StartupWMClass=NMessenger

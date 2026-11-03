@@ -1,0 +1,2229 @@
+{
+  "reference": "/home/lewis/Projetos/GOrb",
+  "resources": [
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ausente_conversa.svg",
+      "source_sha256": "704e19105646e76c93850c99e591cfc4c1a40c76c69e301121b170444af708f3",
+      "file": "status/ausente_conversa.png",
+      "sha256": "935fd37ae13ee267af66ca3295ae97ab00c9b58c2e8b960b19ef7c0d9ca11f80",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ausente_grupo.svg",
+      "source_sha256": "420331d6c11beb9de99da211d72c1bc4b7d379db71e751114be065807dd29b64",
+      "file": "status/ausente_grupo.png",
+      "sha256": "2e510b201b8134e780471b3d66967376c049d673f5d2c7374e5b60f6813e998f",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ausente_icone.svg",
+      "source_sha256": "77bcaae0fe4611e512c2436a0ea83ecf34070ccb78828335f4eaac067255e4fd",
+      "file": "status/ausente_icone.png",
+      "sha256": "0080e45316f899f97bf72c678f8d0381372c7b0b89d85d002ab9c754b26a69b7",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ausente_login.svg",
+      "source_sha256": "db57242591a5cf4810e1f872265cfb8d432b8b3285322c6defb04b697982f64d",
+      "file": "status/ausente_login.png",
+      "sha256": "32d0cae8355cd11d16d2ad200c30f146c9dae42823796e230caa8b5f2f7558d2",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ausente_perfil.svg",
+      "source_sha256": "3ef80419c016a7301a427844be2b9a2e56b075eadfc3bb429595af6dd27c9013",
+      "file": "status/ausente_perfil.png",
+      "sha256": "118d7169a22dc5d4d53d4a09b09af1acd0f143e572681ed14cd8b5199d70b3f0",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/disponivel_conversa.svg",
+      "source_sha256": "7701def0d117ea2065578e26f33735410372ee44be9919d67fb6df143129ba1c",
+      "file": "status/disponivel_conversa.png",
+      "sha256": "53a174e045f589027c03f79bd96f90bf6e5995a34e9181fad43e2083ba837231",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/disponivel_grupo.svg",
+      "source_sha256": "76fea47f604295f3d30527f3e78d86400e5d97604127ba3b01c54222c2b7f2ae",
+      "file": "status/disponivel_grupo.png",
+      "sha256": "b40f2d2215cdebaa00e4cbf95793b8792a0f318145f04c79743bb0b8f756c418",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/disponivel_icone.svg",
+      "source_sha256": "97c5830033e34f0ce933ab80d0dcb98fdd25cdfbfd045eff7cbe6cd08413642b",
+      "file": "status/disponivel_icone.png",
+      "sha256": "5f615c9e7b86f04d7774a17ce8ec31aea1e6c2ee8cebf755490de7e63153ec09",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/disponivel_login.svg",
+      "source_sha256": "2f95b1f0bf043dfa302deb1e6ec10dc7f35c6e8d9c5a5f9e6cac42c381b04955",
+      "file": "status/disponivel_login.png",
+      "sha256": "c34641358d94f6121c0077e7282dc25f9a5d337410df17e81d015189e69a2523",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/disponivel_perfil.svg",
+      "source_sha256": "b0c2846a953e00ee965de96d834c18d60f788db9fac05bcdeb5639b10e8f7574",
+      "file": "status/disponivel_perfil.png",
+      "sha256": "cd3a165867fb3b5caaee689602f207a7d932a7416e5bc1662dcd4b8ab4299e76",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ocupado_conversa.svg",
+      "source_sha256": "7142c7e4f0ce2e3f64e567cdb8fb19a0344afd4916552bcfb7e3007f06c2888b",
+      "file": "status/ocupado_conversa.png",
+      "sha256": "8ea4f633e3c80b4cf1ebd6662342336d6dab6eeaa3fd7b4004fb58bc734e6df6",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ocupado_grupo.svg",
+      "source_sha256": "71c20687cc8a0ac53194b619b7ae62e943b10b8ab04c8d167c80e9dedacf84b2",
+      "file": "status/ocupado_grupo.png",
+      "sha256": "84815204acd5802b177b1e9ef32e8b64169cc55b5563be7132875d49695d0422",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ocupado_icone.svg",
+      "source_sha256": "a0dc8f4c1d2fbe4dbce0cfc39ff0d4df079196ee2dd9f77f859a925a4b6fc4c1",
+      "file": "status/ocupado_icone.png",
+      "sha256": "d6ddf33656377d96b447484b21e571e12c798cbaa6fe64736fc1712816ca2263",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ocupado_login.svg",
+      "source_sha256": "2445db11e52cf97b65248e34b2420671332ec2806b1f862a8e061400f0dab5e3",
+      "file": "status/ocupado_login.png",
+      "sha256": "23c3b945a19118a3d823378d6382b29dcff1c67e4e0b2500245480bffce6ba6a",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/ocupado_perfil.svg",
+      "source_sha256": "75d91803f9c890e0539ff5a26ff872a2572922022482b1cc79cef4c59a7e83e1",
+      "file": "status/ocupado_perfil.png",
+      "sha256": "f3a321c7bef59cdf5fa527276f64dd62a76ebae7f5cd2f183fc994e1a3bf0fa4",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/offline_conversa.svg",
+      "source_sha256": "4b7665afd5e7e4b31ae031f55106a8d7c673346ca49cf5d33f2b78cfedf8a41d",
+      "file": "status/offline_conversa.png",
+      "sha256": "f78e899be476595d937bdf60c04d050d7f510bf9dd5921dd8a962d2e39a3bbe2",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/offline_grupo.svg",
+      "source_sha256": "238491161e1e1870951641d3b428a3111b54e20cbf63aad740f284157b021512",
+      "file": "status/offline_grupo.png",
+      "sha256": "a4747656e9ea65ce37b8af8f3943cdff2a55e57e181ff916ed3caf7bb6442ece",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/offline_icone.svg",
+      "source_sha256": "d165e84570553f4e398191dd92bdc5e86760aa744625d100886f2abf3c546a0d",
+      "file": "status/offline_icone.png",
+      "sha256": "0739fc0cf0e6dfc6d6ab227e1f21c3b89fcdabcb87969c529b8aa4558a61fcb1",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/offline_login.svg",
+      "source_sha256": "4a1aac7dddb9a6bb7b31163928b88f3a97044463d86bb29c0660572776b7a66d",
+      "file": "status/offline_login.png",
+      "sha256": "c38dcc9c6e3e5b67f0637a3511fb038253bd9a08fc5658b58ad36f134f32c768",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/status/offline_perfil.svg",
+      "source_sha256": "7281306f8987d78af81c0309ee841a4dc6381f940c70db7ee6d8cd152c478500",
+      "file": "status/offline_perfil.png",
+      "sha256": "197adc8d3f823af291ce61ebe8c7a73b12edb942f08ea84fc3577f4f76a422aa",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/Icons/fluent_search-32-filled.svg",
+      "source_sha256": "d0d8e9ae6d748b8bd1da7756ad59e6e7cfef990d5bfcc94a4ce962754310271e",
+      "file": "icons/search.png",
+      "sha256": "453d25947c2f0afad02ca07a6dc7ecaccebd9ccdc3971ad2cbd1ee1ba7c362af",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/Icons/eva_arrow-down-fill.svg",
+      "source_sha256": "4b33c03d4ba967afbd14c56ddf47c53af7d1c774cbd4369d27f6efb6fdef178d",
+      "file": "icons/arrow.png",
+      "sha256": "851998d6e47e7391b478886bbf5a5b3f3405a8a39083d3dfc3a82880b05b509c",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/settings.svg",
+      "source_sha256": "5703399b75763538275f16f22b4156894b97cc8aacb0141baaeac891e46b1d1e",
+      "file": "icons/settings.png",
+      "sha256": "c4763d36bd62730cb9a764b9dcb143cdb9080798770c888218997c2403d1fe5f",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Settings/SVG/ic_fluent_settings_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Settings/SVG/ic_fluent_settings_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/add-contact.svg",
+      "source_sha256": "1afed617af96f1ce286f4a68dc2da877a30389995eb2423035267238e3778cb6",
+      "file": "icons/add-contact.png",
+      "sha256": "75fd4afb8cb08a977bb64041d607f24d278319dfdf834a584fb50dbd2eef8774",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Person%20Add/SVG/ic_fluent_person_add_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Person%20Add/SVG/ic_fluent_person_add_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/game.svg",
+      "source_sha256": "762b5bad527b6e0143c7842ab48ae9d5205d50f37f869e1577164d54a27b0c17",
+      "file": "icons/game.png",
+      "sha256": "0a5c516cd10b31d5989aa3907a1d81b2f3ff5886a3788ae8cff22395bf7cf9c5",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Game%20Chat/SVG/ic_fluent_game_chat_20_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Game%20Chat/SVG/ic_fluent_game_chat_20_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/search-chat.svg",
+      "source_sha256": "dc8ec761e8cdc52032b86e15c424716ded96d168970b5b611257253a41484b62",
+      "file": "icons/search-chat.png",
+      "sha256": "a0d057ccef6ac732ea5738e4e47045eb727c5124e3a5c349cb9707dbf6dd8da9",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Search/SVG/ic_fluent_search_24_regular.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Search/SVG/ic_fluent_search_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/call.svg",
+      "source_sha256": "b69c8d4412cf85bd3fdbaaba5d04fc866c07958e60c5794a2f08f5307ee11108",
+      "file": "icons/call.png",
+      "sha256": "d9e3ebdb28c3e8d049ce7a158713d7bc758a45f47ec39305d37f699dfd6f152f",
+      "kind": "reference-cdn-icon",
+      "url": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/main/assets/Call/SVG/ic_fluent_call_24_regular.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Call/SVG/ic_fluent_call_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/chevron.svg",
+      "source_sha256": "52b3569967dcd33b226bd19a7cb3bf1bf491dd22822c4c3a8d36f80cb6612ffa",
+      "file": "icons/chevron.png",
+      "sha256": "a291685e10babab2519e8f79f106d147b433e58661443ebb39c083fb26de2bb5",
+      "kind": "reference-cdn-icon",
+      "url": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/main/assets/Chevron%20Down/SVG/ic_fluent_chevron_down_24_regular.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Chevron%20Down/SVG/ic_fluent_chevron_down_24_regular.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/camera.svg",
+      "source_sha256": "3189229c9c923c89ab1bf394e31c25c48245619b21828b710129240061597ce6",
+      "file": "icons/camera.png",
+      "sha256": "7ba42166fc1ccc1e4bd298055baed1a1c159bcb820f4f404af1779bf48dedf7d",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Camera/SVG/ic_fluent_camera_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Camera/SVG/ic_fluent_camera_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/emoji.svg",
+      "source_sha256": "3330c6d9f92bea3a8d3f584c89ed0e7e89d3e18ab80ffcd51df22f0deb4e2b0a",
+      "file": "icons/emoji.png",
+      "sha256": "ff00ca325c631424a2680389eeece8e0446fc2300f8f6d2342985647c82c3bbb",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Emoji/SVG/ic_fluent_emoji_24_regular.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Emoji/SVG/ic_fluent_emoji_24_regular.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/gift.svg",
+      "source_sha256": "e0a15cfcfed3dc25d29287a9ffc5f3536c2baed243264e005dc13c0a45dc8428",
+      "file": "icons/gift.png",
+      "sha256": "0339c3c0dd61c5785669af31622dbb87f3182a7ef510d2ef8743b1dcf018cc57",
+      "kind": "reference-cdn-icon",
+      "url": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/main/assets/Gift/SVG/ic_fluent_gift_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Gift/SVG/ic_fluent_gift_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/folder.svg",
+      "source_sha256": "06f76f631718174c6bdafb0c6609166ddb78092ce55ab9b7bba272cd827ca14d",
+      "file": "icons/folder.png",
+      "sha256": "adb5050a078099d8aa061d4ef625b6f2c9c6ba2f1ec1dce0754c84ce32d52219",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Document%20Folder/SVG/ic_fluent_document_folder_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Document%20Folder/SVG/ic_fluent_document_folder_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/mic.svg",
+      "source_sha256": "92c3b6cea0a246203ac1ad6a9bcfa74892e3edd7ef296c071d8ee15758c83fa4",
+      "file": "icons/mic.png",
+      "sha256": "b7f3ab78c4c370d023a5a30e6b2b9ed3c059ee3d71782963696b6fee1dedaf62",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Mic/SVG/ic_fluent_mic_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Mic/SVG/ic_fluent_mic_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/send.svg",
+      "source_sha256": "0156aaeeb3d0577cede3752dd3a80e01ef995627a12a5cbe07753693878bc477",
+      "file": "icons/send.png",
+      "sha256": "3f23bd719d61740be6b5465dd3855d07dd9f3c17f9554d3fea908c8feb8d8e7d",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Send/SVG/ic_fluent_send_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Send/SVG/ic_fluent_send_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/nudge.svg",
+      "source_sha256": "9e0fed3fd7bd32040155690fa6a31aee6f6ea51da19ca12a5b5efe8302dc61cc",
+      "file": "icons/nudge.png",
+      "sha256": "e719bf82ff8f5982a993af73642f282657b31841487aa46c88eb8df0eb01768b",
+      "kind": "reference-cdn-icon",
+      "url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Alert/SVG/ic_fluent_alert_24_color.svg",
+      "reference_url": "https://cdn.jsdelivr.net/gh/microsoft/fluentui-system-icons@main/assets/Alert/SVG/ic_fluent_alert_24_color.svg",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/mic.png",
+      "source_sha256": "b7f3ab78c4c370d023a5a30e6b2b9ed3c059ee3d71782963696b6fee1dedaf62",
+      "file": "icons/mic-white.png",
+      "sha256": "6369b5c00ccc9bed15124e7d258869a15355f2199ae5b765a1eacc7bb13a8725",
+      "kind": "white-alpha-mask"
+    },
+    {
+      "source": "/home/lewis/Projetos/nmessenger/nmessenger-client/assets/nmessenger/icons/send.png",
+      "source_sha256": "3f23bd719d61740be6b5465dd3855d07dd9f3c17f9554d3fea908c8feb8d8e7d",
+      "file": "icons/send-white.png",
+      "sha256": "ccf23307fa33bcd0ca283d8d9774234c1f4a89021d6110cb1be81eb87ac9956d",
+      "kind": "white-alpha-mask"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/musical-note.svg",
+      "source_sha256": "889610f268faa48d8c258a55df4b837595d7e91e92bc3695d0603beff12643a9",
+      "file": "icons/musical-note.png",
+      "sha256": "7a2b93484ae200a025362e9704f9c3019a6b3c723dfe4b5ae824f169580663ae",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/sparkles.svg",
+      "source_sha256": "d5802877677464187a510c3fbb9d8c272dea164bcca2bf6a2270944e6cd2324e",
+      "file": "icons/sparkles.png",
+      "sha256": "31b6a46dbc2ba92099a95281758753f221a13e160d4f6f75f565e76cc8b49bd4",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/framed-picture.svg",
+      "source_sha256": "92fc0071a1e4872de34b0a450f4f7da13f3d039b9b5c06c66105e07f76837465",
+      "file": "icons/framed-picture.png",
+      "sha256": "e2f10060950d3a0fe803b2aa53da76a45a80ed550862bd960817658c7ff9683a",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/person.svg",
+      "source_sha256": "19170c4e0b3f7f83c0159e817935fd36316a1c8446dc198d09684022e3167ce0",
+      "file": "icons/person.png",
+      "sha256": "674b501c5f261238558accd43ae23ffcad8883da5a970bb2961e70247cf20b11",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/door.svg",
+      "source_sha256": "6a81dd76ab1e38aef2e6dafdfec77880b51067c0e20ed5ea5d3491cb0af7c3b6",
+      "file": "icons/door.png",
+      "sha256": "194a2a2dfa15474e351c43f79c36e0602ae58fbfb14b6570e69663e114b4d245",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/information.svg",
+      "source_sha256": "ef07a2a1865b8a22f99ebb5d38c4b5f4a58dd7d089a7673a22aa71c8fa9b7581",
+      "file": "icons/information.png",
+      "sha256": "cdbd2e66e9646c0edc68a0496e566ac26edc8766a748e3840c4bec25dde33f52",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/kiss-mark.svg",
+      "source_sha256": "23a9d7730d5eeb0819ca6bb4ddcd299f1aae269e360c44854c2119ff7f1b25ba",
+      "file": "icons/kiss-mark.png",
+      "sha256": "ff58f07cc4f9792503a0f54e5465ee14fe9e1f1427d6eca239a426f31747513f",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/hammer.svg",
+      "source_sha256": "86c017f059dfa32320ee390cd0fcabc67e92ca30edb65d5b260a3bc9796d248e",
+      "file": "icons/hammer.png",
+      "sha256": "70b71c2bd3bfc0ea8ccb8fce53687a19c14694a9d898e57a5d6bff0f5fede587",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/pig-face.svg",
+      "source_sha256": "90dcc30373bac5cee297f1ca7f046e16fe11aee380f49dbe24d4be6aa55dd56a",
+      "file": "icons/pig-face.png",
+      "sha256": "32a7d9f01804d00ae19ed04f9ba1fee7e601d4cfa0a07bfcd511d39ac41b9548",
+      "kind": "svg-rasterized",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/slightly-smiling-face.gif",
+      "source_sha256": "b38c6544cf833b49d3c8fe11210e55db3f12e53852e90ad7b61d2e860912bb22",
+      "file": "emojis/slightly-smiling-face.png",
+      "sha256": "f6adab5941b951689e3f9a271114458f8d4ccbd898ed3e01045b5334f7429b13",
+      "kind": "emoji-preview",
+      "code": ":-)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/grinning-face-with-big-eyes.gif",
+      "source_sha256": "8f9e89a33f4d528978d027dc75bc4b76e9d6a1ab0a31f8edb628ffe0b8a1fb66",
+      "file": "emojis/grinning-face-with-big-eyes.png",
+      "sha256": "7d66cec3d8f1483afe6ef9887a1cdd6fa0b5f931ad18b64105fcddcea31890c3",
+      "kind": "emoji-preview",
+      "code": ":-D"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/winking-face.gif",
+      "source_sha256": "b7b895390dd2c6bbcf240aa0e89090f59b4ac096e09eb5975b9ef670bdd0eaaa",
+      "file": "emojis/winking-face.png",
+      "sha256": "110c542c5c78ae11a43dc78c08e8216be7589a5853d94ab031e18acde0d3b01d",
+      "kind": "emoji-preview",
+      "code": ";-)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-with-tongue.gif",
+      "source_sha256": "28bcae45fddb7cce326bbd5bc1787f5ca790cdd11b787b62b96f4033258a8436",
+      "file": "emojis/face-with-tongue.png",
+      "sha256": "d07e8a249f09d7b391281aa0f82cf7ae77ae489a0288c49c2386a50075ac98b3",
+      "kind": "emoji-preview",
+      "code": ":-P"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-with-open-mouth.gif",
+      "source_sha256": "6d14c1bb03ecaaecae5005ab5a43ba57e3fd98b521b234c0fafbf8f617793844",
+      "file": "emojis/face-with-open-mouth.png",
+      "sha256": "86ff3fd5dda894d6d6389a8cad77d3171ca6ed34a93d4e1e91ce8970a80964d0",
+      "kind": "emoji-preview",
+      "code": ":-O"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/flushed-face.gif",
+      "source_sha256": "124994ccdaeec3d35b6e343df951de95d08a22ff902d8edd1b4f45cbdcde508b",
+      "file": "emojis/flushed-face.png",
+      "sha256": "93647c7aa7620e0f3f619129f78f4615bf475cfe6d95497eabb6d08f3e5c285b",
+      "kind": "emoji-preview",
+      "code": ":-$"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pouting-face.gif",
+      "source_sha256": "e7fffb0ac1abbb4f6817766761c8625788293a15c687f20d6d5070638d5a9a46",
+      "file": "emojis/pouting-face.png",
+      "sha256": "2f8f36b0e13369b9ee5665e7c6216a24adc7c4c68c4e4e15b3dac4a6ceebc0f2",
+      "kind": "emoji-preview",
+      "code": ":-@"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/confused-face.gif",
+      "source_sha256": "cf5272be952f7051d57efdc7118a54dcc656bf23a9f65f8a95821c91fb584dfa",
+      "file": "emojis/confused-face.png",
+      "sha256": "08219cbcc019d66dfaedfa3d33363026aae60e3e1252ca94f4929e6e6ae846d6",
+      "kind": "emoji-preview",
+      "code": ":-S"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-sunglasses.gif",
+      "source_sha256": "448fdf84e4e9dcfb8f264b25f0c763826714fee137b0066ffaa43d0f72059a56",
+      "file": "emojis/smiling-face-with-sunglasses.png",
+      "sha256": "6204287d6fe710b12ebf1b1832d5c7e23062fa78cf9996f8dd96d3af282e8745",
+      "kind": "emoji-preview",
+      "code": "(H)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/thumbs-up.gif",
+      "source_sha256": "af5f50021ceab21173885bd9acec9d9d760a6fe673b9be02d3a1948f76456894",
+      "file": "emojis/thumbs-up.png",
+      "sha256": "bcf5db889da43f8933acc8d13ecdb38a5063878ae0fc2bf2d7f0d459bd344663",
+      "kind": "emoji-preview",
+      "code": "(Y)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/thumbs-down.gif",
+      "source_sha256": "54e2a99a622d201bac322f5e0a71e5ca8c4a6aee344ca2f261209ce647dc733b",
+      "file": "emojis/thumbs-down.png",
+      "sha256": "4e967356ea016b1a4054eb4fcea51c10047b8058aee166efc0e56585541052be",
+      "kind": "emoji-preview",
+      "code": "(N)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/kiss-mark.gif",
+      "source_sha256": "6ad4774410bcbb6faea1adf2fc20a4765ecd69f36ba1d5b760335ad8f9189321",
+      "file": "emojis/kiss-mark.png",
+      "sha256": "83582d10c48189292baa1ad461948f0898bfb0b7005832c99d98118ff2bb820c",
+      "kind": "emoji-preview",
+      "code": "(K)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-halo.gif",
+      "source_sha256": "20f590cc2c2c743ee491c198610164326c588b28b426dc7db8cbdd5bfd4deeed",
+      "file": "emojis/smiling-face-with-halo.png",
+      "sha256": "8efce5be4000be795a0b40118a5ef49c4c99568ab2ccc651e51b4d2a035c6cfe",
+      "kind": "emoji-preview",
+      "code": "(A)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/red-heart.gif",
+      "source_sha256": "7f055a6f1deaad82b4b50ff91ee445d323728e13b27774f85934acf8203c120c",
+      "file": "emojis/red-heart.png",
+      "sha256": "b6fa62749c1af42a1979c69b34fd17d4e45ee02aa32068a1db8b141f8582052e",
+      "kind": "emoji-preview",
+      "code": "(L)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/broken-heart.gif",
+      "source_sha256": "ccd53cb169e7193259e9a5511e0d3b062b3446b29194828e20d593b7cd4cba8c",
+      "file": "emojis/broken-heart.png",
+      "sha256": "617af742e209af0f5cf3fc146e8e8ab066fa6127d98f0ebdb2e001dad09aebb1",
+      "kind": "emoji-preview",
+      "code": "(U)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/alarm-clock.gif",
+      "source_sha256": "eef254b27d49885cc53d68c26cd0339e3f8ad976af43d8daea4db93514c760e7",
+      "file": "emojis/alarm-clock.png",
+      "sha256": "7b06f576e7a36a606d46690175351a1c45415fbad7dd6b00aba540c0fe9a6332",
+      "kind": "emoji-preview",
+      "code": "(O)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/wrapped-gift.gif",
+      "source_sha256": "e8e70de877506e4e4a8add2c40c7ea633536645c225c67ecbb5a57ef14cd726c",
+      "file": "emojis/wrapped-gift.png",
+      "sha256": "02ee8d2a805c78424cac1d506333008720cee7065bf2cab69607ae1d7723afc6",
+      "kind": "emoji-preview",
+      "code": "(G)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/wilted-flower.gif",
+      "source_sha256": "248892014d7acf71b962a44da9a2fbb0baba09c9481a3b782b1a55d344d6b416",
+      "file": "emojis/wilted-flower.png",
+      "sha256": "7cf944e01f2d1009d179e2d83dcc847feddbc8d6eef86c9135ac39c07c874e32",
+      "kind": "emoji-preview",
+      "code": "(F)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/camera.gif",
+      "source_sha256": "23e8aea11fa5b1ba21516df3bd8375b1c3604a2ebb30622640f35a6f8df774e2",
+      "file": "emojis/camera.png",
+      "sha256": "4151c4b1b8fc14a49e2b8222c37112fcc2480ac1a75d1857c3616a331f1cd5be",
+      "kind": "emoji-preview",
+      "code": "(P)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/musical-note.gif",
+      "source_sha256": "464ef9a31931e4e17d22b77e805c9ef3035e4e6495dfc45bbac11a4181aaa1d4",
+      "file": "emojis/musical-note.png",
+      "sha256": "86d2e0f044291b9f71ac4302037b96fbaaa0c62bd521edde512c07b88e55b845",
+      "kind": "emoji-preview",
+      "code": "(M)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/crescent-moon.gif",
+      "source_sha256": "ac00df9168c00c73577a6a54072905b78f28dcd014a4d2d937f2d08c19183d97",
+      "file": "emojis/crescent-moon.png",
+      "sha256": "f9a94141350e9776c148a7dceaca0dac8ea05582c32e22df0f7df6a5014578bf",
+      "kind": "emoji-preview",
+      "code": "(S)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/star.gif",
+      "source_sha256": "b90a54797cc7b626c5c53cb73a13c4f3ca8840bb141d9e39c2711b78ed9aa494",
+      "file": "emojis/star.png",
+      "sha256": "3c9150e0abb7142761bbd8f7d577d47165313de0205eca9dc26a88c1f2bdb144",
+      "kind": "emoji-preview",
+      "code": "(*)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/envelope.gif",
+      "source_sha256": "518e1c4dcbf97a56bf3cbd47e82d12798498579e3f8eb0ee8bdcc0b2d08e77f4",
+      "file": "emojis/envelope.png",
+      "sha256": "dfecce1d5f566f7de8eb15998cd6a2fc97c81239c03492ce38c62bdf7c8ad9a9",
+      "kind": "emoji-preview",
+      "code": "(E)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/hot-beverage.gif",
+      "source_sha256": "cdea1095ea4d8c8d259b1291b51aacc798d550389276ba2e7df0907d327f4ee0",
+      "file": "emojis/hot-beverage.png",
+      "sha256": "5f87b6d2d6872a460b1639c6c9ac7bb8c23eae42bb7fb6f1b0ceac857a1725a5",
+      "kind": "emoji-preview",
+      "code": "(C)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-heart-eyes.gif",
+      "source_sha256": "6342345b5a12d9c2e1ce87a0fc5e89a5bf5ded8c49470e7b07f53d18c89302f9",
+      "file": "emojis/smiling-face-with-heart-eyes.png",
+      "sha256": "9690065570954edd5af90e3fe090af79e102cc447f865ed5ebdf3b666b7e5b14",
+      "kind": "emoji-preview",
+      "code": "(HE)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-blowing-a-kiss.gif",
+      "source_sha256": "823b46059c0ca8aab361e456b647526bc5951ddcaea30afc59d5694f9f4199ef",
+      "file": "emojis/face-blowing-a-kiss.png",
+      "sha256": "ad5b3992cd9702899f1eaa9d81d83515296ab08ecfba49a8b635447c685e8ed1",
+      "kind": "emoji-preview",
+      "code": "(BK)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/squinting-face-with-tongue.gif",
+      "source_sha256": "899fde18faf61c7d1f854e8e5f8f0bed80f92defd43756a2df27d85bc1f8a73f",
+      "file": "emojis/squinting-face-with-tongue.png",
+      "sha256": "82b04b8a5fd556d5a12a273c5077eea98b285e63474d0fec8b54eb0e896c7db1",
+      "kind": "emoji-preview",
+      "code": "(ST)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/zany-face.gif",
+      "source_sha256": "68ac807a8af4bedf14f70884519456728be16fa6e7616a299b6e0c8b8a8db5be",
+      "file": "emojis/zany-face.png",
+      "sha256": "4ff65358cecc5056f820507d826e1e588d059a5aac09ad9cd6193e69e7d90ae9",
+      "kind": "emoji-preview",
+      "code": "(ZF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/shushing-face.gif",
+      "source_sha256": "995af3fea510a1bed7039dccd83bda0407da84f7474a5c98743909e3429d816e",
+      "file": "emojis/shushing-face.png",
+      "sha256": "3d63504e1d8cda765f6563719d502dfadf9887dea48487ddfcc3ade4a651427c",
+      "kind": "emoji-preview",
+      "code": "(SF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/thinking-face.gif",
+      "source_sha256": "1b4b4976b07f9249ead0ffb67e47ebf52c961cbc5880aa7559e35d2c72ff7f22",
+      "file": "emojis/thinking-face.png",
+      "sha256": "d6001f78f7246dfb6f31d82a0ede805aaec6d2e5d403fd89004edf4aa7ae40ba",
+      "kind": "emoji-preview",
+      "code": "(TF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/expressionless-face.gif",
+      "source_sha256": "58afd2b8daff83db7248b16e1a9eddeee378fef85c78ceb71af16450c5db181d",
+      "file": "emojis/expressionless-face.png",
+      "sha256": "ffe395d2324fd56c1e5556dd2ca2b383c09e4ad0a7ef75cfeb4fc4bc777d3765",
+      "kind": "emoji-preview",
+      "code": "(EF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smirking-face.gif",
+      "source_sha256": "bd5ca68531f7286e1bce5499a87f44a0b341d0b6274eb25c910d8b364a64f1bc",
+      "file": "emojis/smirking-face.png",
+      "sha256": "ee1a7ac1264ee751cb80add9a019cece6d0e5b3ad6043cba3fa0c27c2ce12ca0",
+      "kind": "emoji-preview",
+      "code": "(SM)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/grimacing-face.gif",
+      "source_sha256": "9d3f541cf35497f3b58b7b544abb2d9461341841a63eaa6f427d7c5fc6f49594",
+      "file": "emojis/grimacing-face.png",
+      "sha256": "1548bfcc1dabb5d5e035107f6990e33bb5676df6b190e8689dddddf7d54a0c72",
+      "kind": "emoji-preview",
+      "code": "(GF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/drooling-face.gif",
+      "source_sha256": "df2d3a055ded0977829858e78911d137acb1aa6e59ee00bb76cbd9a5e05df5e3",
+      "file": "emojis/drooling-face.png",
+      "sha256": "6e58ba1e35d45d48807347eff83924d4d66e1a7aa53d164c8e9b2fe66b3cccb5",
+      "kind": "emoji-preview",
+      "code": "(DF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/sleeping-face.gif",
+      "source_sha256": "c43f3d503b28aed8321af905bba80ec54a5bbda686290f0e108aff825bcba15a",
+      "file": "emojis/sleeping-face.png",
+      "sha256": "c0ac8846548b7629ac7628c7e7f022246c062f3b87395e153ff1f32d41b8619b",
+      "kind": "emoji-preview",
+      "code": "(SL)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/nauseated-face.gif",
+      "source_sha256": "70e3296cd45536cb820a6e0a24c24eb36976ead2c84d0659850f893aae277ffd",
+      "file": "emojis/nauseated-face.png",
+      "sha256": "4fe70f2181d663fc8dceb2f0bd03e105df2f89c31c7139a26b6c40f6fe954b64",
+      "kind": "emoji-preview",
+      "code": "(NF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-vomiting.gif",
+      "source_sha256": "3e98f2dfe0a738e107f0dc4d3141fbdaf3d704b7219fb53ae23e18c56c6ed526",
+      "file": "emojis/face-vomiting.png",
+      "sha256": "953fc83e849c7a46710091ff45b6f1008ca2103b993d72ffea675eb9d7fa791a",
+      "kind": "emoji-preview",
+      "code": "(VOM)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/exploding-head.gif",
+      "source_sha256": "ca6dd52ae8a6462877adc619115c75c721735bb7d045690294834d3a0385f07b",
+      "file": "emojis/exploding-head.png",
+      "sha256": "1cad478f4b488df608a1ca1e95c5bfaa1969b1f6348d3c735922710238794e85",
+      "kind": "emoji-preview",
+      "code": "(EH)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/partying-face.gif",
+      "source_sha256": "886e736251ce52a5704fc3da6e4b9d576343440c2957deeb49db9a612b939b86",
+      "file": "emojis/partying-face.png",
+      "sha256": "0136c9f7eccc686e2afbb32248fd67c031ac753e1b24311a3fc00d473535861a",
+      "kind": "emoji-preview",
+      "code": "(PF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/woozy-face.gif",
+      "source_sha256": "a56aa064c2b309ed6a76a6bb795d4ccbf827478d55f2dc6b726874c923d90432",
+      "file": "emojis/woozy-face.png",
+      "sha256": "5765722dec43439f6b116f38b5c788a867df989651a341d8b22b5cae5e98a538",
+      "kind": "emoji-preview",
+      "code": "(WF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/crying-face.gif",
+      "source_sha256": "884fa16ce06129a93653888ffc85e1e5c9620da3c481351ae6a941ed2b2af56a",
+      "file": "emojis/crying-face.png",
+      "sha256": "7250a881116dd84904ea07a59f8ab1dafba1cad06bb96627888ba0eadb2a03da",
+      "kind": "emoji-preview",
+      "code": "(;_;)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/loudly-crying-face.gif",
+      "source_sha256": "540011bdab73b79d8c0d141bb76644added667ab8bad16a6a02587cd78a4150a",
+      "file": "emojis/loudly-crying-face.png",
+      "sha256": "2060514261b04df06d6187c4fdd51c6d73515a4f598945df4ef7758e0dfe340b",
+      "kind": "emoji-preview",
+      "code": "(LCF)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-screaming-in-fear.gif",
+      "source_sha256": "28e66de30ef0fa446ea0a60d69c5d4c2f92ac034f5b8ccc5b95ceebca0942bb0",
+      "file": "emojis/face-screaming-in-fear.png",
+      "sha256": "79a6e8bec6f47dc88d4ec1a12abd467390dea3e9540b58c67eede36d761921a5",
+      "kind": "emoji-preview",
+      "code": "(SCR)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/angry-face.gif",
+      "source_sha256": "e7fffb0ac1abbb4f6817766761c8625788293a15c687f20d6d5070638d5a9a46",
+      "file": "emojis/angry-face.png",
+      "sha256": "2f8f36b0e13369b9ee5665e7c6216a24adc7c4c68c4e4e15b3dac4a6ceebc0f2",
+      "kind": "emoji-preview",
+      "code": "(ANG)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-with-symbols-on-mouth.gif",
+      "source_sha256": "6a7abfb783859745b813a1d23b3f932036df07bf0970c0de6873bdeaae8a9bcc",
+      "file": "emojis/face-with-symbols-on-mouth.png",
+      "sha256": "b841847585530ea0747dc46f3a35956fedb412fbfd368be3f115e399acf698c8",
+      "kind": "emoji-preview",
+      "code": "(FSM)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/skull.gif",
+      "source_sha256": "cf73a93ad18f3295d5cc85f0a7dbe91fda41696aff70a823b469ae3a48667a7d",
+      "file": "emojis/skull.png",
+      "sha256": "30135402e9ebbbfcde16358ef021e5030c92f979259b656ba2a36a5841b547b2",
+      "kind": "emoji-preview",
+      "code": "(SK)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pile-of-poo.gif",
+      "source_sha256": "f7cdc16cbc3372aa6ceabd6cbb3d6ec2da854d8eda407f22db04bb0c7c0db9d3",
+      "file": "emojis/pile-of-poo.png",
+      "sha256": "2fac1a42d640b37181882808ea14815863504b2a408900e761a04c7824f3664a",
+      "kind": "emoji-preview",
+      "code": "(POO)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/clapping-hands.gif",
+      "source_sha256": "b768f51c93a59142126a6dac5cedd0618e18bbf926fa31b6ff633dd183ec81a2",
+      "file": "emojis/clapping-hands.png",
+      "sha256": "4f122b56cd2c1dd851da8f1f1016a177eb352510b7ec6d2d9133ef3d37f0b8b1",
+      "kind": "emoji-preview",
+      "code": "(CLAP)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/handshake.gif",
+      "source_sha256": "85f0030bdb29b072b5a5fd1040c39f6d0e6adf570aa42c50c2c1f9c2f2b0e4c8",
+      "file": "emojis/handshake.png",
+      "sha256": "5fcd82faa3ecc03e95dcceb4e0245dbf9550eb5c505323efbbe22f9126ab1bbc",
+      "kind": "emoji-preview",
+      "code": "(HS)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/victory-hand.gif",
+      "source_sha256": "904af0074e7e68000245264a7052eb9b501411fc9eac92afbc0f2816a45d5391",
+      "file": "emojis/victory-hand.png",
+      "sha256": "0ca5a10749057d64429373129933402002603fb228d98227682d68f0224dcfeb",
+      "kind": "emoji-preview",
+      "code": "(VIC)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/flexed-biceps.gif",
+      "source_sha256": "c4fde1502236ce6168a34fd6850213c0d1d0ac12ad153a5f7ae7e8b8a2d92e30",
+      "file": "emojis/flexed-biceps.png",
+      "sha256": "09e7a3a55f741b8b0ac30b7d4ab0cd7ea2e677b50c19fef14901e0f4533b447a",
+      "kind": "emoji-preview",
+      "code": "(FLEX)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/folded-hands.gif",
+      "source_sha256": "bf5e8b2ca63c8c8af4267f5d8485ca1724c8ad4ff81e6c43cea57ea7ad669354",
+      "file": "emojis/folded-hands.png",
+      "sha256": "e6e8f54583b8418652bb258db115796fccb33609d1db5fde3a5febc4a22c94b6",
+      "kind": "emoji-preview",
+      "code": "(FOLD)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/brain.gif",
+      "source_sha256": "71da6eb287c7a4df21393059b632e83f994f93788e7ca7f686a538ba687757f4",
+      "file": "emojis/brain.png",
+      "sha256": "3336d867c3b9d33e5a06347b234ce57129ed0ef04f2756477676c3a50a969b68",
+      "kind": "emoji-preview",
+      "code": "(BR)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/fire.gif",
+      "source_sha256": "b940777de96222427699d4ae74bf7ac7fba07038b5a337426847f415c17669e0",
+      "file": "emojis/fire.png",
+      "sha256": "34ce2c89955bb1963133fddc04eb64bfdceddeb0d0d6886bced3aa9dbbec192d",
+      "kind": "emoji-preview",
+      "code": "(FIRE)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/collision.gif",
+      "source_sha256": "ea14da2a5c39da9be28c8368339ce2a043e51fb400807cba818fd24acef04ff3",
+      "file": "emojis/collision.png",
+      "sha256": "f08c9105e687d775fcec383b07dcc8b3428459f39d2018176bbdad23be21c26c",
+      "kind": "emoji-preview",
+      "code": "(BOOM)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/sparkles.gif",
+      "source_sha256": "1af2c10d0713042e0fc1b6153ef71d40f54e6c6be8f57a1221c67318e0f06fe7",
+      "file": "emojis/sparkles.png",
+      "sha256": "488f88eec7a9ff6478cdbd0669087b5879b9aa080a8eebbe6aeafe3a8bc7a589",
+      "kind": "emoji-preview",
+      "code": "(SPARKS)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/balloon.gif",
+      "source_sha256": "56cb8aaed751ef687781d7617c0350b576baf8a04875956780c81d33cbf67b38",
+      "file": "emojis/balloon.png",
+      "sha256": "269f7d6bcf38519f0b9dbe8aebfa12792df440617e73056e08cc87bb30f1e79c",
+      "kind": "emoji-preview",
+      "code": "(BAL)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/party-popper.gif",
+      "source_sha256": "4b69f0b5797eb712cac2029b0e9ebf0befb597c8dde98ae0ada9d5fa78901b46",
+      "file": "emojis/party-popper.png",
+      "sha256": "f81c326532934bd522e33ef9571a0fe9631626acddfe65c10fe980d1ae0093e9",
+      "kind": "emoji-preview",
+      "code": "(POP)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/rainbow.gif",
+      "source_sha256": "ab4a37e17d0a7e04dd69b729a91d34be88f96c755d15cc81d68af25169c87c85",
+      "file": "emojis/rainbow.png",
+      "sha256": "b13f5af69033948f7c1d923f5b37b940120e9f3d28a0445b31a88fdb170428f4",
+      "kind": "emoji-preview",
+      "code": "(RAIN)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/sun.gif",
+      "source_sha256": "b3fd19a777a4a7671a04a1793071d3ef01b211d65927ce721f92ea690ca5e231",
+      "file": "emojis/sun.png",
+      "sha256": "a3f3aa20c0821790fc504782d806e4fc130a62d2058a8896ff8f9de5e9d23dbe",
+      "kind": "emoji-preview",
+      "code": "(SUN)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/snowflake.gif",
+      "source_sha256": "8506c8804fe74eb7be78e12578afb14eaa0a2f65cac3acc3abb04f9b142e640a",
+      "file": "emojis/snowflake.png",
+      "sha256": "d0210fa2dc30cb3434ca19c7a8113ddf44ed4e1aef36678a66759d0baafc8ab3",
+      "kind": "emoji-preview",
+      "code": "(SNOW)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/umbrella.gif",
+      "source_sha256": "b34bf99cf5e0174af031e200a180d6d2ab464964dbb0e920fe6b8e7485904763",
+      "file": "emojis/umbrella.png",
+      "sha256": "d89152a09285a77fb3e3ada12342eeeb3bd0b288dee86d1b39224b640e928b69",
+      "kind": "emoji-preview",
+      "code": "(UMB)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/dog-face.gif",
+      "source_sha256": "299a4a6c58dc67e577d26301a656aa31b3aaf7397b99a543d3ce8b17d80f8a12",
+      "file": "emojis/dog-face.png",
+      "sha256": "0e239895205a539259df0a68b6a6e49de32b07f9c884d7aab76dc4027bc21c77",
+      "kind": "emoji-preview",
+      "code": "(DOG)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/cat-face.gif",
+      "source_sha256": "5836a4ec3ff658a5d67b073778152d0c6c7b6dcbc745a2fb647194634ae88d23",
+      "file": "emojis/cat-face.png",
+      "sha256": "08ca525cdba2fedb25a2a5c359a835651a87f05bd6d8c00a6cbc01128b096d26",
+      "kind": "emoji-preview",
+      "code": "(CAT)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/panda.gif",
+      "source_sha256": "4443413ba8f94721a7d5362dda377985e59d14d0866ef331d6e6111523c40710",
+      "file": "emojis/panda.png",
+      "sha256": "041443b3463d335ee452ebea0985b82978b6fe8175ff78694a254ddbe4b2f376",
+      "kind": "emoji-preview",
+      "code": "(PANDA)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/alien.gif",
+      "source_sha256": "22060553e178e9e8ef8d72db94f09f7adfecd2a76af45008c0a80b712836d193",
+      "file": "emojis/alien.png",
+      "sha256": "4fb544965c41e90bedd2fd1c44baefea2f95d148b87f2b44d1859ddf91b71d54",
+      "kind": "emoji-preview",
+      "code": "(ALIEN)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/rocket.gif",
+      "source_sha256": "bc3a64f069cbc1439f6559b9e3612de4eb7021a96470e1231b71735a884985c1",
+      "file": "emojis/rocket.png",
+      "sha256": "9b71319b15b9c8325a77a5f882cf2b9b8ea956dc1ff160e74f9e8cb39f23d60a",
+      "kind": "emoji-preview",
+      "code": "(ROCKET)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/airplane.gif",
+      "source_sha256": "b8017ad349b72c1505cba01b68d39496943fe952ffeff5e21479b35c004baa5a",
+      "file": "emojis/airplane.png",
+      "sha256": "77e247284e20726b9a77d2d58305863e076f86088f31833aecf5fe16128fe696",
+      "kind": "emoji-preview",
+      "code": "(PLANE)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/beer-mug.gif",
+      "source_sha256": "7177faa651d2658bfb33702a2d0c3a83e300b9a9c4d77b919a103897821332a7",
+      "file": "emojis/beer-mug.png",
+      "sha256": "3d674b3de884346c8795420cd9218b65d79fe1a41fd5755ebe7496a2125d2ae2",
+      "kind": "emoji-preview",
+      "code": "(BEER)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pizza.gif",
+      "source_sha256": "8e2a274eee34d39a2715d130c79512fa7e1c0f351cb696fd72e7ce1728d24519",
+      "file": "emojis/pizza.png",
+      "sha256": "e81dd84beec71f923b059a97e7bc1772b87cc8c4c8d12397485b17759c5d11e7",
+      "kind": "emoji-preview",
+      "code": "(PIZZA)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/money-bag.gif",
+      "source_sha256": "dca47f31c68cb359f7cfbf05e509d74869e33a12acd1b54f5aa0a5df584b2160",
+      "file": "emojis/money-bag.png",
+      "sha256": "46c90bf8c30c12457697b7629a7e88f40c54340a8a83cc4e0ecb9e0cb74b96a8",
+      "kind": "emoji-preview",
+      "code": "(MONEY)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/trophy.gif",
+      "source_sha256": "7d542987ead429c689b5f048b2929bb9c2fde71e6b4322c246fad1c4b5d71d2e",
+      "file": "emojis/trophy.png",
+      "sha256": "92a94c76489860aef921113c7577b5e584490ade718e0399aa3090debc85612c",
+      "kind": "emoji-preview",
+      "code": "(TROPHY)"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/airplane.gif",
+      "source_sha256": "b8017ad349b72c1505cba01b68d39496943fe952ffeff5e21479b35c004baa5a",
+      "file": "emojis_anim/airplane.gif",
+      "sha256": "b8017ad349b72c1505cba01b68d39496943fe952ffeff5e21479b35c004baa5a",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/alarm-clock.gif",
+      "source_sha256": "eef254b27d49885cc53d68c26cd0339e3f8ad976af43d8daea4db93514c760e7",
+      "file": "emojis_anim/alarm-clock.gif",
+      "sha256": "eef254b27d49885cc53d68c26cd0339e3f8ad976af43d8daea4db93514c760e7",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/alien.gif",
+      "source_sha256": "22060553e178e9e8ef8d72db94f09f7adfecd2a76af45008c0a80b712836d193",
+      "file": "emojis_anim/alien.gif",
+      "sha256": "22060553e178e9e8ef8d72db94f09f7adfecd2a76af45008c0a80b712836d193",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/angry-face.gif",
+      "source_sha256": "e7fffb0ac1abbb4f6817766761c8625788293a15c687f20d6d5070638d5a9a46",
+      "file": "emojis_anim/angry-face.gif",
+      "sha256": "e7fffb0ac1abbb4f6817766761c8625788293a15c687f20d6d5070638d5a9a46",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/balloon.gif",
+      "source_sha256": "56cb8aaed751ef687781d7617c0350b576baf8a04875956780c81d33cbf67b38",
+      "file": "emojis_anim/balloon.gif",
+      "sha256": "56cb8aaed751ef687781d7617c0350b576baf8a04875956780c81d33cbf67b38",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/beer-mug.gif",
+      "source_sha256": "7177faa651d2658bfb33702a2d0c3a83e300b9a9c4d77b919a103897821332a7",
+      "file": "emojis_anim/beer-mug.gif",
+      "sha256": "7177faa651d2658bfb33702a2d0c3a83e300b9a9c4d77b919a103897821332a7",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/brain.gif",
+      "source_sha256": "71da6eb287c7a4df21393059b632e83f994f93788e7ca7f686a538ba687757f4",
+      "file": "emojis_anim/brain.gif",
+      "sha256": "71da6eb287c7a4df21393059b632e83f994f93788e7ca7f686a538ba687757f4",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/broken-heart.gif",
+      "source_sha256": "ccd53cb169e7193259e9a5511e0d3b062b3446b29194828e20d593b7cd4cba8c",
+      "file": "emojis_anim/broken-heart.gif",
+      "sha256": "ccd53cb169e7193259e9a5511e0d3b062b3446b29194828e20d593b7cd4cba8c",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/butterfly.gif",
+      "source_sha256": "d14629d527bb4bf8dcbacdbdae1aec4d94e55a24f33ca8c443bf53e78bc303c7",
+      "file": "emojis_anim/butterfly.gif",
+      "sha256": "d14629d527bb4bf8dcbacdbdae1aec4d94e55a24f33ca8c443bf53e78bc303c7",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/butterfly.gif",
+      "source_sha256": "d14629d527bb4bf8dcbacdbdae1aec4d94e55a24f33ca8c443bf53e78bc303c7",
+      "file": "emojis/butterfly.png",
+      "sha256": "abd89380a7590c5d6f214f84ed0dc7f85d08efe781bc67a71823de65a0340fd5",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/camera.gif",
+      "source_sha256": "23e8aea11fa5b1ba21516df3bd8375b1c3604a2ebb30622640f35a6f8df774e2",
+      "file": "emojis_anim/camera.gif",
+      "sha256": "23e8aea11fa5b1ba21516df3bd8375b1c3604a2ebb30622640f35a6f8df774e2",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/cat-face.gif",
+      "source_sha256": "5836a4ec3ff658a5d67b073778152d0c6c7b6dcbc745a2fb647194634ae88d23",
+      "file": "emojis_anim/cat-face.gif",
+      "sha256": "5836a4ec3ff658a5d67b073778152d0c6c7b6dcbc745a2fb647194634ae88d23",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/clapping-hands.gif",
+      "source_sha256": "b768f51c93a59142126a6dac5cedd0618e18bbf926fa31b6ff633dd183ec81a2",
+      "file": "emojis_anim/clapping-hands.gif",
+      "sha256": "b768f51c93a59142126a6dac5cedd0618e18bbf926fa31b6ff633dd183ec81a2",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/collision.gif",
+      "source_sha256": "ea14da2a5c39da9be28c8368339ce2a043e51fb400807cba818fd24acef04ff3",
+      "file": "emojis_anim/collision.gif",
+      "sha256": "ea14da2a5c39da9be28c8368339ce2a043e51fb400807cba818fd24acef04ff3",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/confused-face.gif",
+      "source_sha256": "cf5272be952f7051d57efdc7118a54dcc656bf23a9f65f8a95821c91fb584dfa",
+      "file": "emojis_anim/confused-face.gif",
+      "sha256": "cf5272be952f7051d57efdc7118a54dcc656bf23a9f65f8a95821c91fb584dfa",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/crescent-moon.gif",
+      "source_sha256": "ac00df9168c00c73577a6a54072905b78f28dcd014a4d2d937f2d08c19183d97",
+      "file": "emojis_anim/crescent-moon.gif",
+      "sha256": "ac00df9168c00c73577a6a54072905b78f28dcd014a4d2d937f2d08c19183d97",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/crying-face.gif",
+      "source_sha256": "884fa16ce06129a93653888ffc85e1e5c9620da3c481351ae6a941ed2b2af56a",
+      "file": "emojis_anim/crying-face.gif",
+      "sha256": "884fa16ce06129a93653888ffc85e1e5c9620da3c481351ae6a941ed2b2af56a",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/dog-face.gif",
+      "source_sha256": "299a4a6c58dc67e577d26301a656aa31b3aaf7397b99a543d3ce8b17d80f8a12",
+      "file": "emojis_anim/dog-face.gif",
+      "sha256": "299a4a6c58dc67e577d26301a656aa31b3aaf7397b99a543d3ce8b17d80f8a12",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/door.gif",
+      "source_sha256": "944d9fcac18c2ad61b0506750598e1fcad4e97f05b4c3760c883e1b514ef7ae4",
+      "file": "emojis_anim/door.gif",
+      "sha256": "944d9fcac18c2ad61b0506750598e1fcad4e97f05b4c3760c883e1b514ef7ae4",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/door.gif",
+      "source_sha256": "944d9fcac18c2ad61b0506750598e1fcad4e97f05b4c3760c883e1b514ef7ae4",
+      "file": "emojis/door.png",
+      "sha256": "cd9eb11e71481545d2d4c71565757e6b752fc6bc74b4bbf799404d1687c2f6af",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/drooling-face.gif",
+      "source_sha256": "df2d3a055ded0977829858e78911d137acb1aa6e59ee00bb76cbd9a5e05df5e3",
+      "file": "emojis_anim/drooling-face.gif",
+      "sha256": "df2d3a055ded0977829858e78911d137acb1aa6e59ee00bb76cbd9a5e05df5e3",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/envelope.gif",
+      "source_sha256": "518e1c4dcbf97a56bf3cbd47e82d12798498579e3f8eb0ee8bdcc0b2d08e77f4",
+      "file": "emojis_anim/envelope.gif",
+      "sha256": "518e1c4dcbf97a56bf3cbd47e82d12798498579e3f8eb0ee8bdcc0b2d08e77f4",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/exploding-head.gif",
+      "source_sha256": "ca6dd52ae8a6462877adc619115c75c721735bb7d045690294834d3a0385f07b",
+      "file": "emojis_anim/exploding-head.gif",
+      "sha256": "ca6dd52ae8a6462877adc619115c75c721735bb7d045690294834d3a0385f07b",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/expressionless-face.gif",
+      "source_sha256": "58afd2b8daff83db7248b16e1a9eddeee378fef85c78ceb71af16450c5db181d",
+      "file": "emojis_anim/expressionless-face.gif",
+      "sha256": "58afd2b8daff83db7248b16e1a9eddeee378fef85c78ceb71af16450c5db181d",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-blowing-a-kiss.gif",
+      "source_sha256": "823b46059c0ca8aab361e456b647526bc5951ddcaea30afc59d5694f9f4199ef",
+      "file": "emojis_anim/face-blowing-a-kiss.gif",
+      "sha256": "823b46059c0ca8aab361e456b647526bc5951ddcaea30afc59d5694f9f4199ef",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-screaming-in-fear.gif",
+      "source_sha256": "28e66de30ef0fa446ea0a60d69c5d4c2f92ac034f5b8ccc5b95ceebca0942bb0",
+      "file": "emojis_anim/face-screaming-in-fear.gif",
+      "sha256": "28e66de30ef0fa446ea0a60d69c5d4c2f92ac034f5b8ccc5b95ceebca0942bb0",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-vomiting.gif",
+      "source_sha256": "3e98f2dfe0a738e107f0dc4d3141fbdaf3d704b7219fb53ae23e18c56c6ed526",
+      "file": "emojis_anim/face-vomiting.gif",
+      "sha256": "3e98f2dfe0a738e107f0dc4d3141fbdaf3d704b7219fb53ae23e18c56c6ed526",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-with-open-mouth.gif",
+      "source_sha256": "6d14c1bb03ecaaecae5005ab5a43ba57e3fd98b521b234c0fafbf8f617793844",
+      "file": "emojis_anim/face-with-open-mouth.gif",
+      "sha256": "6d14c1bb03ecaaecae5005ab5a43ba57e3fd98b521b234c0fafbf8f617793844",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-with-symbols-on-mouth.gif",
+      "source_sha256": "6a7abfb783859745b813a1d23b3f932036df07bf0970c0de6873bdeaae8a9bcc",
+      "file": "emojis_anim/face-with-symbols-on-mouth.gif",
+      "sha256": "6a7abfb783859745b813a1d23b3f932036df07bf0970c0de6873bdeaae8a9bcc",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/face-with-tongue.gif",
+      "source_sha256": "28bcae45fddb7cce326bbd5bc1787f5ca790cdd11b787b62b96f4033258a8436",
+      "file": "emojis_anim/face-with-tongue.gif",
+      "sha256": "28bcae45fddb7cce326bbd5bc1787f5ca790cdd11b787b62b96f4033258a8436",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/fire.gif",
+      "source_sha256": "b940777de96222427699d4ae74bf7ac7fba07038b5a337426847f415c17669e0",
+      "file": "emojis_anim/fire.gif",
+      "sha256": "b940777de96222427699d4ae74bf7ac7fba07038b5a337426847f415c17669e0",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/flexed-biceps.gif",
+      "source_sha256": "c4fde1502236ce6168a34fd6850213c0d1d0ac12ad153a5f7ae7e8b8a2d92e30",
+      "file": "emojis_anim/flexed-biceps.gif",
+      "sha256": "c4fde1502236ce6168a34fd6850213c0d1d0ac12ad153a5f7ae7e8b8a2d92e30",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/floppy-disk.gif",
+      "source_sha256": "41816d7a5f7a4a36ba7c14df47741e27db7061e7a4a9d09b808f7e2c15bda585",
+      "file": "emojis_anim/floppy-disk.gif",
+      "sha256": "41816d7a5f7a4a36ba7c14df47741e27db7061e7a4a9d09b808f7e2c15bda585",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/floppy-disk.gif",
+      "source_sha256": "41816d7a5f7a4a36ba7c14df47741e27db7061e7a4a9d09b808f7e2c15bda585",
+      "file": "emojis/floppy-disk.png",
+      "sha256": "4f03e57c5d5e208021adb52de2911f042673cca76a8fed28a9e6928ed2992d39",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/flushed-face.gif",
+      "source_sha256": "124994ccdaeec3d35b6e343df951de95d08a22ff902d8edd1b4f45cbdcde508b",
+      "file": "emojis_anim/flushed-face.gif",
+      "sha256": "124994ccdaeec3d35b6e343df951de95d08a22ff902d8edd1b4f45cbdcde508b",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/folded-hands.gif",
+      "source_sha256": "bf5e8b2ca63c8c8af4267f5d8485ca1724c8ad4ff81e6c43cea57ea7ad669354",
+      "file": "emojis_anim/folded-hands.gif",
+      "sha256": "bf5e8b2ca63c8c8af4267f5d8485ca1724c8ad4ff81e6c43cea57ea7ad669354",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/framed-picture.gif",
+      "source_sha256": "23e5d298aaba3e79f63978000c48c933dd58fb2a117e0606cfb7f89a4dfa3cbc",
+      "file": "emojis_anim/framed-picture.gif",
+      "sha256": "23e5d298aaba3e79f63978000c48c933dd58fb2a117e0606cfb7f89a4dfa3cbc",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/framed-picture.gif",
+      "source_sha256": "23e5d298aaba3e79f63978000c48c933dd58fb2a117e0606cfb7f89a4dfa3cbc",
+      "file": "emojis/framed-picture.png",
+      "sha256": "fb48e1520c829e1c7e85c508000f83c1cd7db29fe0b82c7e5292bf63955923d0",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/frowning-face.gif",
+      "source_sha256": "12320915a4fb8f8b070254ba2394a144f975cc0d4b8eece37eb04458851f8b2b",
+      "file": "emojis_anim/frowning-face.gif",
+      "sha256": "12320915a4fb8f8b070254ba2394a144f975cc0d4b8eece37eb04458851f8b2b",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/frowning-face.gif",
+      "source_sha256": "12320915a4fb8f8b070254ba2394a144f975cc0d4b8eece37eb04458851f8b2b",
+      "file": "emojis/frowning-face.png",
+      "sha256": "548892f0e1553d7a84f0aa4e5878d298fcc2e6e6b76f1df500f2d7f8dab631f8",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/grimacing-face.gif",
+      "source_sha256": "9d3f541cf35497f3b58b7b544abb2d9461341841a63eaa6f427d7c5fc6f49594",
+      "file": "emojis_anim/grimacing-face.gif",
+      "sha256": "9d3f541cf35497f3b58b7b544abb2d9461341841a63eaa6f427d7c5fc6f49594",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/grinning-face-with-big-eyes.gif",
+      "source_sha256": "8f9e89a33f4d528978d027dc75bc4b76e9d6a1ab0a31f8edb628ffe0b8a1fb66",
+      "file": "emojis_anim/grinning-face-with-big-eyes.gif",
+      "sha256": "8f9e89a33f4d528978d027dc75bc4b76e9d6a1ab0a31f8edb628ffe0b8a1fb66",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/hammer.gif",
+      "source_sha256": "fde62c95367cd3859c4bd75032b5a6664ada520435c6eac6e3c507a3d8ccfaac",
+      "file": "emojis_anim/hammer.gif",
+      "sha256": "fde62c95367cd3859c4bd75032b5a6664ada520435c6eac6e3c507a3d8ccfaac",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/hammer.gif",
+      "source_sha256": "fde62c95367cd3859c4bd75032b5a6664ada520435c6eac6e3c507a3d8ccfaac",
+      "file": "emojis/hammer.png",
+      "sha256": "8e42c573e0b2bdd44063b1af7d91577fe6f5ac452b1ec929a689881793833f05",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/handshake.gif",
+      "source_sha256": "85f0030bdb29b072b5a5fd1040c39f6d0e6adf570aa42c50c2c1f9c2f2b0e4c8",
+      "file": "emojis_anim/handshake.gif",
+      "sha256": "85f0030bdb29b072b5a5fd1040c39f6d0e6adf570aa42c50c2c1f9c2f2b0e4c8",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/hot-beverage.gif",
+      "source_sha256": "cdea1095ea4d8c8d259b1291b51aacc798d550389276ba2e7df0907d327f4ee0",
+      "file": "emojis_anim/hot-beverage.gif",
+      "sha256": "cdea1095ea4d8c8d259b1291b51aacc798d550389276ba2e7df0907d327f4ee0",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/information.gif",
+      "source_sha256": "1a464294edfb3bbb1ac3b51c847e34058fb258844fd398279cd6ca2aa144b6da",
+      "file": "emojis_anim/information.gif",
+      "sha256": "1a464294edfb3bbb1ac3b51c847e34058fb258844fd398279cd6ca2aa144b6da",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/information.gif",
+      "source_sha256": "1a464294edfb3bbb1ac3b51c847e34058fb258844fd398279cd6ca2aa144b6da",
+      "file": "emojis/information.png",
+      "sha256": "9ab037c062919fbafdca3be2733aef13b143df23d70520d8633d332e49167976",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/kiss-mark.gif",
+      "source_sha256": "6ad4774410bcbb6faea1adf2fc20a4765ecd69f36ba1d5b760335ad8f9189321",
+      "file": "emojis_anim/kiss-mark.gif",
+      "sha256": "6ad4774410bcbb6faea1adf2fc20a4765ecd69f36ba1d5b760335ad8f9189321",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/loudly-crying-face.gif",
+      "source_sha256": "540011bdab73b79d8c0d141bb76644added667ab8bad16a6a02587cd78a4150a",
+      "file": "emojis_anim/loudly-crying-face.gif",
+      "sha256": "540011bdab73b79d8c0d141bb76644added667ab8bad16a6a02587cd78a4150a",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/money-bag.gif",
+      "source_sha256": "dca47f31c68cb359f7cfbf05e509d74869e33a12acd1b54f5aa0a5df584b2160",
+      "file": "emojis_anim/money-bag.gif",
+      "sha256": "dca47f31c68cb359f7cfbf05e509d74869e33a12acd1b54f5aa0a5df584b2160",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/musical-note.gif",
+      "source_sha256": "464ef9a31931e4e17d22b77e805c9ef3035e4e6495dfc45bbac11a4181aaa1d4",
+      "file": "emojis_anim/musical-note.gif",
+      "sha256": "464ef9a31931e4e17d22b77e805c9ef3035e4e6495dfc45bbac11a4181aaa1d4",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/nauseated-face.gif",
+      "source_sha256": "70e3296cd45536cb820a6e0a24c24eb36976ead2c84d0659850f893aae277ffd",
+      "file": "emojis_anim/nauseated-face.gif",
+      "sha256": "70e3296cd45536cb820a6e0a24c24eb36976ead2c84d0659850f893aae277ffd",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/panda.gif",
+      "source_sha256": "4443413ba8f94721a7d5362dda377985e59d14d0866ef331d6e6111523c40710",
+      "file": "emojis_anim/panda.gif",
+      "sha256": "4443413ba8f94721a7d5362dda377985e59d14d0866ef331d6e6111523c40710",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/party-popper.gif",
+      "source_sha256": "4b69f0b5797eb712cac2029b0e9ebf0befb597c8dde98ae0ada9d5fa78901b46",
+      "file": "emojis_anim/party-popper.gif",
+      "sha256": "4b69f0b5797eb712cac2029b0e9ebf0befb597c8dde98ae0ada9d5fa78901b46",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/partying-face.gif",
+      "source_sha256": "886e736251ce52a5704fc3da6e4b9d576343440c2957deeb49db9a612b939b86",
+      "file": "emojis_anim/partying-face.gif",
+      "sha256": "886e736251ce52a5704fc3da6e4b9d576343440c2957deeb49db9a612b939b86",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/person.gif",
+      "source_sha256": "fc8f97de8357552adc04a12d8e3d76865922c264026f82cc1298e0651e92d89d",
+      "file": "emojis_anim/person.gif",
+      "sha256": "fc8f97de8357552adc04a12d8e3d76865922c264026f82cc1298e0651e92d89d",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/person.gif",
+      "source_sha256": "fc8f97de8357552adc04a12d8e3d76865922c264026f82cc1298e0651e92d89d",
+      "file": "emojis/person.png",
+      "sha256": "3199967ea7796ed711c32ad132cf67cac46013b4fadadc0e8607cb50efca30c6",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pig-face.gif",
+      "source_sha256": "346b2e6af81ce384c10e33351c95046c8987a99a43a305e0ac4f79924e2c670d",
+      "file": "emojis_anim/pig-face.gif",
+      "sha256": "346b2e6af81ce384c10e33351c95046c8987a99a43a305e0ac4f79924e2c670d",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pig-face.gif",
+      "source_sha256": "346b2e6af81ce384c10e33351c95046c8987a99a43a305e0ac4f79924e2c670d",
+      "file": "emojis/pig-face.png",
+      "sha256": "128a82088d4e3998de566b571a4f22acb5d42350a908f83cdd0b5a52acdd7d28",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pile-of-poo.gif",
+      "source_sha256": "f7cdc16cbc3372aa6ceabd6cbb3d6ec2da854d8eda407f22db04bb0c7c0db9d3",
+      "file": "emojis_anim/pile-of-poo.gif",
+      "sha256": "f7cdc16cbc3372aa6ceabd6cbb3d6ec2da854d8eda407f22db04bb0c7c0db9d3",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pizza.gif",
+      "source_sha256": "8e2a274eee34d39a2715d130c79512fa7e1c0f351cb696fd72e7ce1728d24519",
+      "file": "emojis_anim/pizza.gif",
+      "sha256": "8e2a274eee34d39a2715d130c79512fa7e1c0f351cb696fd72e7ce1728d24519",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/pouting-face.gif",
+      "source_sha256": "e7fffb0ac1abbb4f6817766761c8625788293a15c687f20d6d5070638d5a9a46",
+      "file": "emojis_anim/pouting-face.gif",
+      "sha256": "e7fffb0ac1abbb4f6817766761c8625788293a15c687f20d6d5070638d5a9a46",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/rainbow.gif",
+      "source_sha256": "ab4a37e17d0a7e04dd69b729a91d34be88f96c755d15cc81d68af25169c87c85",
+      "file": "emojis_anim/rainbow.gif",
+      "sha256": "ab4a37e17d0a7e04dd69b729a91d34be88f96c755d15cc81d68af25169c87c85",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/red-heart.gif",
+      "source_sha256": "7f055a6f1deaad82b4b50ff91ee445d323728e13b27774f85934acf8203c120c",
+      "file": "emojis_anim/red-heart.gif",
+      "sha256": "7f055a6f1deaad82b4b50ff91ee445d323728e13b27774f85934acf8203c120c",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/rocket.gif",
+      "source_sha256": "bc3a64f069cbc1439f6559b9e3612de4eb7021a96470e1231b71735a884985c1",
+      "file": "emojis_anim/rocket.gif",
+      "sha256": "bc3a64f069cbc1439f6559b9e3612de4eb7021a96470e1231b71735a884985c1",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/shushing-face.gif",
+      "source_sha256": "995af3fea510a1bed7039dccd83bda0407da84f7474a5c98743909e3429d816e",
+      "file": "emojis_anim/shushing-face.gif",
+      "sha256": "995af3fea510a1bed7039dccd83bda0407da84f7474a5c98743909e3429d816e",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/skull.gif",
+      "source_sha256": "cf73a93ad18f3295d5cc85f0a7dbe91fda41696aff70a823b469ae3a48667a7d",
+      "file": "emojis_anim/skull.gif",
+      "sha256": "cf73a93ad18f3295d5cc85f0a7dbe91fda41696aff70a823b469ae3a48667a7d",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/sleeping-face.gif",
+      "source_sha256": "c43f3d503b28aed8321af905bba80ec54a5bbda686290f0e108aff825bcba15a",
+      "file": "emojis_anim/sleeping-face.gif",
+      "sha256": "c43f3d503b28aed8321af905bba80ec54a5bbda686290f0e108aff825bcba15a",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/slightly-smiling-face.gif",
+      "source_sha256": "b38c6544cf833b49d3c8fe11210e55db3f12e53852e90ad7b61d2e860912bb22",
+      "file": "emojis_anim/slightly-smiling-face.gif",
+      "sha256": "b38c6544cf833b49d3c8fe11210e55db3f12e53852e90ad7b61d2e860912bb22",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-halo.gif",
+      "source_sha256": "20f590cc2c2c743ee491c198610164326c588b28b426dc7db8cbdd5bfd4deeed",
+      "file": "emojis_anim/smiling-face-with-halo.gif",
+      "sha256": "20f590cc2c2c743ee491c198610164326c588b28b426dc7db8cbdd5bfd4deeed",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-heart-eyes.gif",
+      "source_sha256": "6342345b5a12d9c2e1ce87a0fc5e89a5bf5ded8c49470e7b07f53d18c89302f9",
+      "file": "emojis_anim/smiling-face-with-heart-eyes.gif",
+      "sha256": "6342345b5a12d9c2e1ce87a0fc5e89a5bf5ded8c49470e7b07f53d18c89302f9",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-horns.gif",
+      "source_sha256": "81a1fd46caf64296b517ba105458791c26ea6d3efd0e8066f0bee19404eb7844",
+      "file": "emojis_anim/smiling-face-with-horns.gif",
+      "sha256": "81a1fd46caf64296b517ba105458791c26ea6d3efd0e8066f0bee19404eb7844",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-horns.gif",
+      "source_sha256": "81a1fd46caf64296b517ba105458791c26ea6d3efd0e8066f0bee19404eb7844",
+      "file": "emojis/smiling-face-with-horns.png",
+      "sha256": "64131a7414d47805f2a58b0d2a3468846ee42236b66e63f64338c6a87733a57f",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face-with-sunglasses.gif",
+      "source_sha256": "448fdf84e4e9dcfb8f264b25f0c763826714fee137b0066ffaa43d0f72059a56",
+      "file": "emojis_anim/smiling-face-with-sunglasses.gif",
+      "sha256": "448fdf84e4e9dcfb8f264b25f0c763826714fee137b0066ffaa43d0f72059a56",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face.gif",
+      "source_sha256": "6e766dac9fa203c78cffa6f84d057d9f8fca73332405a641d6f9a338770b6e1f",
+      "file": "emojis_anim/smiling-face.gif",
+      "sha256": "6e766dac9fa203c78cffa6f84d057d9f8fca73332405a641d6f9a338770b6e1f",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smiling-face.gif",
+      "source_sha256": "6e766dac9fa203c78cffa6f84d057d9f8fca73332405a641d6f9a338770b6e1f",
+      "file": "emojis/smiling-face.png",
+      "sha256": "2e99b3d6ea2e35152e111804e50d89ca14fa9303a8410381fa2784192d68e350",
+      "kind": "emoji-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/smirking-face.gif",
+      "source_sha256": "bd5ca68531f7286e1bce5499a87f44a0b341d0b6274eb25c910d8b364a64f1bc",
+      "file": "emojis_anim/smirking-face.gif",
+      "sha256": "bd5ca68531f7286e1bce5499a87f44a0b341d0b6274eb25c910d8b364a64f1bc",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/snowflake.gif",
+      "source_sha256": "8506c8804fe74eb7be78e12578afb14eaa0a2f65cac3acc3abb04f9b142e640a",
+      "file": "emojis_anim/snowflake.gif",
+      "sha256": "8506c8804fe74eb7be78e12578afb14eaa0a2f65cac3acc3abb04f9b142e640a",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/sparkles.gif",
+      "source_sha256": "1af2c10d0713042e0fc1b6153ef71d40f54e6c6be8f57a1221c67318e0f06fe7",
+      "file": "emojis_anim/sparkles.gif",
+      "sha256": "1af2c10d0713042e0fc1b6153ef71d40f54e6c6be8f57a1221c67318e0f06fe7",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/squinting-face-with-tongue.gif",
+      "source_sha256": "899fde18faf61c7d1f854e8e5f8f0bed80f92defd43756a2df27d85bc1f8a73f",
+      "file": "emojis_anim/squinting-face-with-tongue.gif",
+      "sha256": "899fde18faf61c7d1f854e8e5f8f0bed80f92defd43756a2df27d85bc1f8a73f",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/star.gif",
+      "source_sha256": "b90a54797cc7b626c5c53cb73a13c4f3ca8840bb141d9e39c2711b78ed9aa494",
+      "file": "emojis_anim/star.gif",
+      "sha256": "b90a54797cc7b626c5c53cb73a13c4f3ca8840bb141d9e39c2711b78ed9aa494",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/sun.gif",
+      "source_sha256": "b3fd19a777a4a7671a04a1793071d3ef01b211d65927ce721f92ea690ca5e231",
+      "file": "emojis_anim/sun.gif",
+      "sha256": "b3fd19a777a4a7671a04a1793071d3ef01b211d65927ce721f92ea690ca5e231",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/thinking-face.gif",
+      "source_sha256": "1b4b4976b07f9249ead0ffb67e47ebf52c961cbc5880aa7559e35d2c72ff7f22",
+      "file": "emojis_anim/thinking-face.gif",
+      "sha256": "1b4b4976b07f9249ead0ffb67e47ebf52c961cbc5880aa7559e35d2c72ff7f22",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/thumbs-down.gif",
+      "source_sha256": "54e2a99a622d201bac322f5e0a71e5ca8c4a6aee344ca2f261209ce647dc733b",
+      "file": "emojis_anim/thumbs-down.gif",
+      "sha256": "54e2a99a622d201bac322f5e0a71e5ca8c4a6aee344ca2f261209ce647dc733b",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/thumbs-up.gif",
+      "source_sha256": "af5f50021ceab21173885bd9acec9d9d760a6fe673b9be02d3a1948f76456894",
+      "file": "emojis_anim/thumbs-up.gif",
+      "sha256": "af5f50021ceab21173885bd9acec9d9d760a6fe673b9be02d3a1948f76456894",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/trophy.gif",
+      "source_sha256": "7d542987ead429c689b5f048b2929bb9c2fde71e6b4322c246fad1c4b5d71d2e",
+      "file": "emojis_anim/trophy.gif",
+      "sha256": "7d542987ead429c689b5f048b2929bb9c2fde71e6b4322c246fad1c4b5d71d2e",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/umbrella.gif",
+      "source_sha256": "b34bf99cf5e0174af031e200a180d6d2ab464964dbb0e920fe6b8e7485904763",
+      "file": "emojis_anim/umbrella.gif",
+      "sha256": "b34bf99cf5e0174af031e200a180d6d2ab464964dbb0e920fe6b8e7485904763",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/victory-hand.gif",
+      "source_sha256": "904af0074e7e68000245264a7052eb9b501411fc9eac92afbc0f2816a45d5391",
+      "file": "emojis_anim/victory-hand.gif",
+      "sha256": "904af0074e7e68000245264a7052eb9b501411fc9eac92afbc0f2816a45d5391",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/wilted-flower.gif",
+      "source_sha256": "248892014d7acf71b962a44da9a2fbb0baba09c9481a3b782b1a55d344d6b416",
+      "file": "emojis_anim/wilted-flower.gif",
+      "sha256": "248892014d7acf71b962a44da9a2fbb0baba09c9481a3b782b1a55d344d6b416",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/winking-face.gif",
+      "source_sha256": "b7b895390dd2c6bbcf240aa0e89090f59b4ac096e09eb5975b9ef670bdd0eaaa",
+      "file": "emojis_anim/winking-face.gif",
+      "sha256": "b7b895390dd2c6bbcf240aa0e89090f59b4ac096e09eb5975b9ef670bdd0eaaa",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/woozy-face.gif",
+      "source_sha256": "a56aa064c2b309ed6a76a6bb795d4ccbf827478d55f2dc6b726874c923d90432",
+      "file": "emojis_anim/woozy-face.gif",
+      "sha256": "a56aa064c2b309ed6a76a6bb795d4ccbf827478d55f2dc6b726874c923d90432",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/wrapped-gift.gif",
+      "source_sha256": "e8e70de877506e4e4a8add2c40c7ea633536645c225c67ecbb5a57ef14cd726c",
+      "file": "emojis_anim/wrapped-gift.gif",
+      "sha256": "e8e70de877506e4e4a8add2c40c7ea633536645c225c67ecbb5a57ef14cd726c",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/zany-face.gif",
+      "source_sha256": "68ac807a8af4bedf14f70884519456728be16fa6e7616a299b6e0c8b8a8db5be",
+      "file": "emojis_anim/zany-face.gif",
+      "sha256": "68ac807a8af4bedf14f70884519456728be16fa6e7616a299b6e0c8b8a8db5be",
+      "kind": "emoji-animation"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/kiss-mark.svg",
+      "source_sha256": "23a9d7730d5eeb0819ca6bb4ddcd299f1aae269e360c44854c2119ff7f1b25ba",
+      "file": "winks/kiss-mark.png",
+      "sha256": "6e9ad5279ffc81652f5cb48b9268cbc833f52fe4bcb7d47da696b95075834f3b",
+      "kind": "wink-artwork",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/hammer.svg",
+      "source_sha256": "86c017f059dfa32320ee390cd0fcabc67e92ca30edb65d5b260a3bc9796d248e",
+      "file": "winks/hammer.png",
+      "sha256": "18b07283c4f74df2b75cf012b569203e2cf420fa183a5593499930667b1bc420",
+      "kind": "wink-artwork",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/pig-face.svg",
+      "source_sha256": "90dcc30373bac5cee297f1ca7f046e16fe11aee380f49dbe24d4be6aa55dd56a",
+      "file": "winks/pig-face.png",
+      "sha256": "e8ba1f593970b9daf74d525f451396c9027f5d779d5b4562f524593a4a94e32d",
+      "kind": "wink-artwork",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis/red-heart.svg",
+      "source_sha256": "61846b9c946736481d65dbf244fe53792d06d50405c2d5f3e40a0a06cbfe5317",
+      "file": "winks/red-heart.png",
+      "sha256": "1f048e01e4db5e84fbaa4a1471a9f9306bf5077340d3f1af5f6d1c74c2a22dc3",
+      "kind": "wink-artwork",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/emojis_anim_gif/party-popper.gif",
+      "source_sha256": "4b69f0b5797eb712cac2029b0e9ebf0befb597c8dde98ae0ada9d5fa78901b46",
+      "file": "winks/party-popper.png",
+      "sha256": "4413cb7f25e45c5c35bd65856ea740f2388880720b567e91fb8f83ed37e52e94",
+      "kind": "wink-artwork",
+      "scale": 2
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/daisy.png",
+      "source_sha256": "20f1c4e17ec39a67d43169de6b285cb6bb5853d4d3db18f9428df3a0fc906c66",
+      "file": "avatars/daisy.png",
+      "sha256": "20f1c4e17ec39a67d43169de6b285cb6bb5853d4d3db18f9428df3a0fc906c66",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/dog.png",
+      "source_sha256": "fc4e2433a6afada4e5161f14496e73f0d847ee51617c451baa8701ed22c5ddc0",
+      "file": "avatars/dog.png",
+      "sha256": "fc4e2433a6afada4e5161f14496e73f0d847ee51617c451baa8701ed22c5ddc0",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/fall.gif",
+      "source_sha256": "b24dfe20f15dd2f47bfc28126f93b8f1aa85eddd82d0622176d414d67544eea0",
+      "file": "avatars/fall.gif",
+      "sha256": "b24dfe20f15dd2f47bfc28126f93b8f1aa85eddd82d0622176d414d67544eea0",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/fall.gif",
+      "source_sha256": "b24dfe20f15dd2f47bfc28126f93b8f1aa85eddd82d0622176d414d67544eea0",
+      "file": "avatars/fall.png",
+      "sha256": "082047d74381fe3c8884d31f33949691d4153d4bb92077e6d1ddd7446de4d157",
+      "kind": "avatar-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/kitten.png",
+      "source_sha256": "3a72089d1910b1aa446a849efdfa948a6ff59ad6393d27b0f336e4006f77149d",
+      "file": "avatars/kitten.png",
+      "sha256": "3a72089d1910b1aa446a849efdfa948a6ff59ad6393d27b0f336e4006f77149d",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/robot.png",
+      "source_sha256": "51e14d6e4aabe6a5edeb6094c5bec73489197736ad3a7562ebb5180d2033d9f8",
+      "file": "avatars/robot.png",
+      "sha256": "51e14d6e4aabe6a5edeb6094c5bec73489197736ad3a7562ebb5180d2033d9f8",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/soccer.gif",
+      "source_sha256": "8a40741d592aa82fb836cd22a5edab45babc739ea73a7aa16d3be2131ba83465",
+      "file": "avatars/soccer.gif",
+      "sha256": "8a40741d592aa82fb836cd22a5edab45babc739ea73a7aa16d3be2131ba83465",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/soccer.gif",
+      "source_sha256": "8a40741d592aa82fb836cd22a5edab45babc739ea73a7aa16d3be2131ba83465",
+      "file": "avatars/soccer.png",
+      "sha256": "8ca86415558e47bd505fea21ccea6d01d60ba2e6129b1f3145a38fd102aa1028",
+      "kind": "avatar-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/spring.gif",
+      "source_sha256": "33d2a55d471e931aa6b7bca9efc0d43b7521facaf6bc90f1cf8e30e16b116c1a",
+      "file": "avatars/spring.gif",
+      "sha256": "33d2a55d471e931aa6b7bca9efc0d43b7521facaf6bc90f1cf8e30e16b116c1a",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/spring.gif",
+      "source_sha256": "33d2a55d471e931aa6b7bca9efc0d43b7521facaf6bc90f1cf8e30e16b116c1a",
+      "file": "avatars/spring.png",
+      "sha256": "e5991312aa55c151ef85d6c38474b0c94d351f6c6f13d1a6380b4fccd4096c0e",
+      "kind": "avatar-preview"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/summer.gif",
+      "source_sha256": "13fc270f31c64e6db2679478917ac3be555a9a3b26a2360bd7b0fa62b0aeebb6",
+      "file": "avatars/summer.gif",
+      "sha256": "13fc270f31c64e6db2679478917ac3be555a9a3b26a2360bd7b0fa62b0aeebb6",
+      "kind": "avatar-preset"
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/orb/assets/usertiles/summer.gif",
+      "source_sha256": "13fc270f31c64e6db2679478917ac3be555a9a3b26a2360bd7b0fa62b0aeebb6",
+      "file": "avatars/summer.png",
+      "sha256": "dd33813d15b58e0927ca87e9e6e80e10ddbd190b56735d6c8897c448ad206ff7",
+      "kind": "avatar-preview"
+    }
+  ],
+  "screenshots": [
+    {
+      "source": "/home/lewis/Projetos/GOrb/docs/Design/Telas/Login.png",
+      "file": "docs/reference/nmessenger/login.png",
+      "sha256": "62fbd0df5084ae7ff7fe66e9141a0d67b9b47a73014962dd4c6d232c8cbd2e57",
+      "size": [
+        373,
+        735
+      ],
+      "green_avatar_bounds": [
+        [
+          120,
+          197,
+          133,
+          118
+        ]
+      ]
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/docs/Design/Telas/Início.png",
+      "file": "docs/reference/nmessenger/contacts.png",
+      "sha256": "509f6c97799c1386290f803e62aad85389366ce74d97ba4460774063690010c4",
+      "size": [
+        373,
+        735
+      ],
+      "green_avatar_bounds": [
+        [
+          16,
+          57,
+          56,
+          39
+        ],
+        [
+          10,
+          206,
+          46,
+          32
+        ]
+      ]
+    },
+    {
+      "source": "/home/lewis/Projetos/GOrb/docs/Design/Telas/Conversa.png",
+      "file": "docs/reference/nmessenger/conversation.png",
+      "sha256": "580175ae1ba515051040e481ab39bd61ccb1ff8107dbe621f4d8afe04aadb844",
+      "size": [
+        886,
+        735
+      ],
+      "green_avatar_bounds": [
+        [
+          43,
+          72,
+          162,
+          145
+        ],
+        [
+          43,
+          576,
+          162,
+          144
+        ]
+      ]
+    }
+  ],
+  "emoji_catalog": [
+    {
+      "code": ":-)",
+      "name": "slightly-smiling-face",
+      "asset": "emojis/slightly-smiling-face.png"
+    },
+    {
+      "code": ":-D",
+      "name": "grinning-face-with-big-eyes",
+      "asset": "emojis/grinning-face-with-big-eyes.png"
+    },
+    {
+      "code": ";-)",
+      "name": "winking-face",
+      "asset": "emojis/winking-face.png"
+    },
+    {
+      "code": ":-P",
+      "name": "face-with-tongue",
+      "asset": "emojis/face-with-tongue.png"
+    },
+    {
+      "code": ":-O",
+      "name": "face-with-open-mouth",
+      "asset": "emojis/face-with-open-mouth.png"
+    },
+    {
+      "code": ":-$",
+      "name": "flushed-face",
+      "asset": "emojis/flushed-face.png"
+    },
+    {
+      "code": ":-@",
+      "name": "pouting-face",
+      "asset": "emojis/pouting-face.png"
+    },
+    {
+      "code": ":-S",
+      "name": "confused-face",
+      "asset": "emojis/confused-face.png"
+    },
+    {
+      "code": "(H)",
+      "name": "smiling-face-with-sunglasses",
+      "asset": "emojis/smiling-face-with-sunglasses.png"
+    },
+    {
+      "code": "(Y)",
+      "name": "thumbs-up",
+      "asset": "emojis/thumbs-up.png"
+    },
+    {
+      "code": "(N)",
+      "name": "thumbs-down",
+      "asset": "emojis/thumbs-down.png"
+    },
+    {
+      "code": "(K)",
+      "name": "kiss-mark",
+      "asset": "emojis/kiss-mark.png"
+    },
+    {
+      "code": "(A)",
+      "name": "smiling-face-with-halo",
+      "asset": "emojis/smiling-face-with-halo.png"
+    },
+    {
+      "code": "(L)",
+      "name": "red-heart",
+      "asset": "emojis/red-heart.png"
+    },
+    {
+      "code": "(U)",
+      "name": "broken-heart",
+      "asset": "emojis/broken-heart.png"
+    },
+    {
+      "code": "(O)",
+      "name": "alarm-clock",
+      "asset": "emojis/alarm-clock.png"
+    },
+    {
+      "code": "(G)",
+      "name": "wrapped-gift",
+      "asset": "emojis/wrapped-gift.png"
+    },
+    {
+      "code": "(F)",
+      "name": "wilted-flower",
+      "asset": "emojis/wilted-flower.png"
+    },
+    {
+      "code": "(P)",
+      "name": "camera",
+      "asset": "emojis/camera.png"
+    },
+    {
+      "code": "(M)",
+      "name": "musical-note",
+      "asset": "emojis/musical-note.png"
+    },
+    {
+      "code": "(S)",
+      "name": "crescent-moon",
+      "asset": "emojis/crescent-moon.png"
+    },
+    {
+      "code": "(*)",
+      "name": "star",
+      "asset": "emojis/star.png"
+    },
+    {
+      "code": "(E)",
+      "name": "envelope",
+      "asset": "emojis/envelope.png"
+    },
+    {
+      "code": "(C)",
+      "name": "hot-beverage",
+      "asset": "emojis/hot-beverage.png"
+    },
+    {
+      "code": "(HE)",
+      "name": "smiling-face-with-heart-eyes",
+      "asset": "emojis/smiling-face-with-heart-eyes.png"
+    },
+    {
+      "code": "(BK)",
+      "name": "face-blowing-a-kiss",
+      "asset": "emojis/face-blowing-a-kiss.png"
+    },
+    {
+      "code": "(ST)",
+      "name": "squinting-face-with-tongue",
+      "asset": "emojis/squinting-face-with-tongue.png"
+    },
+    {
+      "code": "(ZF)",
+      "name": "zany-face",
+      "asset": "emojis/zany-face.png"
+    },
+    {
+      "code": "(SF)",
+      "name": "shushing-face",
+      "asset": "emojis/shushing-face.png"
+    },
+    {
+      "code": "(TF)",
+      "name": "thinking-face",
+      "asset": "emojis/thinking-face.png"
+    },
+    {
+      "code": "(EF)",
+      "name": "expressionless-face",
+      "asset": "emojis/expressionless-face.png"
+    },
+    {
+      "code": "(SM)",
+      "name": "smirking-face",
+      "asset": "emojis/smirking-face.png"
+    },
+    {
+      "code": "(GF)",
+      "name": "grimacing-face",
+      "asset": "emojis/grimacing-face.png"
+    },
+    {
+      "code": "(DF)",
+      "name": "drooling-face",
+      "asset": "emojis/drooling-face.png"
+    },
+    {
+      "code": "(SL)",
+      "name": "sleeping-face",
+      "asset": "emojis/sleeping-face.png"
+    },
+    {
+      "code": "(NF)",
+      "name": "nauseated-face",
+      "asset": "emojis/nauseated-face.png"
+    },
+    {
+      "code": "(VOM)",
+      "name": "face-vomiting",
+      "asset": "emojis/face-vomiting.png"
+    },
+    {
+      "code": "(EH)",
+      "name": "exploding-head",
+      "asset": "emojis/exploding-head.png"
+    },
+    {
+      "code": "(PF)",
+      "name": "partying-face",
+      "asset": "emojis/partying-face.png"
+    },
+    {
+      "code": "(WF)",
+      "name": "woozy-face",
+      "asset": "emojis/woozy-face.png"
+    },
+    {
+      "code": "(;_;)",
+      "name": "crying-face",
+      "asset": "emojis/crying-face.png"
+    },
+    {
+      "code": "(LCF)",
+      "name": "loudly-crying-face",
+      "asset": "emojis/loudly-crying-face.png"
+    },
+    {
+      "code": "(SCR)",
+      "name": "face-screaming-in-fear",
+      "asset": "emojis/face-screaming-in-fear.png"
+    },
+    {
+      "code": "(ANG)",
+      "name": "angry-face",
+      "asset": "emojis/angry-face.png"
+    },
+    {
+      "code": "(FSM)",
+      "name": "face-with-symbols-on-mouth",
+      "asset": "emojis/face-with-symbols-on-mouth.png"
+    },
+    {
+      "code": "(SK)",
+      "name": "skull",
+      "asset": "emojis/skull.png"
+    },
+    {
+      "code": "(POO)",
+      "name": "pile-of-poo",
+      "asset": "emojis/pile-of-poo.png"
+    },
+    {
+      "code": "(CLAP)",
+      "name": "clapping-hands",
+      "asset": "emojis/clapping-hands.png"
+    },
+    {
+      "code": "(HS)",
+      "name": "handshake",
+      "asset": "emojis/handshake.png"
+    },
+    {
+      "code": "(VIC)",
+      "name": "victory-hand",
+      "asset": "emojis/victory-hand.png"
+    },
+    {
+      "code": "(FLEX)",
+      "name": "flexed-biceps",
+      "asset": "emojis/flexed-biceps.png"
+    },
+    {
+      "code": "(FOLD)",
+      "name": "folded-hands",
+      "asset": "emojis/folded-hands.png"
+    },
+    {
+      "code": "(BR)",
+      "name": "brain",
+      "asset": "emojis/brain.png"
+    },
+    {
+      "code": "(FIRE)",
+      "name": "fire",
+      "asset": "emojis/fire.png"
+    },
+    {
+      "code": "(BOOM)",
+      "name": "collision",
+      "asset": "emojis/collision.png"
+    },
+    {
+      "code": "(SPARKS)",
+      "name": "sparkles",
+      "asset": "emojis/sparkles.png"
+    },
+    {
+      "code": "(BAL)",
+      "name": "balloon",
+      "asset": "emojis/balloon.png"
+    },
+    {
+      "code": "(POP)",
+      "name": "party-popper",
+      "asset": "emojis/party-popper.png"
+    },
+    {
+      "code": "(RAIN)",
+      "name": "rainbow",
+      "asset": "emojis/rainbow.png"
+    },
+    {
+      "code": "(SUN)",
+      "name": "sun",
+      "asset": "emojis/sun.png"
+    },
+    {
+      "code": "(SNOW)",
+      "name": "snowflake",
+      "asset": "emojis/snowflake.png"
+    },
+    {
+      "code": "(UMB)",
+      "name": "umbrella",
+      "asset": "emojis/umbrella.png"
+    },
+    {
+      "code": "(DOG)",
+      "name": "dog-face",
+      "asset": "emojis/dog-face.png"
+    },
+    {
+      "code": "(CAT)",
+      "name": "cat-face",
+      "asset": "emojis/cat-face.png"
+    },
+    {
+      "code": "(PANDA)",
+      "name": "panda",
+      "asset": "emojis/panda.png"
+    },
+    {
+      "code": "(ALIEN)",
+      "name": "alien",
+      "asset": "emojis/alien.png"
+    },
+    {
+      "code": "(ROCKET)",
+      "name": "rocket",
+      "asset": "emojis/rocket.png"
+    },
+    {
+      "code": "(PLANE)",
+      "name": "airplane",
+      "asset": "emojis/airplane.png"
+    },
+    {
+      "code": "(BEER)",
+      "name": "beer-mug",
+      "asset": "emojis/beer-mug.png"
+    },
+    {
+      "code": "(PIZZA)",
+      "name": "pizza",
+      "asset": "emojis/pizza.png"
+    },
+    {
+      "code": "(MONEY)",
+      "name": "money-bag",
+      "asset": "emojis/money-bag.png"
+    },
+    {
+      "code": "(TROPHY)",
+      "name": "trophy",
+      "asset": "emojis/trophy.png"
+    }
+  ],
+  "avatar_catalog": [
+    {
+      "name": "Daisy",
+      "preview": "avatars/daisy.png",
+      "original": "avatars/daisy.png"
+    },
+    {
+      "name": "Cachorro",
+      "preview": "avatars/dog.png",
+      "original": "avatars/dog.png"
+    },
+    {
+      "name": "Outono",
+      "preview": "avatars/fall.png",
+      "original": "avatars/fall.gif"
+    },
+    {
+      "name": "Gatinho",
+      "preview": "avatars/kitten.png",
+      "original": "avatars/kitten.png"
+    },
+    {
+      "name": "Robô",
+      "preview": "avatars/robot.png",
+      "original": "avatars/robot.png"
+    },
+    {
+      "name": "Futebol",
+      "preview": "avatars/soccer.png",
+      "original": "avatars/soccer.gif"
+    },
+    {
+      "name": "Primavera",
+      "preview": "avatars/spring.png",
+      "original": "avatars/spring.gif"
+    },
+    {
+      "name": "Verão",
+      "preview": "avatars/summer.png",
+      "original": "avatars/summer.gif"
+    }
+  ],
+  "notes": [
+    "SVGs rasterized at 2x for native egui; originals retained.",
+    "Emoji GIF animations and first-frame previews are both bundled; winks have high-resolution artwork.",
+    "Runtime resources are bundled; the reference project is never required at runtime."
+  ]
+}
