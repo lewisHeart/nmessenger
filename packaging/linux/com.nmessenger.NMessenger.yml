@@ -1,0 +1,40 @@
+app-id: com.nmessenger.NMessenger
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: nmessenger-launch
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --filesystem=home
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.mpris.MediaPlayer2.*
+
+modules:
+  - name: nmessenger
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 nmessenger /app/bin/nmessenger
+      - install -Dm755 nmessenger-launch /app/bin/nmessenger-launch
+      - install -Dm644 com.nmessenger.NMessenger.desktop /app/share/applications/com.nmessenger.NMessenger.desktop
+      - install -Dm644 com.nmessenger.NMessenger.svg /app/share/icons/hicolor/scalable/apps/com.nmessenger.NMessenger.svg
+      - install -Dm644 com.nmessenger.NMessenger.metainfo.xml /app/share/metainfo/com.nmessenger.NMessenger.metainfo.xml
+      - install -Dm644 LICENSE /app/share/licenses/nmessenger/LICENSE
+    sources:
+      - type: file
+        path: nmessenger
+      - type: file
+        path: nmessenger-launch
+      - type: file
+        path: com.nmessenger.NMessenger.desktop
+      - type: file
+        path: com.nmessenger.NMessenger.svg
+      - type: file
+        path: com.nmessenger.NMessenger.metainfo.xml
+      - type: file
+        path: LICENSE
+

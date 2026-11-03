@@ -264,6 +264,7 @@ public final class MainActivity extends NativeActivity {
 
     public native void nativeCommitText(String text);
     public native void nativeDeleteSurroundingText(int before, int after);
+    public native void nativeBackFromKeyboard();
 
     public void onImeCommitText(String text) {
         try {
@@ -375,6 +376,12 @@ public final class MainActivity extends NativeActivity {
                 public boolean deleteSurroundingText(int beforeLength, int afterLength) {
                     activity.onImeDeleteSurroundingText(beforeLength, afterLength);
                     return super.deleteSurroundingText(beforeLength, afterLength);
+                }
+
+                @Override
+                public boolean performEditorAction(int actionCode) {
+                    activity.onImeCommitText("\n");
+                    return true;
                 }
 
                 @Override
@@ -490,11 +497,26 @@ public final class MainActivity extends NativeActivity {
             if (event.getAction() == android.view.KeyEvent.ACTION_UP) {
                 if (currentKeyboardHeightPx > 0 || keyboardRequested) {
                     hideKeyboard();
+                    try {
+                        nativeBackFromKeyboard();
+                    } catch (Throwable ignored) {}
                     return true;
                 }
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentKeyboardHeightPx > 0 || keyboardRequested) {
+            hideKeyboard();
+            try {
+                nativeBackFromKeyboard();
+            } catch (Throwable ignored) {}
+            return;
+        }
+        super.onBackPressed();
     }
 
     public String getClipboardText() {

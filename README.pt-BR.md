@@ -17,7 +17,7 @@ Um aplicativo de mensagens nativo com criptografia de ponta a ponta (E2EE), insp
 
 <br>
 
-[Início Rápido](#início-rápido) · [Capturas de Tela](#capturas-de-tela) · [Recursos](#recursos) · [Compilação & Android](#compilação) · [Arquitetura](#estrutura-do-projeto) · [Segurança](#segurança-e-privacidade)
+[Início Rápido](#início-rápido) · [Capturas de Tela](#capturas-de-tela) · [Recursos](#recursos) · [Documentação](docs/README.md) · [Compilação & Releases](docs/releases.md) · [Segurança](docs/security.md)
 
 </div>
 
@@ -278,6 +278,21 @@ make smoke
 ```
 *Requer `Xvfb`, `xdotool`, `ffmpeg`, `Python 3` e utilitários do cliente PostgreSQL.*
 </details>
+
+---
+
+## Documentação
+
+| Guia | Conteúdo |
+| :--- | :--- |
+| [Arquitetura & Design](docs/architecture.md) | Arquitetura cliente-servidor, crates do workspace e protocolos em tempo real |
+| [Segurança & Privacidade](docs/security.md) | Criptografia de ponta a ponta (E2EE), cofre de identidade e recuperação de chaves |
+| [Desenvolvimento](docs/development.md) | Configuração local, pré-requisitos, execução de testes e smoke tests de UI |
+| [Operação & Hospedagem](docs/operations.md) | Configuração do servidor em produção, Docker Compose, Caddy TLS e backups |
+| [Compilação & Releases](docs/releases.md) | Matriz multiplataforma, AppImage, Flatpak, NSIS e APKs Android |
+| [SDK para Bots](docs/bots.md) | Criação de contas de bot, autenticação e SDK em Rust |
+
+Consulte o [índice completo da documentação](docs/README.md).
 
 ---
 

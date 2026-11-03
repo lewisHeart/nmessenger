@@ -69,7 +69,13 @@ impl Config {
                 .ok_or("USER_UPLOAD_QUOTA_BYTES deve ser entre 25 MiB e 1 TiB")?,
             database_url: required("DATABASE_URL")?,
             redis_url: required("REDIS_URL")?,
-            bind_addr: std::env::var("BIND_ADDR").unwrap_or_else(|_| "0.0.0.0:8080".into()),
+            bind_addr: std::env::var("BIND_ADDR").unwrap_or_else(|_| {
+                if let Ok(port) = std::env::var("PORT") {
+                    format!("0.0.0.0:{port}")
+                } else {
+                    "0.0.0.0:8080".into()
+                }
+            }),
             upload_dir: std::env::var("UPLOAD_DIR")
                 .unwrap_or_else(|_| "data/uploads".into())
                 .into(),

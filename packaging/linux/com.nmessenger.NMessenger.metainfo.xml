@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.nmessenger.NMessenger</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>NMessenger</name>
+  <summary>Classic instant messenger inspired by Windows Live Messenger</summary>
+  <description>
+    <p>
+      NMessenger is a native, end-to-end encrypted messaging client inspired by the golden era of Windows Live Messenger.
+      It combines the expressive nostalgia of 2000s instant messengers with modern high-performance cryptography,
+      real-time communication, voice/video calls, and screen sharing.
+    </p>
+  </description>
+  <launchable type="desktop-id">com.nmessenger.NMessenger.desktop</launchable>
+  <url type="homepage">https://github.com/lewisHeart/nmessenger</url>
+  <url type="bugtracker">https://github.com/lewisHeart/nmessenger/issues</url>
+  <provides>
+    <binary>nmessenger</binary>
+  </provides>
+  <releases>
+    <release version="0.1.0-alpha" date="2026-11-03">
+      <description>
+        <p>First alpha release of NMessenger featuring end-to-end encryption, nostalgic UI, game spaces, and screen sharing.</p>
+      </description>
+    </release>
+  </releases>
+  <content_rating type="oars-1.1"/>
+</component>
+

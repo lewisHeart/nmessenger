@@ -17,7 +17,7 @@ A native, end-to-end encrypted messaging application inspired by Windows Live Me
 
 <br>
 
-[Quick Start](#quick-start) · [Screenshots](#screenshots) · [Features](#features) · [Building & Android](#building) · [Architecture](#project-structure) · [Security](#security-and-privacy)
+[Quick Start](#quick-start) · [Screenshots](#screenshots) · [Features](#features) · [Documentation](docs/README.md) · [Building & Releases](docs/releases.md) · [Security](docs/security.md)
 
 </div>
 
@@ -278,6 +278,21 @@ make smoke
 ```
 *Requires `Xvfb`, `xdotool`, `ffmpeg`, `Python 3`, and PostgreSQL client utilities.*
 </details>
+
+---
+
+## Documentation
+
+| Guide | Read About |
+| :--- | :--- |
+| [Architecture & Design](docs/architecture.md) | Client-server architecture, workspace crates, and real-time protocols |
+| [Security & Privacy](docs/security.md) | End-to-end encryption (E2EE), identity vault, and key recovery |
+| [Development](docs/development.md) | Local workstation setup, prerequisites, running tests, and smoke tests |
+| [Operations & Hosting](docs/operations.md) | Production server setup, Docker Compose, Caddy TLS, and backups |
+| [Building & Releases](docs/releases.md) | Multiplatform build matrix, AppImage, Flatpak, NSIS, and Android APKs |
+| [Bot SDK](docs/bots.md) | Creating bots, token authentication, and the Rust bot SDK |
+
+Browse the complete [documentation index](docs/README.md).
 
 ---
 

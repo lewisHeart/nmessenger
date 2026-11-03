@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=NMessenger
+GenericName=Instant Messenger
+GenericName[pt_BR]=Mensageiro Instantâneo
+Comment=Classic instant messenger inspired by Windows Live Messenger
+Comment[pt_BR]=Mensageiro instantâneo clássico inspirado no Windows Live Messenger
+Exec=nmessenger
+Icon=com.nmessenger.NMessenger
+Terminal=false
+Categories=Network;InstantMessaging;Chat;
+StartupWMClass=NMessenger
+Keywords=chat;msn;messenger;frutiger;im;
+

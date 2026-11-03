@@ -1,0 +1,188 @@
+name: Build and Draft Multi-Platform Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release version tag (e.g. v0.1.0-alpha)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux AMD64
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            platform: linux
+            arch: x86_64
+          # Linux ARM64
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            platform: linux
+            arch: arm64
+          # Windows AMD64
+          - os: windows-2022
+            target: x86_64-pc-windows-msvc
+            platform: windows
+            arch: x86_64
+          # Windows ARM64
+          - os: windows-11-arm
+            target: aarch64-pc-windows-msvc
+            platform: windows
+            arch: arm64
+          # macOS Intel
+          - os: macos-15-intel
+            target: x86_64-apple-darwin
+            platform: macos
+            arch: x86_64
+          # macOS Apple Silicon
+          - os: macos-14
+            target: aarch64-apple-darwin
+            platform: macos
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Tag
+        id: vars
+        shell: bash
+        run: |
+          TAG="${{ inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      # Linux dependencies
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libasound2-dev libudev-dev \
+            libxkbcommon-dev libwayland-dev libx11-dev libgl1-mesa-dev \
+            flatpak flatpak-builder librsvg2-bin
+
+      # Windows dependencies
+      - name: Install NSIS (Windows)
+        if: runner.os == 'Windows'
+        run: choco install nsis -y
+
+      - name: Build Binary
+        run: cargo build --release --locked -p nmessenger-client --target ${{ matrix.target }}
+
+      # Packaging Linux
+      - name: Package Linux (Tarball, AppImage, Flatpak)
+        if: runner.os == 'Linux'
+        run: |
+          python3 scripts/build_all.py --package-only --platform linux --arch ${{ matrix.arch }}
+
+      # Packaging Windows
+      - name: Package Windows (Portable Zip & NSIS Installer)
+        if: runner.os == 'Windows'
+        run: |
+          python scripts/build_all.py --package-only --platform windows --arch ${{ matrix.arch }}
+
+      # Packaging macOS
+      - name: Package macOS (.app, DMG, Tarball)
+        if: runner.os == 'macOS'
+        run: |
+          python3 scripts/build_all.py --package-only --platform macos --arch ${{ matrix.arch }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            dist/*.zip
+            dist/*.tar.gz
+            dist/*.AppImage
+            dist/*.flatpak
+            dist/*.dmg
+            dist/*-setup.exe
+          if-no-files-found: error
+
+  build-android:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android, x86_64-linux-android
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Android SDK & NDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK and Build Tools
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;27.0.12077973"
+
+      - name: Build Android APKs
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-android.outputs.sdk-path }}/ndk/27.0.12077973
+        run: |
+          python3 scripts/build_all.py --platform android
+
+      - name: Upload Android Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-android
+          path: dist/*.apk
+          if-no-files-found: error
+
+  release:
+    needs: [build-desktop, build-android]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Tag
+        id: vars
+        run: |
+          TAG="${{ inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Generate Checksums
+        run: |
+          python3 scripts/build_all.py --check
+          cd dist
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Create GitHub Release Draft
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          name: NMessenger ${{ steps.vars.outputs.tag }}
+          draft: true
+          prerelease: true
+          files: |
+            dist/*
+

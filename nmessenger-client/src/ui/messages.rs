@@ -183,25 +183,32 @@ pub fn show(app: &mut MessengerApp, ui: &mut egui::Ui, message: &Message, groupe
                 }
             }
         }).response;
-    if me && message.kind == MessageKind::Text && message.attachment_id.is_none()
+    if message.kind == MessageKind::Text && message.attachment_id.is_none()
         && !app.editing_message.as_ref().is_some_and(|item| item.id == message.id)
         && !message.body.starts_with("[Mensagem protegida indisponível:") {
         let response = ui.interact(row.rect, ui.scope_id().with(("message-actions", message.id)), egui::Sense::click());
         response.context_menu(|ui| {
-            let editable = (chrono::Utc::now() - message.created_at).num_seconds() <= MESSAGE_EDIT_WINDOW_SECS;
-            if ui.add_enabled(editable, egui::Button::new(tr("Edit", "Editar")))
-                .on_disabled_hover_text(tr("Messages can be edited for 15 minutes.", "Mensagens podem ser editadas por 15 minutos."))
-                .clicked() {
-                app.edit_message_draft = message.body.clone();
-                app.editing_message = Some(message.clone());
-                app.edit_message_busy = false;
-                app.edit_message_error = None;
-                ui.memory_mut(|memory| memory.request_focus(egui::Id::unique(("inline-message-edit", message.id))));
+            if ui.button(tr("Copy", "Copiar")).clicked() {
+                crate::platform::set_clipboard_text(&message.body);
+                ui.ctx().copy_text(message.body.clone());
                 ui.close();
             }
-            if ui.button(tr("Delete", "Excluir")).clicked() {
-                app.send(Action::DeleteMessage { conversation: message.conversation_id, message: message.id });
-                ui.close();
+            if me {
+                let editable = (chrono::Utc::now() - message.created_at).num_seconds() <= MESSAGE_EDIT_WINDOW_SECS;
+                if ui.add_enabled(editable, egui::Button::new(tr("Edit", "Editar")))
+                    .on_disabled_hover_text(tr("Messages can be edited for 15 minutes.", "Mensagens podem ser editadas por 15 minutos."))
+                    .clicked() {
+                    app.edit_message_draft = message.body.clone();
+                    app.editing_message = Some(message.clone());
+                    app.edit_message_busy = false;
+                    app.edit_message_error = None;
+                    ui.memory_mut(|memory| memory.request_focus(egui::Id::unique(("inline-message-edit", message.id))));
+                    ui.close();
+                }
+                if ui.button(tr("Delete", "Excluir")).clicked() {
+                    app.send(Action::DeleteMessage { conversation: message.conversation_id, message: message.id });
+                    ui.close();
+                }
             }
         });
     }

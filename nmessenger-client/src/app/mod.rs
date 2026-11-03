@@ -1096,6 +1096,18 @@ impl eframe::App for MessengerApp {
     }
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         crate::platform::poll_ime_events(ctx);
+        if crate::platform::take_keyboard_back() {
+            if self.profile_edit.is_some() {
+                self.profile_edit = None;
+                self.profile_draft.clear();
+                crate::platform::hide_soft_input();
+            } else if self.editing_message.is_some() {
+                self.editing_message = None;
+                self.edit_message_draft.clear();
+                self.edit_message_busy = false;
+                self.edit_message_error = None;
+            }
+        }
         while let Ok(packet) = self.transport.receiver.try_recv() {
             if packet.generation == self.generation {
                 self.apply(ctx, packet.update);

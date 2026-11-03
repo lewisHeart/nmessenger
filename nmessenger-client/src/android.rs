@@ -374,6 +374,24 @@ pub fn keyboard_height(ctx: &eframe::egui::Context) -> f32 {
 
 static PENDING_IME_TEXT: Mutex<Vec<String>> = Mutex::new(Vec::new());
 static PENDING_IME_BACKSPACES: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+static PENDING_KEYBOARD_BACK: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+#[unsafe(no_mangle)]
+pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeBackFromKeyboard(
+    _env: *mut std::ffi::c_void,
+    _class: *mut std::ffi::c_void,
+) {
+    PENDING_KEYBOARD_BACK.store(true, std::sync::atomic::Ordering::Relaxed);
+    if let Ok(guard) = APP.lock() {
+        if let Some(app) = guard.as_ref() {
+            app.create_waker().wake();
+        }
+    }
+}
+
+pub fn take_keyboard_back() -> bool {
+    PENDING_KEYBOARD_BACK.swap(false, std::sync::atomic::Ordering::Relaxed)
+}
 
 #[unsafe(no_mangle)]
 pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeCommitText(
@@ -443,7 +461,24 @@ pub fn poll_ime_events(ctx: &eframe::egui::Context) {
                 });
             }
             for text in texts {
-                i.events.push(eframe::egui::Event::Paste(text));
+                if text == "\n" {
+                    i.events.push(eframe::egui::Event::Key {
+                        key: eframe::egui::Key::Enter,
+                        physical_key: Some(eframe::egui::Key::Enter),
+                        pressed: true,
+                        repeat: false,
+                        modifiers: eframe::egui::Modifiers::NONE,
+                    });
+                    i.events.push(eframe::egui::Event::Key {
+                        key: eframe::egui::Key::Enter,
+                        physical_key: Some(eframe::egui::Key::Enter),
+                        pressed: false,
+                        repeat: false,
+                        modifiers: eframe::egui::Modifiers::NONE,
+                    });
+                } else {
+                    i.events.push(eframe::egui::Event::Paste(text));
+                }
             }
         });
         ctx.request_repaint();

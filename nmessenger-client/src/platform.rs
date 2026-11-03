@@ -182,6 +182,17 @@ pub fn hide_soft_input() {
     }
 }
 
+pub fn take_keyboard_back() -> bool {
+    #[cfg(target_os = "android")]
+    {
+        crate::android::take_keyboard_back()
+    }
+    #[cfg(not(target_os = "android"))]
+    {
+        false
+    }
+}
+
 pub fn poll_ime_events(ctx: &eframe::egui::Context) {
     #[cfg(target_os = "android")]
     {
@@ -257,11 +268,11 @@ pub fn get_clipboard_text() -> Option<String> {
     }
     #[cfg(not(target_os = "android"))]
     {
-        None
+        let mut cb = arboard::Clipboard::new().ok()?;
+        cb.get_text().ok()
     }
 }
 
-#[allow(dead_code)]
 pub fn set_clipboard_text(text: &str) {
     #[cfg(target_os = "android")]
     {
@@ -269,6 +280,8 @@ pub fn set_clipboard_text(text: &str) {
     }
     #[cfg(not(target_os = "android"))]
     {
-        let _ = text;
+        if let Ok(mut cb) = arboard::Clipboard::new() {
+            let _ = cb.set_text(text);
+        }
     }
 }

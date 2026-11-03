@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -e
+
+# Setup display and sound fallbacks if running under Wayland/X11
+export GDK_BACKEND="wayland,x11,*"
+export WINIT_UNIX_BACKEND="${WINIT_UNIX_BACKEND:-x11}"
+
+exec /app/bin/nmessenger "$@"
+

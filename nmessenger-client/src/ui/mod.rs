@@ -147,6 +147,12 @@ pub fn shell(app: &mut MessengerApp, ui: &mut egui::Ui) {
 
 fn mobile_back(app: &mut MessengerApp) {
     use zeroize::Zeroize;
+    if app.profile_edit.is_some() {
+        app.profile_edit = None;
+        app.profile_draft.clear();
+        crate::platform::hide_soft_input();
+        return;
+    }
     if app.editing_message.is_some() {
         app.editing_message = None;
         app.edit_message_draft.clear();

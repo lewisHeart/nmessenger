@@ -5,7 +5,7 @@ TEST_DB := postgres://nmessenger:nmessenger_test@127.0.0.1:$(NM_TEST_POSTGRES_PO
 TEST_REDIS := redis://127.0.0.1:$(NM_TEST_REDIS_PORT)/0
 ANDROID_ARGS ?=
 
-.PHONY: up down infra server client build build-client build-server check test test-infra test-stop smoke media-test android android-debug android-release android-check
+.PHONY: up down infra server client build build-client build-server check test test-infra test-stop smoke media-test android android-debug android-release android-check dist dist-check package-linux package-windows package-macos
 
 android: android-debug
 
@@ -62,3 +62,18 @@ smoke: test-infra
 
 test-stop:
 	docker compose --profile test stop test-postgres test-redis
+
+dist-check:
+	python3 scripts/build_all.py --check
+
+dist:
+	python3 scripts/build_all.py
+
+package-linux:
+	python3 scripts/build_all.py --platform linux
+
+package-windows:
+	python3 scripts/build_all.py --platform windows
+
+package-macos:
+	python3 scripts/build_all.py --platform macos
