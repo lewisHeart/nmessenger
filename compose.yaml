@@ -44,6 +44,9 @@ services:
       USER_UPLOAD_QUOTA_BYTES: ${USER_UPLOAD_QUOTA_BYTES:-536870912}
       GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-}
       RUST_LOG: ${RUST_LOG:-nm_servo=info,actix_web=info}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
     ports:
       - "${API_BIND:-0.0.0.0}:${API_PORT:-18087}:8080"
     volumes:
