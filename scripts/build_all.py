@@ -45,8 +45,8 @@ TARGETS = {
     "windows-x86_64": {
         "platform": "windows",
         "arch": "x86_64",
-        "rust_target": "x86_64-pc-windows-msvc",
-        "fallback_target": "x86_64-pc-windows-gnu",
+        "rust_target": "x86_64-pc-windows-gnu" if sys.platform != "win32" else "x86_64-pc-windows-msvc",
+        "fallback_target": "x86_64-pc-windows-msvc" if sys.platform != "win32" else "x86_64-pc-windows-gnu",
         "binary_name": "nmessenger-client.exe",
         "output_name": "nmessenger-{version}-windows-x86_64",
     },
@@ -135,9 +135,15 @@ def find_binary(rust_target, binary_name, release=True):
     candidates = [
         ROOT / "target" / rust_target / profile / binary_name,
         ROOT / "target" / profile / binary_name,
-        ROOT / "target" / rust_target / profile / binary_name.removesuffix(".exe"),
-        ROOT / "target" / profile / binary_name.removesuffix(".exe"),
     ]
+    if binary_name.endswith(".exe"):
+        for extra in ["x86_64-pc-windows-gnu", "aarch64-pc-windows-gnullvm", "x86_64-pc-windows-msvc"]:
+            candidates.append(ROOT / "target" / extra / profile / binary_name)
+    else:
+        candidates.extend([
+            ROOT / "target" / rust_target / profile / binary_name.removesuffix(".exe"),
+            ROOT / "target" / profile / binary_name.removesuffix(".exe"),
+        ])
     for candidate in candidates:
         if candidate.is_file():
             return candidate

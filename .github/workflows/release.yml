@@ -135,17 +135,12 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Setup Android SDK & NDK
-        id: setup-android
-        uses: android-actions/setup-android@v3
-
-      - name: Install NDK and Build Tools
+      - name: Install Android Build Tools
         run: |
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;27.0.12077973"
+          yes | sdkmanager --licenses || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Build Android APKs
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-android.outputs.sdk-path }}/ndk/27.0.12077973
         run: |
           python3 scripts/build_all.py --platform android
 
