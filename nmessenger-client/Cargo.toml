@@ -32,6 +32,8 @@ chacha20poly1305 = "0.11"
 crypto_box = { version = "0.9.1", features = ["std"] }
 ed25519-dalek = "3.0"
 x25519-dalek = "3.0"
+rustls = { version = "0.23", default-features = false, features = ["std", "aws_lc_rs"] }
+webpki-roots = "1.0"
 cpal = { version = "0.18.2", optional = true }
 
 [features]

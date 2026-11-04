@@ -35,11 +35,18 @@ pub fn base(server: &str) -> Result<String, String> {
 }
 
 pub(crate) fn client() -> Result<Client, String> {
+    let mut root_store = rustls::RootCertStore::empty();
+    root_store.extend(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
+    let tls_config = rustls::ClientConfig::builder()
+        .with_root_certificates(root_store)
+        .with_no_client_auth();
+
     Client::builder()
         .connect_timeout(Duration::from_secs(10))
         .timeout(Duration::from_secs(60))
         .user_agent("NMessenger/0.1")
         .redirect(reqwest::redirect::Policy::none())
+        .tls_backend_preconfigured(tls_config)
         .build()
         .map_err(|e| e.to_string())
 }

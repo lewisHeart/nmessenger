@@ -441,8 +441,13 @@ async fn worker(mut commands: async_mpsc::UnboundedReceiver<(u64, Action)>, init
                 session = None;
                 watches.lock().unwrap().clear();
                 bus.send(Update::Connection("Entrando…".into()));
-                match api::authenticate(server, email, password, device, name, presence, identity_password).await {
-                    Ok((api, bootstrap)) => {
+                match tokio::time::timeout(
+                    std::time::Duration::from_secs(15),
+                    api::authenticate(server, email, password, device, name, presence, identity_password),
+                )
+                .await
+                {
+                    Ok(Ok((api, bootstrap))) => {
                         if let Some((server, email, password)) = remember_login.take()
                             && let Err(error) =
                                 crate::storage::save_saved_session(&server, &email, &password).await
@@ -474,9 +479,15 @@ async fn worker(mut commands: async_mpsc::UnboundedReceiver<(u64, Action)>, init
                         )));
                         session = Some(api);
                     }
-                    Err(e) => {
+                    Ok(Err(e)) => {
                         remember_login = None;
                         bus.send(Update::AuthenticationFailed(e));
+                    }
+                    Err(_) => {
+                        remember_login = None;
+                        bus.send(Update::AuthenticationFailed(
+                            "Tempo limite esgotado ao conectar ao servidor. Verifique o endereço e a conexão.".into(),
+                        ));
                     }
                 }
             }
