@@ -649,9 +649,22 @@ fn ink(ui: &mut egui::Ui, composer: &mut crate::app::Composer) {
         if ui.button(tr("Clear", "Limpar")).clicked() {
             composer.ink.strokes.clear();
         }
+        if ui.button(if composer.ink_expanded { tr("Reduce", "Reduzir") } else { tr("Expand", "Expandir") }).clicked() {
+            composer.ink_expanded = !composer.ink_expanded;
+        }
     });
     let (rect, response) =
-        ui.allocate_exact_size(Vec2::new(ui.available_width(), 142.0), egui::Sense::drag());
+        ui.allocate_exact_size(Vec2::new(ui.available_width(), if composer.ink_expanded { 300.0 } else { 142.0 }), egui::Sense::drag());
+    if composer.ink.width > 0.0 && composer.ink.height > 0.0 {
+        let sx = rect.width() / composer.ink.width;
+        let sy = rect.height() / composer.ink.height;
+        if (sx - 1.0).abs() > 0.001 || (sy - 1.0).abs() > 0.001 {
+            for point in composer.ink.strokes.iter_mut().flat_map(|stroke| stroke.points.iter_mut()) {
+                point[0] *= sx;
+                point[1] *= sy;
+            }
+        }
+    }
     ui.painter().rect_filled(rect, 4, Color32::WHITE);
     ui.painter().rect_stroke(
         rect,

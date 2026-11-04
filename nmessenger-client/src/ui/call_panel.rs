@@ -121,6 +121,20 @@ pub fn show(app: &mut MessengerApp, ui: &mut egui::Ui, activity: &Activity) {
                     });
                 });
             }
+            let me = app.data.as_ref().map(|data| data.me.id);
+            let shared = app.screen_frames.iter()
+                .find(|((id, user), _)| *id == activity.id && Some(*user) != me)
+                .or_else(|| app.screen_frames.iter().find(|((id, _), _)| *id == activity.id))
+                .map(|(_, texture)| texture.clone());
+            if let Some(texture) = shared {
+                ui.add_space(6.0);
+                ui.label(RichText::new(tr("Shared screen", "Tela compartilhada")).small().strong());
+                let size = texture.size_vec2();
+                if size.x > 0.0 && size.y > 0.0 {
+                    let scale = (ui.available_width() / size.x).min(240.0 / size.y).min(1.0);
+                    ui.image((texture.id(), size * scale));
+                }
+            }
         });
 }
 
@@ -149,10 +163,6 @@ fn controls(app: &mut MessengerApp, ui: &mut egui::Ui, activity: &Activity, curr
                 app.set_screen_sharing(!screen);
             }
         }
-        let sharing = status.is_some_and(|status| status.screen_sharing);
-        if ui.add_enabled(crate::media::remote::available(), egui::Button::new(RichText::new(
-            if sharing { tr("Stop sharing", "Parar tela") } else { tr("Share screen", "Compartilhar tela") }).size(11.0)))
-            .clicked() { app.set_screen_sharing(!sharing); }
         if ui.add(egui::Button::new(RichText::new(tr("Devices", "Dispositivos")).size(11.0))
             .min_size(Vec2::new(72.0, 28.0))).clicked() {
             app.open_options();

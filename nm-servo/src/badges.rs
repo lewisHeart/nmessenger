@@ -26,7 +26,8 @@ async fn sync_age_badges_users(db: &mut PgConnection, user_ids: &[Uuid]) -> Resu
         SELECT u.id, b.id
         FROM users u
         JOIN badges b ON (
-            (b.slug = '1-ano-de-conta' AND u.created_at <= clock_timestamp() - INTERVAL '1 year')
+            (b.slug = 'fundadores' AND u.created_at >= TIMESTAMPTZ '2026-11-01 00:00:00+00' AND u.created_at < TIMESTAMPTZ '2026-12-01 00:00:00+00')
+            OR (b.slug = '1-ano-de-conta' AND u.created_at <= clock_timestamp() - INTERVAL '1 year')
             OR (b.slug = '2-anos-de-conta' AND u.created_at <= clock_timestamp() - INTERVAL '2 years')
             OR (b.slug = '3-anos-de-conta' AND u.created_at <= clock_timestamp() - INTERVAL '3 years')
             OR (b.slug = '4-anos-de-conta' AND u.created_at <= clock_timestamp() - INTERVAL '4 years')

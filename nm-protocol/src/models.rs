@@ -128,6 +128,8 @@ pub enum ConversationKind {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Conversation {
     pub id: Uuid,
+    #[serde(default)]
+    pub owner_id: Option<Uuid>,
     pub title: Option<String>,
     pub kind: ConversationKind,
     pub members: Vec<Profile>,

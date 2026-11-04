@@ -2,6 +2,7 @@
 """Build and sign an Android APK using the Android SDK and NDK (Linux x86-64)."""
 import argparse
 import hashlib
+import tomllib
 import json
 import os
 from pathlib import Path
@@ -139,7 +140,14 @@ def main():
         stripped = temp / "libnmessenger_client.so"
         run([toolchain / "bin/llvm-strip", "--strip-debug", "-o", stripped, native])
         run([tools / "aapt2", "compile", "--dir", ROOT / "android/res", "-o", compiled])
-        run([tools / "aapt2", "link", "-I", android_jar, "--manifest", ROOT / "android/AndroidManifest.xml", "-o", unsigned, compiled])
+        with (ROOT / "Cargo.toml").open("rb") as version_file:
+            version = tomllib.load(version_file)["workspace"]["package"]["version"]
+        code = os.environ.get("NM_ANDROID_VERSION_CODE", "1")
+        if not code.isdecimal() or not 1 <= int(code) <= 2100000000:
+            raise RuntimeError("NM_ANDROID_VERSION_CODE must be an integer between 1 and 2100000000")
+        if args.production and "NM_ANDROID_VERSION_CODE" not in os.environ:
+            raise RuntimeError("Production signing requires a monotonically increasing NM_ANDROID_VERSION_CODE")
+        run([tools / "aapt2", "link", "-I", android_jar, "--manifest", ROOT / "android/AndroidManifest.xml", "--replace-version", "--version-code", code, "--version-name", version, "-o", unsigned, compiled])
         with zipfile.ZipFile(unsigned, "a") as archive:
             archive.write(dex / "classes.dex", "classes.dex", compress_type=zipfile.ZIP_DEFLATED)
             archive.write(stripped, f"lib/{abi}/libnmessenger_client.so", compress_type=zipfile.ZIP_STORED)

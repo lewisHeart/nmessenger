@@ -17,6 +17,7 @@ use uuid::Uuid;
 #[derive(FromRow)]
 struct ConversationRow {
     id: Uuid,
+    owner_id: Uuid,
     title: Option<String>,
     kind: String,
     updated_at: DateTime<Utc>,
@@ -98,6 +99,7 @@ async fn load(state: &AppState, user: Uuid, ids: &[Uuid]) -> Result<Vec<Conversa
         .map(|row| {
             Ok(Conversation {
                 id: row.id,
+                owner_id: Some(row.owner_id),
                 title: row.title,
                 kind: validation::parse(&row.kind)?,
                 updated_at: row.updated_at,
@@ -299,6 +301,20 @@ async fn remove_member(
     Ok(HttpResponse::NoContent().finish())
 }
 
+async fn transfer_owner(state: web::Data<AppState>, session: Session, id: web::Path<Uuid>, body: web::Json<MemberRequest>) -> Result<web::Json<Conversation>> {
+    let mut tx = state.db.begin().await?;
+    authz::exclusive(&mut tx).await?;
+    let (kind, owner) = authz::lock_conversation(&mut tx, *id).await?;
+    let members = authz::member(&mut tx, session.user_id, *id).await?;
+    if kind != "group" || owner != session.user_id { return Err(Error::forbidden()); }
+    if !members.contains(&body.user_id) { return Err(Error::missing()); }
+    sqlx::query("UPDATE conversations SET owner_id=$2,updated_at=clock_timestamp() WHERE id=$1")
+        .bind(*id).bind(body.user_id).execute(&mut *tx).await?;
+    tx.commit().await?;
+    state.publish(members, ServerEvent::ConversationsChanged).await;
+    Ok(web::Json(one(&state, session.user_id, *id).await?))
+}
+
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::resource("/conversations")
@@ -307,6 +323,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     )
     .route("/conversations/{id}", web::patch().to(update))
     .route("/conversations/{id}/members", web::post().to(add_member))
+    .route("/conversations/{id}/owner", web::put().to(transfer_owner))
     .route(
         "/conversations/{id}/members/{user_id}",
         web::delete().to(remove_member),

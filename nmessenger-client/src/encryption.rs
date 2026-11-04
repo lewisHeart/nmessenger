@@ -194,6 +194,7 @@ mod tests {
         };
         let mut conversation = Conversation {
             id: Uuid::new_v4(),
+            owner_id: None,
             title: Some("Private group".into()),
             kind: ConversationKind::Group,
             members: vec![profile(alice.user), profile(bob.user)],

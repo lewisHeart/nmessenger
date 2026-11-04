@@ -78,7 +78,7 @@ pub async fn checked(mut response: Response) -> Result<Response, String> {
     }
 }
 
-pub(super) async fn bounded_json<T: DeserializeOwned>(mut response: Response) -> Result<T, String> {
+pub(crate) async fn bounded_json<T: DeserializeOwned>(mut response: Response) -> Result<T, String> {
     const LIMIT: usize = 16 * 1024 * 1024;
     if response.content_length().is_some_and(|size| size > LIMIT as u64) {
         return Err("Resposta do servidor excede o limite".into());

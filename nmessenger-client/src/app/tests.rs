@@ -62,6 +62,7 @@ fn conversation_window_title_formats_direct_with_email_and_group() {
     });
     let direct_conv = Conversation {
         id: Uuid::new_v4(),
+        owner_id: None,
         title: None,
         kind: ConversationKind::Direct,
         members: vec![
@@ -90,6 +91,7 @@ fn conversation_window_title_formats_direct_with_email_and_group() {
     );
     let group_conv = Conversation {
         id: Uuid::new_v4(),
+        owner_id: None,
         title: Some("Galera do MSN".into()),
         kind: ConversationKind::Group,
         members: vec![],

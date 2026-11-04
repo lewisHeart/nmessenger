@@ -1,4 +1,4 @@
-use super::{nmessenger, theme};
+use super::nmessenger;
 use crate::{app::MessengerApp, transport::Action};
 use eframe::egui::{self, Color32, RichText, Vec2};
 use nm_protocol::*;
@@ -32,6 +32,21 @@ pub fn members(app: &mut MessengerApp, ui: &mut egui::Ui, conversation: &Convers
                     .strong()
                     .color(nmessenger::HEADING),
             );
+            ui.menu_button("⚙", |ui| {
+                if ui.button("Gerenciar participantes").clicked() {
+                    app.conversation_forms.conversation = Some(conversation.id);
+                    app.conversation_forms.viewport = Some(ui.ctx().viewport_id());
+                    app.conversation_forms.title = conversation.title.clone().unwrap_or_default();
+                    app.conversation_forms.members_open = true;
+                    ui.close();
+                }
+                if ui.button("Sair do grupo").clicked() {
+                    if let Some(me) = app.data.as_ref().map(|data| data.me.id) {
+                        app.send(Action::RemoveMember(conversation.id, me));
+                    }
+                    ui.close();
+                }
+            });
         });
         ui.label(
             RichText::new(format!(
@@ -47,8 +62,11 @@ pub fn members(app: &mut MessengerApp, ui: &mut egui::Ui, conversation: &Convers
             .max_height((ui.available_height() - 140.0).clamp(100.0, 360.0))
             .show(ui, |ui| {
                 for member in &conversation.members {
-                    ui.horizontal(|ui| {
-                        nmessenger::avatar(app, ui, member, 32.0);
+                    let compact = conversation.members.len() > 8;
+                    let own = app.data.as_ref().is_some_and(|data| data.me.id == member.id);
+                    let is_owner = app.data.as_ref().is_some_and(|data| Some(data.me.id) == conversation.owner_id);
+                    let row = ui.horizontal(|ui| {
+                        nmessenger::avatar(app, ui, member, if compact { 22.0 } else { 32.0 });
                         ui.add_space(3.0);
                         ui.vertical(|ui| {
                             ui.set_width(ui.available_width());
@@ -60,55 +78,34 @@ pub fn members(app: &mut MessengerApp, ui: &mut egui::Ui, conversation: &Convers
                                 )
                                 .truncate(),
                             );
-                            let own = app
-                                .data
-                                .as_ref()
-                                .is_some_and(|data| data.me.id == member.id);
-                            ui.label(
+                            if !compact { ui.label(
                                 RichText::new(if own {
                                     crate::i18n::tr("You", "Você")
+                                } else if Some(member.id) == conversation.owner_id {
+                                    "Administrador"
                                 } else {
                                     nmessenger::status_label(member.presence)
                                 })
                                 .size(10.0)
                                 .color(Color32::from_rgb(118, 139, 157)),
-                            );
+                            ); }
                         });
-                    });
-                    ui.add_space(8.0);
+                    }).response;
+                    if is_owner && !own {
+                        let menu = ui.interact(row.rect, ui.scope_id().with(("group-member-menu", member.id)), egui::Sense::click());
+                        menu.context_menu(|ui| {
+                            if ui.button("Tornar administrador").clicked() {
+                                app.send(Action::TransferGroupOwner(conversation.id, member.id));
+                                ui.close();
+                            }
+                            if ui.button("Expulsar do grupo").clicked() {
+                                app.send(Action::RemoveMember(conversation.id, member.id));
+                                ui.close();
+                            }
+                        });
+                    }
+                    ui.add_space(if compact { 2.0 } else { 8.0 });
                 }
             });
-        ui.add_space(12.0);
-        if theme::primary_button(
-            ui,
-            RichText::new("Gerenciar participantes")
-                .size(10.5)
-                .color(Color32::from_rgb(1, 45, 147))
-                .strong(),
-            Vec2::new(ui.available_width(), 30.0),
-        )
-        .clicked()
-        {
-            app.conversation_forms.conversation = Some(conversation.id);
-            app.conversation_forms.viewport = Some(ui.ctx().viewport_id());
-            app.conversation_forms.title = conversation.title.clone().unwrap_or_default();
-            app.conversation_forms.members_open = true;
-        }
-        ui.add_space(5.0);
-        if ui
-            .add_sized(
-                [ui.available_width(), 27.0],
-                egui::Button::new(
-                    RichText::new("Sair do grupo")
-                        .size(10.5)
-                        .color(Color32::from_rgb(173, 72, 72)),
-                )
-                .frame(false),
-            )
-            .clicked()
-            && let Some(me) = app.data.as_ref().map(|data| data.me.id)
-        {
-            app.send(Action::RemoveMember(conversation.id, me));
-        }
     });
 }

@@ -330,6 +330,10 @@ async fn run(api: &Api, action: Action, bus: &Bus) -> Result<(), String> {
                 .await?,
             open: false,
         }),
+        Action::TransferGroupOwner(id, user_id) => bus.send(Update::Conversation {
+            conversation: api.json(Method::PUT, &format!("/conversations/{id}/owner"), &MemberRequest { user_id }).await?,
+            open: false,
+        }),
         Action::RemoveMember(id, user_id) => {
             api.empty(
                 Method::DELETE,

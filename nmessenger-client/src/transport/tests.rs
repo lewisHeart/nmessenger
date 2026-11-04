@@ -54,6 +54,7 @@ fn fixture_bootstrap() -> Bootstrap {
         activities: vec![],
         conversations: vec![Conversation {
             id: Uuid::from_u128(10),
+            owner_id: None,
             title: None,
             kind: ConversationKind::Direct,
             members: vec![profile(1), profile(2)],

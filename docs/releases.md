@@ -79,8 +79,19 @@ Built directly on Linux x86-64 without Gradle via `scripts/build_android.py`:
 
 The repository includes a multi-platform release workflow at `.github/workflows/release.yml`.
 
-When a git tag (e.g. `v0.1.0-alpha`) is pushed or manually triggered via GitHub Actions:
+Set the repository secrets `NM_ANDROID_KEYSTORE_BASE64`, `NM_ANDROID_KEY_ALIAS`,
+`NM_ANDROID_STOREPASS`, and `NM_ANDROID_KEYPASS` to the existing production
+Android signing identity. Preserve and back up this keystore: changing it breaks
+updates of already-installed APKs. The workflow sets `NM_ANDROID_VERSION_CODE`
+from the monotonically increasing workflow run number. If releases were signed
+elsewhere, ensure the next run number is greater than their version code first.
+
+When a git tag matching the workspace version (e.g. `v0.1.0-alpha`) is pushed or manually triggered via GitHub Actions:
 1. Native matrix runners (Ubuntu x86_64, Ubuntu ARM64, Windows x86_64, Windows ARM64, macOS Intel, macOS Apple Silicon) build and package their respective native artifacts.
 2. The Android job compiles and signs ARM64 and x86_64 APKs.
-3. The release coordinator collects all artifacts, computes `SHA256SUMS.txt`, and publishes a draft GitHub Release ready for distribution.
+3. The coordinator verifies that every required artifact exists, computes `SHA256SUMS.txt`, creates a draft, uploads the assets, and then publishes it. Tags containing a hyphen are marked as prereleases.
 
+Windows and macOS packages require separate platform signing and notarization
+credentials for a fully trusted distribution; the current workflow does not sign
+or notarize those packages. The client verifies GitHub's SHA-256 asset digest and
+saves the selected package; installation still requires opening it manually.

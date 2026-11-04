@@ -17,6 +17,7 @@ mod models;
 mod outbox;
 mod presence;
 mod privacy;
+mod push;
 mod realtime;
 mod releases;
 pub mod state;
@@ -166,6 +167,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .configure(assets::routes)
             .configure(activities::routes)
             .configure(announcements::routes)
+            .configure(push::routes)
             .configure(releases::routes)
             .default_service(web::route().to(missing)),
     )

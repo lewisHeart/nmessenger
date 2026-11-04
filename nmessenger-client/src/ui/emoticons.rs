@@ -298,7 +298,7 @@ pub fn show(
     });
 }
 
-pub fn picker(app: &mut MessengerApp, ui: &mut egui::Ui) -> Option<&'static str> {
+pub fn picker(_app: &mut MessengerApp, ui: &mut egui::Ui) -> Option<&'static str> {
     let mut selected = None;
     ui.set_min_width(224.0);
     ui.label(RichText::new("Emojis").strong().color(nmessenger::HEADING));
@@ -325,12 +325,12 @@ pub fn picker(app: &mut MessengerApp, ui: &mut egui::Ui) -> Option<&'static str>
                                 egui::StrokeKind::Inside,
                             );
                         }
-                        paint(
-                            app,
-                            ui,
-                            asset,
-                            egui::Rect::from_center_size(rect.center(), Vec2::splat(24.0)),
-                        );
+                        // Avoid decoding dozens of full animations just to open the picker.
+                        // Animated images are still used in sent messages.
+                        if ui.is_rect_visible(rect) {
+                            nmessenger::paint(ui.ctx(), ui.painter(), asset,
+                                egui::Rect::from_center_size(rect.center(), Vec2::splat(24.0)));
+                        }
                         if response.on_hover_text(format!("{name}  {code}")).clicked() {
                             selected = Some(*code);
                         }

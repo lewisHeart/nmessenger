@@ -222,6 +222,14 @@ async fn update(
     .fetch_optional(&mut *tx)
     .await?
     .ok_or_else(Error::missing)?;
+    if body.favorite == Some(true) {
+        let count: i64 = sqlx::query_scalar(
+            "SELECT count(*) FROM contacts WHERE owner_id=$1 AND favorite AND user_id<>$2",
+        ).bind(session.user_id).bind(*target).fetch_one(&mut *tx).await?;
+        if count >= 7 {
+            return Err(Error::conflict("Você pode ter no máximo 7 contatos favoritos."));
+        }
+    }
     if let Some(blocked) = body.blocked {
         if blocked {
             sqlx::query(

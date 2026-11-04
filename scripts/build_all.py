@@ -132,18 +132,7 @@ def build_rust_binary(target, release=True, package="nmessenger-client"):
 
 def find_binary(rust_target, binary_name, release=True):
     profile = "release" if release else "debug"
-    candidates = [
-        ROOT / "target" / rust_target / profile / binary_name,
-        ROOT / "target" / profile / binary_name,
-    ]
-    if binary_name.endswith(".exe"):
-        for extra in ["x86_64-pc-windows-gnu", "aarch64-pc-windows-gnullvm", "x86_64-pc-windows-msvc"]:
-            candidates.append(ROOT / "target" / extra / profile / binary_name)
-    else:
-        candidates.extend([
-            ROOT / "target" / rust_target / profile / binary_name.removesuffix(".exe"),
-            ROOT / "target" / profile / binary_name.removesuffix(".exe"),
-        ])
+    candidates = [ROOT / "target" / rust_target / profile / binary_name]
     for candidate in candidates:
         if candidate.is_file():
             return candidate
@@ -178,7 +167,7 @@ def package_linux(tag, target_info, dist_dir, binary, formats):
         pkg_script = ROOT / "packaging/linux/package_linux.sh"
         if pkg_script.is_file():
             print(f"Running Linux packaging script: {pkg_script}")
-            run_cmd(["bash", str(pkg_script), tag, rust_target], allow_failure=True)
+            run_cmd(["bash", str(pkg_script), tag, rust_target])
 
 
 def package_windows(tag, target_info, dist_dir, binary, formats):
@@ -210,7 +199,7 @@ def package_windows(tag, target_info, dist_dir, binary, formats):
                 f"-DOUTPUT={installer_out}",
                 str(nsis_script),
             ]
-            run_cmd(cmd, allow_failure=True)
+            run_cmd(cmd)
         elif check_tool("docker"):
             print(f"Building Windows NSIS Installer via Docker (cdrx/nsis)...")
             cmd = [
@@ -225,9 +214,9 @@ def package_windows(tag, target_info, dist_dir, binary, formats):
                 f"-DOUTPUT=dist/{name}-setup.exe",
                 "packaging/windows/installer.nsi",
             ]
-            run_cmd(cmd, allow_failure=True)
+            run_cmd(cmd)
         else:
-            print("Notice: makensis not found and docker unavailable; NSIS installer skipped.")
+            raise RuntimeError("makensis not found and docker unavailable")
 
 
 def package_macos(tag, target_info, dist_dir, binary, formats):
@@ -239,7 +228,7 @@ def package_macos(tag, target_info, dist_dir, binary, formats):
     pkg_script = ROOT / "packaging/macos/package_macos.sh"
     if pkg_script.is_file():
         print(f"Running macOS packaging script: {pkg_script}")
-        run_cmd(["bash", str(pkg_script), tag, rust_target], allow_failure=True)
+        run_cmd(["bash", str(pkg_script), tag, rust_target])
 
 
 def build_android(tag, target_info, dist_dir, is_production=False):
@@ -256,14 +245,15 @@ def build_android(tag, target_info, dist_dir, is_production=False):
         cmd.append("--debug")
 
     print(f"=== Building Android APK for {arch} ===")
-    success = run_cmd(cmd, allow_failure=True)
-    if success:
-        # Copy produced APK to dist/
-        abi = target_info["abi"]
-        for apk in (ROOT / "target/android").glob(f"*{abi}*.apk"):
-            out_apk = dist_dir / f"nmessenger-{tag}-android-{abi}.apk"
-            shutil.copy2(apk, out_apk)
-            print(f"Generated Android APK: {out_apk}")
+    run_cmd(cmd)
+    abi = target_info["abi"]
+    profile, signing = ("release", "production") if is_production else ("debug", "development")
+    apk = ROOT / "target/android" / f"nmessenger-{abi}-{profile}-{signing}.apk"
+    if not apk.is_file():
+        raise RuntimeError(f"Expected APK not found: {apk}")
+    out_apk = dist_dir / f"nmessenger-{tag}-android-{abi}.apk"
+    shutil.copy2(apk, out_apk)
+    print(f"Generated Android APK: {out_apk}")
 
 
 def generate_checksums(dist_dir):
@@ -335,7 +325,7 @@ def main():
     parser.add_argument("--package-only", action="store_true", help="Package existing compiled binaries without compiling")
     parser.add_argument("--production", action="store_true", help="Production release build and signing")
     parser.add_argument("--output-dir", default=str(ROOT / "dist"), help="Output directory (default: dist/)")
-    parser.add_argument("--skip-missing", action="store_true", default=True,
+    parser.add_argument("--skip-missing", action="store_true",
                         help="Skip targets where cross-compilers or tools are missing instead of aborting")
     args = parser.parse_args()
 
@@ -402,8 +392,10 @@ def main():
 
         binary = find_binary(rust_target, binary_name, release=True)
         if not binary or not binary.is_file():
-            print(f"Binary not found for {key} ({rust_target}); skipping packaging.")
-            continue
+            if args.skip_missing:
+                print(f"Binary not found for {key} ({rust_target}); skipping packaging.")
+                continue
+            raise RuntimeError(f"Binary not found for {key} ({rust_target})")
 
         print(f"Found binary: {binary}")
 
@@ -420,4 +412,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

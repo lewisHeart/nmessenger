@@ -24,10 +24,8 @@ async fn upgrade_legacy_migration_checksum(db: &sqlx::PgPool) -> Result<()> {
             .find(|migration| migration.version == 1)
             .ok_or_else(Error::internal)?;
 
-        let has_legacy_split: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM _sqlx_migrations WHERE version > 1)")
-            .fetch_one(db)
-            .await
-            .unwrap_or(false);
+        let has_legacy_split: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM _sqlx_migrations WHERE version > 1) AND EXISTS(SELECT 1 FROM _sqlx_migrations WHERE version=1 AND checksum=$1)")
+            .bind(&old).fetch_one(db).await?;
 
         if has_legacy_split {
             let _ = sqlx::query("DELETE FROM _sqlx_migrations WHERE version > 1").execute(db).await;

@@ -102,6 +102,7 @@ pub enum Action {
     CreateConversation(CreateConversationRequest),
     RenameConversation(Uuid, String),
     AddMember(Uuid, Uuid),
+    TransferGroupOwner(Uuid, Uuid),
     RemoveMember(Uuid, Uuid),
     History {
         id: Uuid,
