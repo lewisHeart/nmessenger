@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+env:
+  CLIENT_DEFAULT_SERVER_URL: https://nms.lawellx.com
+  SERVER_URL: https://nms.lawellx.com
+
 jobs:
   build-desktop:
     strategy:
@@ -132,6 +136,7 @@ jobs:
           java-version: '21'
 
       - name: Setup Android SDK & NDK
+        id: setup-android
         uses: android-actions/setup-android@v3
 
       - name: Install NDK and Build Tools

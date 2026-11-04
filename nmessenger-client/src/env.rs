@@ -10,7 +10,7 @@ use std::path::Path;
 pub fn format_server_url(raw: &str) -> String {
     let trimmed = raw.trim().trim_matches(['\'', '"']);
     if trimmed.is_empty() {
-        return "http://127.0.0.1:18087".to_string();
+        return "https://nms.lawellx.com".to_string();
     }
     let url = if trimmed.starts_with("http://") || trimmed.starts_with("https://") {
         trimmed.to_string()
@@ -75,7 +75,7 @@ pub fn default_server_url() -> String {
         }
     }
 
-    "http://127.0.0.1:18087".to_string()
+    "https://nms.lawellx.com".to_string()
 }
 
 #[cfg(test)]
@@ -84,7 +84,7 @@ mod tests {
 
     #[test]
     fn format_server_url_handles_all_variants() {
-        assert_eq!(format_server_url(""), "http://127.0.0.1:18087");
+        assert_eq!(format_server_url(""), "https://nms.lawellx.com");
         assert_eq!(format_server_url("192.168.1.16"), "http://192.168.1.16:18087");
         assert_eq!(format_server_url("192.168.1.16:18087"), "http://192.168.1.16:18087");
         assert_eq!(format_server_url("http://192.168.1.16:18087/"), "http://192.168.1.16:18087");
