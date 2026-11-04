@@ -17,12 +17,11 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
     let mut outcome = Outcome::Stay;
     let native = super::window::system_titlebars(ctx);
 
-    let gnome = std::env::var("XDG_CURRENT_DESKTOP").is_ok_and(|desktop| desktop.to_ascii_lowercase().contains("gnome"));
-    let initial_pos = if let Some((w, _h, off_x, off_y)) = target_monitor_bounds(ctx) {
-        Some(toast_position(w, off_x, off_y, gnome))
+    let target_pos = if let Some((w, h, off_x, off_y)) = target_monitor_bounds(ctx) {
+        Some(toast_position(w, h, off_x, off_y))
     } else {
         ctx.input(|input| input.viewport().monitor_size)
-            .map(|m| toast_position(m.x, 0.0, 0.0, gnome))
+            .map(|m| toast_position(m.x, m.y, 0.0, 0.0))
     };
 
     let mut builder = egui::ViewportBuilder::default()
@@ -35,7 +34,7 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
         .with_decorations(native)
         .with_transparent(true);
 
-    if let Some(pos) = initial_pos {
+    if let Some(pos) = target_pos {
         builder = builder.with_position(pos);
     }
 
@@ -45,15 +44,8 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
         |ui, _class| {
             let ctx = ui.ctx().clone();
             let key = egui::Id::unique(("nmessenger-toast-position", toast.id));
-            // Top-right corner near system tray
+            // Bottom-right corner near system tray / taskbar
             if ctx.data(|data| data.get_temp::<bool>(key)) != Some(true) {
-                let target_pos = if let Some((w, _h, off_x, off_y)) = target_monitor_bounds(&ctx) {
-                    Some(toast_position(w, off_x, off_y, gnome))
-                } else {
-                    ctx.input(|input| input.viewport().monitor_size)
-                        .map(|monitor| toast_position(monitor.x, 0.0, 0.0, gnome))
-                };
-
                 if let Some(pos) = target_pos {
                     ctx.send_viewport_cmd(egui::ViewportCommand::OuterPosition(pos));
                     ctx.data_mut(|data| data.insert_temp(key, true));
@@ -162,8 +154,18 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
     }
 }
 
-fn toast_position(width: f32, x: f32, y: f32, gnome: bool) -> egui::Pos2 {
-    egui::pos2(if gnome { x + (width - 336.0) / 2.0 } else { x + width - 336.0 - 16.0 }, y + 48.0)
+fn toast_position(width: f32, height: f32, x: f32, y: f32) -> egui::Pos2 {
+    let toast_w = 336.0;
+    let toast_h = 106.0;
+    let margin_right = 24.0;
+    let margin_bottom = 48.0;
+    let pos_x = (x + width - toast_w - margin_right).max(x + margin_right);
+    let pos_y = if height > toast_h + margin_bottom {
+        y + height - toast_h - margin_bottom
+    } else {
+        y + 48.0
+    };
+    egui::pos2(pos_x, pos_y)
 }
 
 fn target_monitor_bounds(ctx: &egui::Context) -> Option<(f32, f32, f32, f32)> {
@@ -263,8 +265,14 @@ mod tests {
     }
 
     #[test]
-    fn gnome_toast_is_centered_on_the_selected_monitor() {
-        assert_eq!(toast_position(1920.0, -1920.0, 0.0, true), egui::pos2(-1128.0, 48.0));
-        assert_eq!(toast_position(1920.0, 0.0, 0.0, false), egui::pos2(1568.0, 48.0));
+    fn toast_is_positioned_in_bottom_right_corner() {
+        assert_eq!(
+            toast_position(1920.0, 1080.0, -1920.0, 0.0),
+            egui::pos2(-360.0, 926.0)
+        );
+        assert_eq!(
+            toast_position(1920.0, 1080.0, 0.0, 0.0),
+            egui::pos2(1560.0, 926.0)
+        );
     }
 }

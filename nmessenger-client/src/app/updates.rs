@@ -787,14 +787,23 @@ impl MessengerApp {
                             && matches!(c.user.presence, Presence::Offline | Presence::Invisible)
                     })
                 });
+                let is_me = self.data.as_ref().is_some_and(|d| d.me.id == user_id);
+                let direct_convo = self.direct_with(user_id);
+                let is_chatting_now = direct_convo
+                    .is_some_and(|c_id| self.active == Some(c_id) || self.detached.contains(&c_id));
+                let recently_alerted = self
+                    .last_online_alerts
+                    .get(&user_id)
+                    .is_some_and(|last| last.elapsed() < Duration::from_secs(300));
                 let notify = self
                     .data
                     .as_ref()
-                    .is_some_and(|d| d.settings.online_alerts && is_online && was_offline);
+                    .is_some_and(|d| d.settings.online_alerts && is_online && was_offline)
+                    && !is_me
+                    && !is_chatting_now
+                    && !recently_alerted;
                 if let Some(data) = &mut self.data {
-                    if is_online
-                        && data.settings.online_alerts
-                        && was_offline
+                    if notify
                         && let Some(contact) = data.contacts.iter().find(|c| c.user.id == user_id)
                     {
                         self.notice = format!("{} acabou de entrar", contact.name());
@@ -813,9 +822,9 @@ impl MessengerApp {
                     }
                 }
                 if notify {
+                    self.last_online_alerts.insert(user_id, Instant::now());
                     self.notify("online", user_id);
-                    let conversation = self.direct_with(user_id);
-                    self.push_toast(user_id, "acabou de entrar".into(), conversation);
+                    self.push_toast(user_id, "acabou de entrar".into(), direct_convo);
                 }
             }
             ServerEvent::ProfileUpdated { profile } => self.update_profile(profile),

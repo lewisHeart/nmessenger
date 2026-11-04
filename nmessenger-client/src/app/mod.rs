@@ -95,6 +95,7 @@ pub struct MessengerApp {
     pub last_input: Instant,
     pub auto_away: bool,
     pub previous_presence: Presence,
+    pub last_online_alerts: HashMap<Uuid, Instant>,
 }
 
 impl MessengerApp {
@@ -180,6 +181,7 @@ impl MessengerApp {
             last_input: Instant::now(),
             auto_away: false,
             previous_presence: Presence::Available,
+            last_online_alerts: HashMap::new(),
         }
     }
 
@@ -261,6 +263,7 @@ impl MessengerApp {
             last_input: Instant::now(),
             auto_away: false,
             previous_presence: Presence::Available,
+            last_online_alerts: HashMap::new(),
         }
     }
 
@@ -804,7 +807,7 @@ impl MessengerApp {
         #[cfg(any(not(target_os = "android"), test))]
         {
             self.toasts
-                .retain(|toast| toast.conversation != conversation);
+                .retain(|toast| !(toast.profile.id == user || (conversation.is_some() && toast.conversation == conversation)));
             self.toasts.push(Toast {
                 id: Uuid::new_v4(),
                 profile,
