@@ -585,10 +585,10 @@ fn editor(
             .layout(egui::Layout::top_down(egui::Align::Min)),
     );
     child.set_clip_rect(rect.shrink(1.0));
-    let editor_id = child.make_persistent_id(("message-text", id));
+    let text_id = egui::Id::unique(("composer-text-input", id));
     if composer.focus_requested {
         composer.focus_requested = false;
-        ui.ctx().memory_mut(|m| m.request_focus(editor_id));
+        ui.ctx().memory_mut(|m| m.request_focus(text_id));
         crate::platform::show_soft_input();
     }
     let style = composer.style.clone();
@@ -605,7 +605,8 @@ fn editor(
         .show(&mut child, |ui| {
             let res = ui.add(
                 egui::TextEdit::multiline(&mut composer.text)
-                    .id_salt(("message-text", id))
+                    .id(text_id)
+                    .lock_focus(true)
                     .desired_rows(1)
                     .desired_width(ui.available_width())
                     .font(super::message_style::font(&composer.style))

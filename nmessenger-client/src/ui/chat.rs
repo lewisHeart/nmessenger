@@ -1058,34 +1058,27 @@ fn history_toolbar(app: &mut MessengerApp, ui: &mut egui::Ui, conversation: &Con
 }
 
 fn pending(app: &mut MessengerApp, ui: &mut egui::Ui, id: Uuid) {
-    let pending: Vec<_> = app
+    let failed: Vec<_> = app
         .pending
         .iter()
-        .filter(|(_, p)| p.conversation == id)
-        .map(|(key, p)| (*key, p.request.clone(), p.error.clone()))
+        .filter(|(_, p)| p.conversation == id && p.error.is_some())
+        .map(|(key, p)| (*key, p.request.clone(), p.error.clone().unwrap_or_default()))
         .collect();
-    for (key, request, error) in pending {
+    for (key, request, error) in failed {
         egui::Frame::group(ui.style()).show(ui, |ui| {
             ui.label(RichText::new(&request.body).color(theme::MUTED));
-            if let Some(error) = error {
-                ui.colored_label(egui::Color32::from_rgb(160, 65, 45), error);
-                ui.horizontal(|ui| {
-                    if ui.button(tr("Try again", "Tentar novamente")).clicked() {
-                        if let Some(p) = app.pending.get_mut(&key) {
-                            p.error = None;
-                        }
-                        app.send(Action::Send(id, request.clone()));
+            ui.colored_label(egui::Color32::from_rgb(160, 65, 45), error);
+            ui.horizontal(|ui| {
+                if ui.button(tr("Try again", "Tentar novamente")).clicked() {
+                    if let Some(p) = app.pending.get_mut(&key) {
+                        p.error = None;
                     }
-                    if ui.button(tr("Discard", "Descartar")).clicked() {
-                        app.pending.remove(&key);
-                    }
-                });
-            } else {
-                ui.horizontal(|ui| {
-                    ui.spinner();
-                    ui.label(tr("Sending…", "Enviando…"));
-                });
-            }
+                    app.send(Action::Send(id, request.clone()));
+                }
+                if ui.button(tr("Discard", "Descartar")).clicked() {
+                    app.pending.remove(&key);
+                }
+            });
         });
     }
 }
