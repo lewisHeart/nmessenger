@@ -18,6 +18,25 @@ mod ui;
 
 #[cfg(not(target_os = "android"))]
 pub fn run_desktop() -> eframe::Result {
+    #[cfg(target_os = "linux")]
+    {
+        let has_x11 = std::env::var("DISPLAY").map(|v| !v.is_empty()).unwrap_or(false);
+        let force_wayland = std::env::var("WAYLAND_FORCE").ok().as_deref() == Some("1")
+            || std::env::var("WINIT_UNIX_BACKEND").ok().as_deref() == Some("wayland");
+
+        if has_x11 && !force_wayland {
+            // Under Wayland, winit's multi-window immediate viewports (chats, settings,
+            // dialogs) suffer from compositor buffer scaling artifacts during interactive
+            // resize because child viewports cannot render synchronously with configure.
+            // X11 / XWayland provides rock-solid multi-window resizing and matches the
+            // packaging intent (packaging/linux/nmessenger-launch).
+            unsafe {
+                std::env::remove_var("WAYLAND_DISPLAY");
+                std::env::remove_var("WAYLAND_SOCKET");
+            }
+        }
+    }
+
     let options = eframe::NativeOptions {
         viewport: eframe::egui::ViewportBuilder::default()
             .with_title("NMessenger")

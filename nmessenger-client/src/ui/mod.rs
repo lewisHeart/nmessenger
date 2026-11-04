@@ -141,12 +141,17 @@ pub fn shell(app: &mut MessengerApp, ui: &mut egui::Ui) {
             announcements::show(app, &ctx);
         }
     }
+    announcements::modal(app, &ctx);
     image_viewer::show(app, &ctx);
     errors(app, &ctx);
 }
 
 fn mobile_back(app: &mut MessengerApp) {
     use zeroize::Zeroize;
+    if app.announcements.viewing.is_some() {
+        app.announcements.viewing = None;
+        return;
+    }
     if app.profile_edit.is_some() {
         app.profile_edit = None;
         app.profile_draft.clear();

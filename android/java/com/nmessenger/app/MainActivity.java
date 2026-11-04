@@ -263,8 +263,10 @@ public final class MainActivity extends NativeActivity {
     private ImeInputView imeInputView;
 
     public native void nativeCommitText(String text);
+    public native void nativeComposingText(String text);
     public native void nativeDeleteSurroundingText(int before, int after);
     public native void nativeBackFromKeyboard();
+    public native void nativeEditAction(int action);
 
     public void onImeCommitText(String text) {
         try {
@@ -335,6 +337,18 @@ public final class MainActivity extends NativeActivity {
             return true;
         }
 
+        @Override public int getAutofillType() {
+            return ("email".equals(activity.currentInputType) || "password".equals(activity.currentInputType))
+                ? android.view.View.AUTOFILL_TYPE_TEXT : android.view.View.AUTOFILL_TYPE_NONE;
+        }
+
+        @Override public void autofill(android.view.autofill.AutofillValue value) {
+            if (value != null && value.isText() && value.getTextValue() != null) {
+                activity.nativeEditAction(4);
+                activity.onImeCommitText(value.getTextValue().toString());
+            }
+        }
+
         @Override
         protected void onFocusChanged(boolean gainFocus, int direction, android.graphics.Rect previouslyFocusedRect) {
             super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
@@ -358,17 +372,35 @@ public final class MainActivity extends NativeActivity {
                     | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD;
             } else {
                 outAttrs.inputType = android.text.InputType.TYPE_CLASS_TEXT
-                    | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD;
+                    | android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE | android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
             }
             outAttrs.imeOptions = android.view.inputmethod.EditorInfo.IME_FLAG_NO_EXTRACT_UI
                 | android.view.inputmethod.EditorInfo.IME_FLAG_NO_FULLSCREEN;
 
             return new android.view.inputmethod.BaseInputConnection(this, true) {
+                private String composing = "";
+                @Override
+                public boolean setComposingText(CharSequence text, int newCursorPosition) {
+                    composing = text == null ? "" : text.toString();
+                    activity.nativeComposingText(composing);
+                    return super.setComposingText(text, newCursorPosition);
+                }
+
+                @Override
+                public boolean finishComposingText() {
+                    if (!composing.isEmpty()) {
+                        activity.onImeCommitText(composing);
+                        composing = "";
+                    }
+                    return super.finishComposingText();
+                }
+
                 @Override
                 public boolean commitText(CharSequence text, int newCursorPosition) {
                     if (text != null && text.length() > 0) {
                         activity.onImeCommitText(text.toString());
                     }
+                    composing = "";
                     return super.commitText(text, newCursorPosition);
                 }
 
@@ -411,6 +443,9 @@ public final class MainActivity extends NativeActivity {
 
                 @Override
                 public boolean performContextMenuAction(int id) {
+                    if (id == android.R.id.selectAll) { activity.nativeEditAction(4); return true; }
+                    if (id == android.R.id.copy) { activity.nativeEditAction(1); return true; }
+                    if (id == android.R.id.cut) { activity.nativeEditAction(2); return true; }
                     if (id == android.R.id.paste) {
                         String text = activity.getClipboardText();
                         if (text != null && !text.isEmpty()) {
@@ -602,6 +637,13 @@ public final class MainActivity extends NativeActivity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        if (android.os.Build.VERSION.SDK_INT >= 33
+            && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+            && !getPreferences(MODE_PRIVATE).getBoolean("notifications_requested", false)) {
+            getPreferences(MODE_PRIVATE).edit().putBoolean("notifications_requested", true).apply();
+            notificationPermissionPending = true;
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATIONS);
+        }
         if (getIntent() != null) notificationConversation = getIntent().getStringExtra("conversation");
         getWindow().setStatusBarColor(0xffc2ddf4);
         getWindow().setNavigationBarColor(0xffeff8fa);

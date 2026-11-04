@@ -52,7 +52,7 @@ fn render_banner_content(
     let size = Vec2::new(ui.available_width(), height);
     let (rect, _) = ui.allocate_exact_size(
         size,
-        if clickable && item.link_url.is_some() {
+        if clickable {
             egui::Sense::click()
         } else {
             egui::Sense::hover()
@@ -82,8 +82,14 @@ fn render_banner_content(
             })
         });
 
+    let is_hovered = clickable && !is_dialog_preview && ui.rect_contains_pointer(rect) && !in_nav_zone;
+    let bg_color = if is_hovered {
+        Color32::from_rgb(238, 246, 255)
+    } else {
+        Color32::from_rgb(245, 250, 255)
+    };
     ui.painter()
-        .rect_filled(rect, banner_corners, Color32::from_rgb(245, 250, 255));
+        .rect_filled(rect, banner_corners, bg_color);
 
     if item.full_banner {
         if let Some(file) = item.image_file_id
@@ -173,32 +179,40 @@ fn render_banner_content(
             .truncate(),
         );
 
-        if item.link_url.is_some() {
-            ui.painter().text(
-                Pos2::new(x_offset, top_y + 42.0),
-                egui::Align2::LEFT_TOP,
-                "Saiba mais ›",
-                FontId::proportional(9.0),
-                nmessenger::BLUE,
-            );
-        }
+        let link_text = if item.link_url.is_some() {
+            "Saiba mais ›"
+        } else {
+            "Ver mais ›"
+        };
+        let link_color = if item.link_url.is_some() {
+            nmessenger::BLUE
+        } else {
+            Color32::from_rgb(105, 138, 168)
+        };
+        ui.painter().text(
+            Pos2::new(x_offset, top_y + 42.0),
+            egui::Align2::LEFT_TOP,
+            link_text,
+            FontId::proportional(9.0),
+            link_color,
+        );
     }
 
-    if clickable && let Some(url) = &item.link_url {
-        let in_resize_zone = !is_dialog_preview
-            && ui.input(|i| {
-                i.pointer.hover_pos().is_some_and(|p| {
-                    p.y >= rect.bottom() - 8.0
-                        || p.x <= rect.left() + 8.0
-                        || p.x >= rect.right() - 8.0
-                })
-            });
+    if clickable && !is_dialog_preview {
+        let in_resize_zone = ui.input(|i| {
+            i.pointer.hover_pos().is_some_and(|p| {
+                p.y >= rect.bottom() - 8.0
+                    || p.x <= rect.left() + 8.0
+                    || p.x >= rect.right() - 8.0
+            })
+        });
         if !in_resize_zone && !in_nav_zone {
-            let response = ui.interact(rect, ui.scope_id().with("banner-link"), egui::Sense::click())
+            let response = ui
+                .interact(rect, ui.scope_id().with("banner-view-modal"), egui::Sense::click())
                 .on_hover_cursor(egui::CursorIcon::PointingHand)
-                .on_hover_text(url);
+                .on_hover_text(crate::i18n::tr("Click to view full announcement", "Clique para ver o anúncio completo"));
             if response.clicked() {
-                ui.ctx().open_url(egui::OpenUrl::new_tab(url));
+                app.announcements.viewing = Some(item.clone());
             }
         }
     }
@@ -295,6 +309,189 @@ fn render_banner_content(
             [rect.left_top(), rect.right_top()],
             egui::Stroke::new(1.0_f32, Color32::from_rgb(215, 229, 241)),
         );
+    }
+}
+
+pub fn modal(app: &mut MessengerApp, ctx: &egui::Context) {
+    let Some(item) = app.announcements.viewing.clone() else {
+        return;
+    };
+
+    let items: Vec<_> = app
+        .announcements
+        .feed
+        .items
+        .iter()
+        .filter(|item| item.enabled)
+        .cloned()
+        .collect();
+    let current_pos = items.iter().position(|it| it.id == item.id);
+
+    let screen = ctx.content_rect();
+    let modal_width = (screen.width() - 32.0).min(340.0).max(260.0);
+    let modal = egui::Modal::new(egui::Id::unique("announcement-detail-modal"))
+        .backdrop_color(Color32::from_black_alpha(130))
+        .frame(
+            egui::Frame::new()
+                .fill(Color32::from_rgb(252, 254, 255))
+                .stroke(egui::Stroke::new(1.0, Color32::from_rgb(180, 210, 238)))
+                .corner_radius(10)
+                .shadow(egui::epaint::Shadow {
+                    offset: [0, 8],
+                    blur: 24,
+                    spread: 0,
+                    color: Color32::from_black_alpha(65),
+                })
+                .inner_margin(egui::Margin::symmetric(16, 14)),
+        );
+
+    let mut close = false;
+    let mut next_item = None;
+
+    let response = modal.show(ctx, |ui| {
+        ui.set_width(modal_width);
+
+        // Header: Category, pagination if multiple, and close button
+        ui.horizontal(|ui| {
+            ui.label(
+                RichText::new("📢 ANÚNCIO")
+                    .size(9.5)
+                    .color(Color32::from_rgb(115, 140, 165))
+                    .strong(),
+            );
+            if let Some(idx) = current_pos
+                && items.len() > 1
+            {
+                ui.add_space(4.0);
+                if ui.button("‹").on_hover_text(crate::i18n::tr("Previous", "Anterior")).clicked() {
+                    let prev_idx = (idx + items.len() - 1) % items.len();
+                    next_item = Some((items[prev_idx].clone(), prev_idx));
+                }
+                ui.label(
+                    RichText::new(format!("{}/{}", idx + 1, items.len()))
+                        .size(9.5)
+                        .color(Color32::from_rgb(120, 145, 168)),
+                );
+                if ui.button("›").on_hover_text(crate::i18n::tr("Next", "Próximo")).clicked() {
+                    let next_idx = (idx + 1) % items.len();
+                    next_item = Some((items[next_idx].clone(), next_idx));
+                }
+            }
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                if super::theme::close_button(ui, 18.0)
+                    .on_hover_text(crate::i18n::tr("Close", "Fechar"))
+                    .clicked()
+                {
+                    close = true;
+                }
+            });
+        });
+
+        ui.add_space(6.0);
+        ui.separator();
+        ui.add_space(8.0);
+
+        // Image (if any)
+        if let Some(file) = item.image_file_id
+            && let Some((texture, source_size)) = app.texture(ui.ctx(), ImageSource::File(file))
+        {
+            let max_w = ui.available_width();
+            let max_h = 160.0_f32;
+            let ratio = (max_w / source_size.x.max(1.0))
+                .min(max_h / source_size.y.max(1.0))
+                .min(1.0);
+            let img_size = Vec2::new(
+                (source_size.x * ratio).round().max(10.0),
+                (source_size.y * ratio).round().max(10.0),
+            );
+            ui.vertical_centered(|ui| {
+                let (img_rect, _) = ui.allocate_exact_size(img_size, egui::Sense::hover());
+                let uv = Rect::from_min_max(Pos2::ZERO, Pos2::new(1.0, 1.0));
+                ui.painter().image(texture, img_rect, uv, Color32::WHITE);
+                ui.painter().rect_stroke(
+                    img_rect,
+                    6,
+                    egui::Stroke::new(1.0, Color32::from_rgb(215, 229, 241)),
+                    egui::StrokeKind::Inside,
+                );
+            });
+            ui.add_space(10.0);
+        }
+
+        // Title (wrapped, bold, full)
+        if !item.title.is_empty() {
+            let title_font = FontId::new(13.5, egui::FontFamily::Name("Segoe UI Bold".into()));
+            ui.add(
+                egui::Label::new(
+                    RichText::new(&item.title)
+                        .font(title_font)
+                        .color(nmessenger::HEADING),
+                )
+                .wrap(),
+            );
+            ui.add_space(6.0);
+        }
+
+        // Body (wrapped, full text, scrollable if long)
+        if !item.body.is_empty() {
+            let body_max_h = (screen.height() - 280.0).clamp(90.0, 220.0);
+            super::scroll::vertical()
+                .id_salt("announcement-modal-body-scroll")
+                .max_height(body_max_h)
+                .auto_shrink([false, true])
+                .show(ui, |ui| {
+                    ui.add(
+                        egui::Label::new(
+                            RichText::new(&item.body)
+                                .size(11.5)
+                                .color(Color32::from_rgb(60, 85, 110)),
+                        )
+                        .wrap(),
+                    );
+                });
+        }
+
+        // Action Buttons
+        ui.add_space(10.0);
+        ui.separator();
+        ui.add_space(8.0);
+        ui.horizontal(|ui| {
+            if let Some(url) = &item.link_url {
+                let link_btn = theme::primary_button(
+                    ui,
+                    RichText::new("Acessar link ↗")
+                        .color(Color32::from_rgb(1, 45, 147))
+                        .size(11.0)
+                        .strong(),
+                    Vec2::new(115.0, 28.0),
+                )
+                .on_hover_cursor(egui::CursorIcon::PointingHand)
+                .on_hover_text(url);
+                if link_btn.clicked() {
+                    ui.ctx().open_url(egui::OpenUrl::new_tab(url));
+                }
+            }
+
+            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                if ui
+                    .add_sized(
+                        [78.0, 28.0],
+                        egui::Button::new(RichText::new(crate::i18n::tr("Close", "Fechar")).size(11.0)),
+                    )
+                    .clicked()
+                {
+                    close = true;
+                }
+            });
+        });
+    });
+
+    if let Some((it, idx)) = next_item {
+        app.announcements.viewing = Some(it);
+        app.announcements.current_index = idx;
+        app.announcements.rotation = Some(std::time::Instant::now());
+    } else if response.should_close() || close {
+        app.announcements.viewing = None;
     }
 }
 

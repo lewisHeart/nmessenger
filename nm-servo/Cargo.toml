@@ -27,6 +27,7 @@ redis = { version = "1.8.1", features = ["tokio-comp", "connection-manager"] }
 sha2 = "0.11.1"
 sqlx = { version = "0.9.0", features = ["runtime-tokio", "tls-rustls-ring-webpki", "postgres", "uuid", "chrono", "json", "migrate"] }
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+web-push = { version = "0.11", default-features = false }
 
 [dev-dependencies]
 tokio-tungstenite = "0.30.0"

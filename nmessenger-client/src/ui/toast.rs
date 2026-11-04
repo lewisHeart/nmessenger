@@ -11,6 +11,13 @@ enum Outcome {
 
 /// A small always-on-top window near the tray, like classic messenger alerts.
 pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
+    #[cfg(target_os = "linux")]
+    if wayland_notifications() {
+        show_system_notification(app, ctx);
+        if !ctx.data(|data| data.get_temp::<bool>(egui::Id::unique("nm-toast-native-failed"))).unwrap_or(false) {
+            return;
+        }
+    }
     let Some(toast) = app.toasts.last().cloned() else {
         return;
     };
@@ -151,6 +158,67 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
             app.dismiss_toast(id);
             app.open_conversation(conversation);
         }
+    }
+}
+
+// Wayland compositors deliberately ignore absolute window positions. Use their
+// notification service instead of creating a centered, unplaceable window.
+#[cfg(target_os = "linux")]
+fn wayland_notifications() -> bool {
+    std::env::var_os("WAYLAND_DISPLAY").is_some()
+        && std::env::var("WINIT_UNIX_BACKEND").ok().as_deref() != Some("x11")
+}
+
+#[cfg(target_os = "linux")]
+fn show_system_notification(app: &mut MessengerApp, ctx: &egui::Context) {
+    use std::sync::{Mutex, OnceLock, mpsc};
+    enum ResultEvent { Open(Uuid), Failed(crate::app::Toast) }
+    static CHANNEL: OnceLock<(mpsc::Sender<ResultEvent>, Mutex<mpsc::Receiver<ResultEvent>>)> = OnceLock::new();
+    let (sender, receiver) = CHANNEL.get_or_init(|| {
+        let (sender, receiver) = mpsc::channel();
+        (sender, Mutex::new(receiver))
+    });
+    if let Ok(receiver) = receiver.lock() {
+        while let Ok(event) = receiver.try_recv() {
+            match event {
+                ResultEvent::Open(conversation) => {
+                    app.open_conversation(conversation);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Visible(true));
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
+                }
+                ResultEvent::Failed(toast) => {
+                    app.error("Não foi possível mostrar a notificação do sistema. Verifique se notify-send está instalado.");
+                    app.toasts.push(toast);
+                    // Avoid retrying the same failed notification indefinitely.
+                    ctx.data_mut(|data| data.insert_temp(egui::Id::unique("nm-toast-native-failed"), true));
+                }
+            }
+        }
+    }
+    if ctx.data(|data| data.get_temp::<bool>(egui::Id::unique("nm-toast-native-failed"))).unwrap_or(false) {
+        return;
+    }
+    let pending = std::mem::take(&mut app.toasts);
+    for toast in pending {
+        let sender = sender.clone();
+        let ctx = ctx.clone();
+        std::thread::spawn(move || {
+            let mut command = std::process::Command::new("notify-send");
+            // Packaged launchers can inject incompatible shared-library paths.
+            command.env_remove("LD_LIBRARY_PATH").env_remove("LD_PRELOAD").env_remove("LD_AUDIT");
+            command.args(["--app-name=NMessenger", "--expire-time=9000"]);
+            if toast.conversation.is_some() { command.arg("--action=default=Abrir conversa"); }
+            let output = command.arg("--").arg(&toast.profile.display_name).arg(&toast.text).output();
+            match output {
+                Ok(output) if output.status.success() => {
+                    if let Some(conversation) = toast.conversation
+                        && String::from_utf8_lossy(&output.stdout).trim() == "default"
+                    { let _ = sender.send(ResultEvent::Open(conversation)); }
+                }
+                _ => { let _ = sender.send(ResultEvent::Failed(toast)); }
+            }
+            ctx.request_repaint();
+        });
     }
 }
 

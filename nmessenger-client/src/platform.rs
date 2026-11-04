@@ -218,6 +218,8 @@ pub fn sync_ime(ctx: &eframe::egui::Context) {
             false
         };
 
+        android_edit_menu(ctx, is_password);
+
         ctx.output_mut(|o| {
             o.ime = None;
             for cmd in &o.commands {
@@ -259,6 +261,57 @@ pub fn sync_ime(ctx: &eframe::egui::Context) {
     {
         let _ = ctx;
     }
+}
+
+#[cfg(target_os = "android")]
+fn android_edit_menu(ctx: &eframe::egui::Context, password: bool) {
+    use eframe::egui::{self, Id};
+    #[derive(Clone, Default)]
+    struct State { press: Option<(f64, egui::Pos2)>, menu: Option<(Id, egui::Pos2, bool)> }
+    let id = Id::unique("android-global-edit-menu");
+    let mut state = ctx.data_mut(|data| data.get_temp::<State>(id).unwrap_or_default());
+    let (down, pos, now) = ctx.input(|input| (input.pointer.primary_down(), input.pointer.interact_pos(), input.time));
+    if down {
+        if let Some(pos) = pos {
+            match state.press {
+                None => state.press = Some((now, pos)),
+                Some((_, start)) if start.distance(pos) > 12.0 => state.press = None,
+                Some((start, _)) if now - start >= 0.55 && state.menu.is_none() && ctx.text_edit_focused() => {
+                    if let Some(focus) = ctx.memory(|memory| memory.focused()) {
+                        state.menu = Some((focus, pos, password));
+                    }
+                }
+                _ => {}
+            }
+        }
+        if state.menu.is_none() { ctx.request_repaint_after(std::time::Duration::from_millis(100)); }
+    } else { state.press = None; }
+    if let Some((focus, pos, is_password)) = state.menu {
+        let screen = ctx.content_rect();
+        let origin = egui::pos2(pos.x.clamp(screen.left(), (screen.right() - 260.0).max(screen.left())),
+            (pos.y - 48.0).clamp(screen.top(), screen.bottom()));
+        let mut action = None;
+        egui::Area::new(id.with("toolbar")).order(egui::Order::Foreground).fixed_pos(origin).show(ctx, |ui| {
+            egui::Frame::popup(ui.style()).show(ui, |ui| {
+                ui.horizontal(|ui| {
+                    if ui.button(crate::i18n::tr("Select all", "Selecionar tudo")).clicked() { action = Some(4); }
+                    if !is_password && ui.button(crate::i18n::tr("Copy", "Copiar")).clicked() { action = Some(1); }
+                    if !is_password && ui.button(crate::i18n::tr("Cut", "Recortar")).clicked() { action = Some(2); }
+                    if ui.button(crate::i18n::tr("Paste", "Colar")).clicked() { action = Some(3); }
+                    if ui.button("×").clicked() { action = Some(0); }
+                });
+            });
+        });
+        if let Some(action) = action {
+            ctx.memory_mut(|memory| memory.request_focus(focus));
+            if action == 3 {
+                if let Some(text) = crate::android::get_clipboard_text() { crate::android::queue_paste(text); }
+            } else if action != 0 { crate::android::queue_edit_action(action); }
+            state.menu = None;
+            ctx.request_repaint();
+        }
+    }
+    ctx.data_mut(|data| data.insert_temp(id, state));
 }
 
 pub fn get_clipboard_text() -> Option<String> {

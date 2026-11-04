@@ -44,6 +44,7 @@ services:
       USER_UPLOAD_QUOTA_BYTES: ${USER_UPLOAD_QUOTA_BYTES:-536870912}
       GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET:-}
       NTFY_ORIGIN: ${NTFY_ORIGIN:-}
+      NTFY_TOKEN: ${NTFY_TOKEN:-}
       RUST_LOG: ${RUST_LOG:-nm_servo=info,actix_web=info}
     labels:
       - "traefik.enable=true"

@@ -16,6 +16,7 @@ pub struct Announcements {
     pub notice: String,
     pub rotation: Option<Instant>,
     pub current_index: usize,
+    pub viewing: Option<Announcement>,
 }
 
 impl Announcements {

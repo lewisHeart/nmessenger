@@ -372,9 +372,41 @@ pub fn keyboard_height(ctx: &eframe::egui::Context) -> f32 {
     0.0
 }
 
-static PENDING_IME_TEXT: Mutex<Vec<String>> = Mutex::new(Vec::new());
-static PENDING_IME_BACKSPACES: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+enum ImeEdit { Text(String), Compose(String), Paste(String), Delete { before: u32, after: u32 }, Action(i32) }
+static PENDING_IME_EDITS: Mutex<Vec<ImeEdit>> = Mutex::new(Vec::new());
 static PENDING_KEYBOARD_BACK: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+pub fn queue_edit_action(action: i32) {
+    if let Ok(mut edits) = PENDING_IME_EDITS.lock() { edits.push(ImeEdit::Action(action)); }
+}
+
+pub fn queue_paste(text: String) {
+    if let Ok(mut edits) = PENDING_IME_EDITS.lock() { edits.push(ImeEdit::Paste(text)); }
+}
+
+#[unsafe(no_mangle)]
+pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeComposingText(
+    mut env: EnvUnowned<'_>, _class: JClass<'_>, text: JString<'_>,
+) {
+    env.with_env(|env| -> jni::errors::Result<()> {
+        if !text.is_null() {
+            let text = text.try_to_string(env)?;
+            if let Ok(mut edits) = PENDING_IME_EDITS.lock() { edits.push(ImeEdit::Compose(text)); }
+            if let Ok(guard) = APP.lock() { if let Some(app) = guard.as_ref() { app.create_waker().wake(); } }
+        }
+        Ok(())
+    }).resolve::<jni::errors::ThrowRuntimeExAndDefault>();
+}
+
+#[unsafe(no_mangle)]
+pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeEditAction(
+    _env: *mut std::ffi::c_void, _class: *mut std::ffi::c_void, action: i32,
+) {
+    if matches!(action, 1 | 2 | 4) {
+        if let Ok(mut edits) = PENDING_IME_EDITS.lock() { edits.push(ImeEdit::Action(action)); }
+        if let Ok(guard) = APP.lock() { if let Some(app) = guard.as_ref() { app.create_waker().wake(); } }
+    }
+}
 
 #[unsafe(no_mangle)]
 pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeBackFromKeyboard(
@@ -403,8 +435,8 @@ pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeCommitText(
         if !text.is_null() {
             let s = text.try_to_string(env)?;
             if !s.is_empty() {
-                if let Ok(mut lock) = PENDING_IME_TEXT.lock() {
-                    lock.push(s);
+                if let Ok(mut lock) = PENDING_IME_EDITS.lock() {
+                    lock.push(ImeEdit::Text(s));
                 }
                 if let Ok(guard) = APP.lock() {
                     if let Some(app) = guard.as_ref() {
@@ -422,10 +454,12 @@ pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeDeleteSurround
     _env: *mut std::ffi::c_void,
     _class: *mut std::ffi::c_void,
     before: i32,
-    _after: i32,
+    after: i32,
 ) {
-    if before > 0 {
-        PENDING_IME_BACKSPACES.fetch_add(before as u32, std::sync::atomic::Ordering::Relaxed);
+    if before > 0 || after > 0 {
+        if let Ok(mut edits) = PENDING_IME_EDITS.lock() {
+            edits.push(ImeEdit::Delete { before: before.clamp(0, 1000) as u32, after: after.clamp(0, 1000) as u32 });
+        }
         if let Ok(guard) = APP.lock() {
             if let Some(app) = guard.as_ref() {
                 app.create_waker().wake();
@@ -435,32 +469,46 @@ pub extern "system" fn Java_com_nmessenger_app_MainActivity_nativeDeleteSurround
 }
 
 pub fn poll_ime_events(ctx: &eframe::egui::Context) {
-    let backspaces = PENDING_IME_BACKSPACES.swap(0, std::sync::atomic::Ordering::Relaxed);
-    let texts: Vec<String> = if let Ok(mut lock) = PENDING_IME_TEXT.lock() {
+    let edits = if let Ok(mut lock) = PENDING_IME_EDITS.lock() {
         std::mem::take(&mut *lock)
     } else {
         Vec::new()
     };
 
-    if backspaces > 0 || !texts.is_empty() {
+    if !edits.is_empty() {
         ctx.input_mut(|i| {
-            for _ in 0..backspaces {
-                i.events.push(eframe::egui::Event::Key {
-                    key: eframe::egui::Key::Backspace,
-                    physical_key: Some(eframe::egui::Key::Backspace),
-                    pressed: true,
-                    repeat: false,
-                    modifiers: eframe::egui::Modifiers::NONE,
-                });
-                i.events.push(eframe::egui::Event::Key {
-                    key: eframe::egui::Key::Backspace,
-                    physical_key: Some(eframe::egui::Key::Backspace),
-                    pressed: false,
-                    repeat: false,
-                    modifiers: eframe::egui::Modifiers::NONE,
-                });
-            }
-            for text in texts {
+            for edit in edits {
+                let text = match edit {
+                    ImeEdit::Text(text) => text,
+                    ImeEdit::Compose(text) => {
+                        i.events.push(eframe::egui::Event::Ime(eframe::egui::ImeEvent::Preedit { text, active_range_chars: None }));
+                        continue;
+                    }
+                    ImeEdit::Paste(text) => { i.events.push(eframe::egui::Event::Paste(text)); continue; }
+                    ImeEdit::Action(action) => {
+                        match action {
+                            1 => i.events.push(eframe::egui::Event::Copy),
+                            2 => i.events.push(eframe::egui::Event::Cut),
+                            4 => i.events.push(eframe::egui::Event::Key {
+                                key: eframe::egui::Key::A, physical_key: Some(eframe::egui::Key::A),
+                                pressed: true, repeat: false,
+                                modifiers: eframe::egui::Modifiers { ctrl: true, command: true, ..Default::default() },
+                            }),
+                            _ => {},
+                        }
+                        continue;
+                    }
+                    ImeEdit::Delete { before, after } => {
+                        for (key, count) in [(eframe::egui::Key::Backspace, before), (eframe::egui::Key::Delete, after)] {
+                            for _ in 0..count {
+                                for pressed in [true, false] {
+                                    i.events.push(eframe::egui::Event::Key { key, physical_key: Some(key), pressed, repeat: false, modifiers: eframe::egui::Modifiers::NONE });
+                                }
+                            }
+                        }
+                        continue;
+                    }
+                };
                 if text == "\n" {
                     i.events.push(eframe::egui::Event::Key {
                         key: eframe::egui::Key::Enter,
@@ -477,7 +525,7 @@ pub fn poll_ime_events(ctx: &eframe::egui::Context) {
                         modifiers: eframe::egui::Modifiers::NONE,
                     });
                 } else {
-                    i.events.push(eframe::egui::Event::Paste(text));
+                    i.events.push(eframe::egui::Event::Ime(eframe::egui::ImeEvent::Commit(text)));
                 }
             }
         });
@@ -491,7 +539,7 @@ pub fn show_soft_input() {
     let current = {
         CURRENT_INPUT_TYPE.lock().unwrap_or_else(|e| e.into_inner()).clone()
     };
-    if current.is_empty() {
+    if current.is_empty() || current == "password" {
         show_soft_input_type("text");
     } else {
         show_soft_input_type(&current);

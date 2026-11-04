@@ -796,9 +796,12 @@ impl MessengerApp {
     }
 
     pub fn push_toast(&mut self, user: Uuid, text: String, conversation: Option<Uuid>) {
-        let Some(profile) = self.profile_of(user) else {
-            return;
-        };
+        let profile = self.profile_of(user).unwrap_or_else(|| Profile {
+            id: user, email: String::new(), display_name: "Nova mensagem".into(),
+            personal_message: String::new(), presence: Presence::Offline, avatar_id: None,
+            scene: String::new(), now_playing: None, created_at: chrono::Utc::now(),
+            bio: String::new(), badges: Vec::new(),
+        });
         if self.data.as_ref().is_some_and(|data| data.me.id == user) {
             return;
         }
