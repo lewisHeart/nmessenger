@@ -4,13 +4,13 @@ use eframe::egui::{self, RichText, Vec2};
 use nm_protocol::*;
 
 pub fn menu_contents(app: &mut MessengerApp, ui: &mut egui::Ui, conversation: &Conversation) {
-    let pair = conversation.members.len() == 2;
+    let can_call = conversation.members.len() >= 2;
     for (kind, label) in [
         (ActivityKind::AudioCall, "Chamada de voz"),
         (ActivityKind::VideoCall, "Videochamada"),
     ] {
         if ui
-            .add_enabled(pair && audio::AVAILABLE && !app.call_busy(None), egui::Button::new(label))
+            .add_enabled(can_call && audio::AVAILABLE && !app.call_busy(None), egui::Button::new(label))
             .on_hover_text(if app.call_busy(None) {
                 tr("End the current call first.", "Encerre a chamada atual primeiro.")
             } else if audio::AVAILABLE {
@@ -28,7 +28,7 @@ pub fn menu_contents(app: &mut MessengerApp, ui: &mut egui::Ui, conversation: &C
     ui.separator();
     if ui
         .add_enabled(
-            pair && crate::media::remote::available() && !app.call_busy(None),
+            can_call && crate::media::remote::available() && !app.call_busy(None),
             egui::Button::new("Compartilhar tela"),
         )
         .on_hover_text("A tela é enviada após o convite ser aceito. Controle remoto está disponível no Linux/X11.")
@@ -290,11 +290,22 @@ pub(super) fn game(
             }
         });
     ui.add_space(8.0);
-    if ui.small_button("Sincronizar partida").clicked() {
-        app.send(Action::Realtime(ClientEvent::Signal {
-            activity_id: activity.id,
-            data: serde_json::json!({"game":"tic_tac_toe","action":"sync"}),
-        }));
-    }
+    ui.horizontal(|ui| {
+        if turn == me && game.winner().is_none() && game.board.iter().any(|c| c.is_none()) {
+            if ui.button(tr("Pass turn", "Passar a vez")).clicked() {
+                game.pass_turn();
+                app.send(Action::Realtime(ClientEvent::Signal {
+                    activity_id: activity.id,
+                    data: serde_json::json!({"game":"tic_tac_toe","action":"pass_turn"}),
+                }));
+            }
+        }
+        if ui.small_button(tr("Sync match", "Sincronizar partida")).clicked() {
+            app.send(Action::Realtime(ClientEvent::Signal {
+                activity_id: activity.id,
+                data: serde_json::json!({"game":"tic_tac_toe","action":"sync"}),
+            }));
+        }
+    });
     app.games.insert(activity.id, game);
 }

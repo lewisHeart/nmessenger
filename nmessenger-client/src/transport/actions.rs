@@ -305,7 +305,35 @@ async fn run(api: &Api, action: Action, bus: &Bus) -> Result<(), String> {
                 .await?;
             bus.send(Update::CategoryRemoved(id));
         }
-        Action::Conversations => bus.send(Update::Conversations(api.get("/conversations").await?)),
+        Action::Conversations => {
+            let convs = api.get("/conversations").await?;
+            bus.send(Update::Conversations(convs));
+            if let Ok(invites) = api.get("/conversations/invites").await {
+                bus.send(Update::ConversationInvites(invites));
+            }
+        }
+        Action::AcceptGroupInvite(id) => {
+            let conv = api
+                .json(
+                    Method::POST,
+                    &format!("/conversations/{id}/invites/accept"),
+                    &serde_json::json!({}),
+                )
+                .await?;
+            bus.send(Update::Conversation {
+                conversation: conv,
+                open: true,
+            });
+            bus.send(Update::InviteDeclined(id));
+        }
+        Action::DeclineGroupInvite(id) => {
+            api.empty(
+                Method::POST,
+                &format!("/conversations/{id}/invites/decline"),
+            )
+            .await?;
+            bus.send(Update::InviteDeclined(id));
+        }
         Action::CreateConversation(request) => bus.send(Update::Conversation {
             conversation: api.json(Method::POST, "/conversations", &request).await?,
             open: true,
@@ -315,7 +343,23 @@ async fn run(api: &Api, action: Action, bus: &Bus) -> Result<(), String> {
                 .json(
                     Method::PATCH,
                     &format!("/conversations/{id}"),
-                    &UpdateConversationRequest { title },
+                    &UpdateConversationRequest {
+                        title,
+                        members_can_invite: None,
+                    },
+                )
+                .await?,
+            open: false,
+        }),
+        Action::SetGroupInvitePermission(id, members_can_invite) => bus.send(Update::Conversation {
+            conversation: api
+                .json(
+                    Method::PATCH,
+                    &format!("/conversations/{id}"),
+                    &UpdateConversationRequest {
+                        title: String::new(),
+                        members_can_invite: Some(members_can_invite),
+                    },
                 )
                 .await?,
             open: false,

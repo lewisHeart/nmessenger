@@ -83,7 +83,7 @@ async fn bot_sdk_exchanges_encrypted_messages_and_files() {
         .json(&AddContactRequest { email: created["bot"]["address"].as_str().unwrap().into(), nickname: None })
         .send().await.unwrap()).await;
     let conversation: Conversation = server::json(server.request(Method::POST, "/conversations", &owner)
-        .json(&CreateConversationRequest { member_ids: vec![bot_id], title: None }).send().await.unwrap()).await;
+        .json(&CreateConversationRequest { member_ids: vec![bot_id], title: None, members_can_invite: true }).send().await.unwrap()).await;
     let (owner_api, _) = api::authenticate(server.url.clone(), owner.user.email.clone(), "test password 123".into(),
         "Bot SDK test".into(), None, Presence::Available, None).await.unwrap();
     bot.conversations().await.unwrap();

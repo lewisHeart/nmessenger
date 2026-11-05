@@ -168,6 +168,7 @@ impl TestServer {
                 .json(&CreateConversationRequest {
                     member_ids: vec![b.user.id],
                     title: None,
+                    members_can_invite: true,
                 })
                 .send()
                 .await
@@ -182,6 +183,7 @@ impl TestServer {
                 .json(&CreateConversationRequest {
                     member_ids: others.iter().map(|u| u.user.id).collect(),
                     title: Some("Test group".into()),
+                    members_can_invite: true,
                 })
                 .send()
                 .await

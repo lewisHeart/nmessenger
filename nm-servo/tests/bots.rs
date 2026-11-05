@@ -25,7 +25,7 @@ async fn bot_owner_can_create_and_manage_isolated_bot_account() {
         .json(&AddContactRequest { email: address.into(), nickname: None }).send().await.unwrap()).await;
     assert_eq!(contact.state, ContactState::Accepted);
     let conversation: Conversation = json(server.request(Method::POST, "/conversations", &owner)
-        .json(&CreateConversationRequest { member_ids: vec![bot_id], title: None }).send().await.unwrap()).await;
+        .json(&CreateConversationRequest { member_ids: vec![bot_id], title: None, members_can_invite: true }).send().await.unwrap()).await;
     let plaintext = server.client.post(format!("{}/v1/conversations/{}/messages", server.url, conversation.id))
         .bearer_auth(token).json(&send_request("sem criptografia")).send().await.unwrap();
     assert_eq!(plaintext.status(), 400);

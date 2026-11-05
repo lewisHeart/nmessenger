@@ -33,8 +33,19 @@ pub fn initial_size(ctx: &egui::Context, key: &str, default: [f32; 2]) -> [f32; 
     })
 }
 
+pub fn has_viewport_initialized(ctx: &egui::Context, key: &str) -> bool {
+    ctx.data(|data| data.get_temp::<bool>(egui::Id::unique(("nmessenger-viewport-init", key)))).unwrap_or(false)
+}
+
+pub fn mark_viewport_initialized(ctx: &egui::Context, key: &str) {
+    ctx.data_mut(|data| data.insert_temp(egui::Id::unique(("nmessenger-viewport-init", key)), true));
+}
+
 pub fn forget_initial_size(ctx: &egui::Context, key: &str) {
-    ctx.data_mut(|data| data.remove::<[f32; 2]>(egui::Id::unique(("nmessenger-initial-window-size", key))));
+    ctx.data_mut(|data| {
+        data.remove::<[f32; 2]>(egui::Id::unique(("nmessenger-initial-window-size", key)));
+        data.remove::<bool>(egui::Id::unique(("nmessenger-viewport-init", key)));
+    });
 }
 
 pub fn record_size(ctx: &egui::Context, key: &str) {
@@ -53,7 +64,11 @@ pub fn record_size(ctx: &egui::Context, key: &str) {
         data.insert_temp(sizes_id(), state);
         true
     });
-    if changed { ctx.request_repaint_of(egui::ViewportId::ROOT); }
+    if changed {
+        // Do NOT request immediate repaint of ROOT during interactive mouse drag!
+        // Schedule ROOT repaint after the 750ms debounce window so ROOT stays idle during resize.
+        ctx.request_repaint_after_for(Duration::from_millis(800), egui::ViewportId::ROOT);
+    }
 }
 
 pub fn take_size_changes(ctx: &egui::Context) -> Option<HashMap<String, [f32; 2]>> {

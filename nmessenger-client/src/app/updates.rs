@@ -316,6 +316,16 @@ impl MessengerApp {
                     data.conversations = conversations;
                 }
             }
+            Update::ConversationInvites(invites) => {
+                if let Some(data) = &mut self.data {
+                    data.conversation_invites = invites;
+                }
+            }
+            Update::InviteDeclined(id) => {
+                if let Some(data) = &mut self.data {
+                    data.conversation_invites.retain(|i| i.conversation_id != id);
+                }
+            }
             Update::Conversation { conversation, open } => {
                 let id = conversation.id;
                 if let Some(data) = &mut self.data {
@@ -979,14 +989,21 @@ impl MessengerApp {
                     game.apply(from, cell as usize, initiator, other);
                 }
             }
+            Some("pass_turn") => {
+                game.pass_turn();
+            }
             Some("sync") => {
                 let board = game.board;
+                let pass_count = game.pass_count;
                 self.send(Action::Realtime(ClientEvent::Signal {
                     activity_id: id,
-                    data: serde_json::json!({"game":"tic_tac_toe","action":"state","board":board}),
+                    data: serde_json::json!({"game":"tic_tac_toe","action":"state","board":board,"pass_count":pass_count}),
                 }));
             }
             Some("state") if game.board.iter().all(|c| c.is_none()) => {
+                if let Some(p) = value["pass_count"].as_u64() {
+                    game.pass_count = p as usize;
+                }
                 if let Ok(board) =
                     serde_json::from_value::<[Option<Uuid>; 9]>(value["board"].clone())
                 {

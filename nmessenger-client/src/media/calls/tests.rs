@@ -207,6 +207,7 @@ async fn synthetic_audio_video_cross_the_real_backend_and_survive_restart() {
         .json(&CreateConversationRequest {
             member_ids: vec![b.user.id],
             title: None,
+            members_can_invite: true,
         })
         .send()
         .await

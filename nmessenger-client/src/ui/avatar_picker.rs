@@ -12,10 +12,29 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
     if !app.options.avatar_picker {
         return;
     }
+    let title = tr("Profile picture", "Imagem de perfil");
+    if let Some(shared) = app.shared.clone() {
+        if !ctx.embed_viewports() && !crate::platform::is_mobile() {
+            dialog::show_deferred(
+                shared,
+                ctx,
+                "nmessenger-avatar-picker",
+                &title,
+                [640.0, 480.0],
+                content,
+                |app| {
+                    app.options.avatar_picker = false;
+                    app.options.avatar_choice = None;
+                    app.options.avatar_error = None;
+                },
+            );
+            return;
+        }
+    }
     let open = dialog::show(
         ctx,
         "nmessenger-avatar-picker",
-        tr("Profile picture", "Imagem de perfil"),
+        &title,
         [640.0, 480.0],
         |ui| content(app, ui),
     );

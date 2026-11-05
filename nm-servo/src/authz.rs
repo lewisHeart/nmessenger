@@ -84,11 +84,37 @@ pub async fn peers(db: &mut PgConnection, user: Uuid, peers: &[Uuid]) -> Result<
     Ok(())
 }
 
+pub async fn group_invite(
+    db: &mut PgConnection,
+    inviter: Uuid,
+    new_member: Uuid,
+    existing_members: &[Uuid],
+) -> Result<()> {
+    peers(db, new_member, &[inviter]).await?;
+    if !existing_members.is_empty() {
+        let blocked: bool = sqlx::query_scalar(
+            "SELECT EXISTS(
+                SELECT 1 FROM user_blocks
+                WHERE (owner_id=$1 AND user_id=ANY($2))
+                   OR (owner_id=ANY($2) AND user_id=$1)
+            )",
+        )
+        .bind(new_member)
+        .bind(existing_members)
+        .fetch_one(&mut *db)
+        .await?;
+        if blocked {
+            return Err(Error::forbidden());
+        }
+    }
+    Ok(())
+}
+
 pub async fn lock_conversation(
     db: &mut PgConnection,
     conversation: Uuid,
-) -> Result<(String, Uuid)> {
-    sqlx::query_as("SELECT kind,owner_id FROM conversations WHERE id=$1 FOR UPDATE")
+) -> Result<(String, Uuid, bool)> {
+    sqlx::query_as("SELECT kind,owner_id,members_can_invite FROM conversations WHERE id=$1 FOR UPDATE")
         .bind(conversation)
         .fetch_optional(db)
         .await?

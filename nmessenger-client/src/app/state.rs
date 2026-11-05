@@ -191,6 +191,7 @@ pub enum AvatarChoice {
 #[derive(Default, Clone)]
 pub struct Game {
     pub board: [Option<Uuid>; 9],
+    pub pass_count: usize,
 }
 
 impl Game {
@@ -216,11 +217,16 @@ impl Game {
     }
 
     pub fn turn(&self, initiator: Uuid, other: Uuid) -> Uuid {
-        if self.board.iter().filter(|c| c.is_some()).count() % 2 == 0 {
+        let moves = self.board.iter().filter(|c| c.is_some()).count();
+        if (moves + self.pass_count) % 2 == 0 {
             initiator
         } else {
             other
         }
+    }
+
+    pub fn pass_turn(&mut self) {
+        self.pass_count += 1;
     }
 
     pub fn apply(&mut self, from: Uuid, cell: usize, initiator: Uuid, other: Uuid) -> bool {

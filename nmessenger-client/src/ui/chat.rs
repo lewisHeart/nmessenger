@@ -233,6 +233,44 @@ pub fn mobile(app: &mut MessengerApp, ui: &mut egui::Ui) {
                             offer_call(app, conversation.id, ActivityKind::AudioCall);
                         }
                     } else if conversation.kind == ConversationKind::Group {
+                        let (call_rect, call_resp) =
+                            ui.allocate_exact_size(Vec2::new(36.0, 36.0), egui::Sense::click());
+                        let call_resp = call_resp.on_hover_text(tr("Start group call", "Chamada em grupo"));
+                        if call_resp.is_pointer_button_down_on() {
+                            ui.painter().rect_filled(
+                                call_rect,
+                                4,
+                                Color32::from_rgba_unmultiplied(185, 220, 252, 230),
+                            );
+                            ui.painter().rect_stroke(
+                                call_rect,
+                                4,
+                                Stroke::new(1.0, Color32::from_rgb(70, 145, 230)),
+                                egui::StrokeKind::Inside,
+                            );
+                        } else if call_resp.hovered() {
+                            ui.painter().rect_filled(
+                                call_rect,
+                                4,
+                                Color32::from_rgba_unmultiplied(225, 240, 255, 210),
+                            );
+                            ui.painter().rect_stroke(
+                                call_rect,
+                                4,
+                                Stroke::new(1.0, Color32::from_rgb(145, 195, 245)),
+                                egui::StrokeKind::Inside,
+                            );
+                        }
+                        nmessenger::paint(
+                            ui.ctx(),
+                            ui.painter(),
+                            "icons/call.png",
+                            egui::Rect::from_center_size(call_rect.center(), Vec2::splat(18.0)),
+                        );
+                        if call_resp.clicked() {
+                            offer_call(app, conversation.id, ActivityKind::AudioCall);
+                        }
+
                         let (grp_rect, grp_resp) =
                             ui.allocate_exact_size(Vec2::new(36.0, 36.0), egui::Sense::click());
                         let grp_resp = grp_resp.on_hover_text(tr("Participants", "Participantes"));
@@ -710,99 +748,138 @@ fn detached(app: &mut MessengerApp, ctx: &egui::Context) {
         };
         let viewport = egui::ViewportId::from_hash_of(("nm-conversation", id));
         let chat_window_title = app.conversation_window_title(&conversation);
+        let key = format!("chat:{id}");
+        let mut builder = egui::ViewportBuilder::default()
+            .with_title(&chat_window_title)
+            .with_min_inner_size([460.0, 400.0])
+            .with_decorations(super::window::system_titlebars(ctx))
+            .with_transparent(true)
+            .with_icon(nmessenger::app_icon());
+
+        if !super::window::has_viewport_initialized(ctx, &key) {
+            builder = builder.with_inner_size(super::window::initial_size(ctx, &key, nmessenger::CHAT_SIZE));
+            super::window::mark_viewport_initialized(ctx, &key);
+        }
+
+        if let Some(shared) = app.shared.clone() {
+            if !ctx.embed_viewports() {
+                let conv = conversation.clone();
+                let title = chat_window_title.clone();
+                ctx.show_viewport_deferred(
+                    viewport,
+                    builder,
+                    move |ui, class| {
+                        let mut guard = shared.lock().unwrap();
+                        render_detached_chat(&mut *guard, ui, class, id, conv.clone(), title.clone());
+                    },
+                );
+                continue;
+            }
+        }
+
         ctx.show_viewport_immediate(
             viewport,
-            egui::ViewportBuilder::default()
-                .with_title(&chat_window_title)
-                .with_inner_size(super::window::initial_size(ctx, &format!("chat:{id}"), nmessenger::CHAT_SIZE))
-                .with_min_inner_size([460.0, 400.0])
-                .with_decorations(super::window::system_titlebars(ctx))
-                .with_transparent(true)
-                .with_icon(nmessenger::app_icon()),
+            builder,
             |ui, class| {
-                let ctx = ui.ctx().clone();
-                if class != egui::ViewportClass::EmbeddedWindow { super::window::record_size(&ctx, &format!("chat:{id}")); }
-                super::window::minimum(&ctx, Vec2::new(460.0, 400.0));
-                let shake_offset = super::window::shake(&ctx, app.nudges.get(&id).copied());
-                if ctx.input(|i| i.viewport().close_requested()) {
-                    super::window::forget_initial_size(&ctx, &format!("chat:{id}"));
-                    app.detached.remove(&id);
-                    if app.active == Some(id) {
-                        app.active = None;
-                    }
-                    app.conversation_focus.remove(&id);
-                }
-                if ctx.input(|i| !i.events.is_empty()) {
-                    app.last_input = std::time::Instant::now();
-                }
-                let focused = ctx.input(|i| i.viewport().focused.unwrap_or(false));
-                if focused {
-                    app.conversation_focus.insert(id);
-                } else {
-                    app.conversation_focus.remove(&id);
-                }
-                let mut render_content = |ui: &mut egui::Ui| {
-                    if class == egui::ViewportClass::EmbeddedWindow {
-                        let mut open = true;
-                        let mut closed_by_title = false;
-                        let screen = ctx.content_rect();
-                        let win_w = (screen.width() - 16.0).min(760.0).max(480.0);
-                        let win_h = (screen.height() - 24.0).min(660.0).max(400.0);
-                        let default_pos = Pos2::new(8.0, 12.0) + shake_offset;
-                        egui::Window::new(&chat_window_title)
-                            .title_bar(false)
-                            .frame(super::dialog::frame())
-                            .id(egui::Id::unique(("chat-window", id)))
-                            .open(&mut open)
-                            .default_pos(default_pos)
-                            .default_size([win_w, win_h])
-                            .min_size([460.0, 400.0])
-                            .resizable(true)
-                            .show(&ctx, |ui| {
-                                closed_by_title |= super::dialog::embedded_title(ui, &chat_window_title);
-                                body(app, ui, &conversation, false);
-                            });
-                        if closed_by_title {
-                            open = false;
-                        }
-                        if !open {
-                            app.detached.remove(&id);
-                            if app.active == Some(id) {
-                                app.active = None;
-                            }
-                            app.conversation_focus.remove(&id);
-                        }
-                    } else {
-                        theme::window_bar_with_controls(
-                            ui,
-                            &chat_window_title,
-                            theme::WindowControls::All,
-                        );
-                        body(app, ui, &conversation, false);
-                    }
-                };
-                if shake_offset != Vec2::ZERO {
-                    ui.with_visual_transform(
-                        egui::emath::TSTransform::from_translation(shake_offset),
-                        |ui| {
-                            render_content(ui);
-                        },
-                    );
-                } else {
-                    render_content(ui);
-                }
-                if focused {
-                    app.mark_visible(id);
-                }
-                dialogs(app, &ctx);
-                if app.options.game_browser == Some(id) {
-                    super::games::show(app, &ctx);
-                }
-                // Each viewport repaints independently in egui 0.37: images, typing
-                // indicators and animations must not wait for the next user input.
-                ctx.request_repaint_after(std::time::Duration::from_millis(200));
+                render_detached_chat(app, ui, class, id, conversation.clone(), chat_window_title.clone());
             },
         );
+    }
+}
+
+fn render_detached_chat(
+    app: &mut MessengerApp,
+    ui: &mut egui::Ui,
+    class: egui::ViewportClass,
+    id: Uuid,
+    conversation: Conversation,
+    chat_window_title: String,
+) {
+    let ctx = ui.ctx().clone();
+    if class != egui::ViewportClass::EmbeddedWindow { super::window::record_size(&ctx, &format!("chat:{id}")); }
+    super::window::minimum(&ctx, Vec2::new(460.0, 400.0));
+    let shake_offset = super::window::shake(&ctx, app.nudges.get(&id).copied());
+    if ctx.input(|i| i.viewport().close_requested()) {
+        super::window::forget_initial_size(&ctx, &format!("chat:{id}"));
+        app.detached.remove(&id);
+        if app.active == Some(id) {
+            app.active = None;
+        }
+        app.conversation_focus.remove(&id);
+    }
+    if ctx.input(|i| !i.events.is_empty()) {
+        app.last_input = std::time::Instant::now();
+    }
+    let focused = ctx.input(|i| i.viewport().focused.unwrap_or(false));
+    if focused {
+        app.conversation_focus.insert(id);
+    } else {
+        app.conversation_focus.remove(&id);
+    }
+    let mut render_content = |ui: &mut egui::Ui| {
+        if class == egui::ViewportClass::EmbeddedWindow {
+            let mut open = true;
+            let mut closed_by_title = false;
+            let screen = ctx.content_rect();
+            let win_w = (screen.width() - 16.0).min(760.0).max(480.0);
+            let win_h = (screen.height() - 24.0).min(660.0).max(400.0);
+            let default_pos = Pos2::new(8.0, 12.0) + shake_offset;
+            egui::Window::new(&chat_window_title)
+                .title_bar(false)
+                .frame(super::dialog::frame())
+                .id(egui::Id::unique(("chat-window", id)))
+                .open(&mut open)
+                .default_pos(default_pos)
+                .default_size([win_w, win_h])
+                .min_size([460.0, 400.0])
+                .resizable(true)
+                .show(&ctx, |ui| {
+                    closed_by_title |= super::dialog::embedded_title(ui, &chat_window_title);
+                    body(app, ui, &conversation, false);
+                });
+            if closed_by_title {
+                open = false;
+            }
+            if !open {
+                app.detached.remove(&id);
+                if app.active == Some(id) {
+                    app.active = None;
+                }
+                app.conversation_focus.remove(&id);
+            }
+        } else {
+            theme::window_bar_with_controls(
+                ui,
+                &chat_window_title,
+                theme::WindowControls::All,
+            );
+            body(app, ui, &conversation, false);
+        }
+    };
+    if shake_offset != Vec2::ZERO {
+        ui.with_visual_transform(
+            egui::emath::TSTransform::from_translation(shake_offset),
+            |ui| {
+                render_content(ui);
+            },
+        );
+    } else {
+        render_content(ui);
+    }
+    if focused {
+        app.mark_visible(id);
+    }
+    dialogs(app, &ctx);
+    if app.options.game_browser == Some(id) {
+        super::games::show(app, &ctx);
+    }
+    // Only request repaint when an active animation, nudge, wink, or voice call requires it.
+    let needs_anim = !app.nudges.is_empty()
+        || !app.winks.is_empty()
+        || app.current_call.is_some()
+        || !app.typing.is_empty();
+    if needs_anim {
+        ctx.request_repaint_after(std::time::Duration::from_millis(50));
     }
 }
 
@@ -953,9 +1030,9 @@ fn offer_call(app: &mut MessengerApp, conversation: Uuid, kind: ActivityKind) {
     if !app.data.as_ref().is_some_and(|d| {
         d.conversations
             .iter()
-            .any(|c| c.id == conversation && c.members.len() == 2)
+            .any(|c| c.id == conversation && c.members.len() >= 2)
     }) {
-        app.error(tr("Calls are available for conversations with two people.", "Chamadas disponíveis para conversas com duas pessoas."));
+        app.error(tr("Calls require at least two people in the conversation.", "Chamadas requerem pelo menos duas pessoas na conversa."));
         return;
     }
     app.offered_calls.insert(conversation, kind);
@@ -1149,6 +1226,7 @@ fn members(app: &mut MessengerApp, ctx: &egui::Context) {
                     .corner_radius(6)
                     .inner_margin(8)
                     .show(ui, |ui| {
+                        let is_owner = app.data.as_ref().is_some_and(|data| Some(data.me.id) == conversation.owner_id);
                         ui.horizontal(|ui| {
                             ui.label(
                                 RichText::new(tr("Group name:", "Nome do grupo:"))
@@ -1176,6 +1254,23 @@ fn members(app: &mut MessengerApp, ctx: &egui::Context) {
                                 ));
                             }
                         });
+                        ui.add_space(4.0);
+                        if is_owner {
+                            let mut can_invite = conversation.members_can_invite;
+                            if ui.checkbox(&mut can_invite, tr("Allow any member to add people", "Qualquer membro pode adicionar pessoas")).changed() {
+                                app.send(Action::SetGroupInvitePermission(conversation.id, can_invite));
+                            }
+                        } else {
+                            ui.label(
+                                RichText::new(if conversation.members_can_invite {
+                                    tr("Any member can add people", "Qualquer membro pode adicionar pessoas")
+                                } else {
+                                    tr("Only the administrator can add people", "Apenas o administrador pode adicionar pessoas")
+                                })
+                                .size(10.0)
+                                .color(nmessenger::MUTED),
+                            );
+                        }
                     });
                 ui.add_space(8.0);
             }
@@ -1192,60 +1287,122 @@ fn members(app: &mut MessengerApp, ctx: &egui::Context) {
                 .fill(Color32::WHITE)
                 .stroke(Stroke::new(1.0, Color32::from_rgb(220, 232, 244)))
                 .corner_radius(6)
-                .inner_margin(egui::Margin::symmetric(8, 4))
+                .inner_margin(egui::Margin::symmetric(4, 4))
                 .show(ui, |ui| {
+                    let is_owner = app.data.as_ref().is_some_and(|data| Some(data.me.id) == conversation.owner_id);
                     for (i, member) in conversation.members.iter().enumerate() {
                         if i > 0 {
                             ui.separator();
                         }
-                        ui.horizontal(|ui| {
-                            theme::avatar(app, ui, member, 34.0);
-                            ui.add_space(4.0);
-                            ui.vertical(|ui| {
+                        let own = Some(member.id) == me;
+                        let (row_rect, row_resp) = ui.allocate_exact_size(
+                            Vec2::new(ui.available_width(), 40.0),
+                            egui::Sense::click(),
+                        );
+                        if row_resp.is_pointer_button_down_on() {
+                            ui.painter().rect_filled(
+                                row_rect,
+                                4,
+                                Color32::from_rgba_unmultiplied(190, 222, 250, 200),
+                            );
+                            ui.painter().rect_stroke(
+                                row_rect,
+                                4,
+                                Stroke::new(1.0, Color32::from_rgb(120, 180, 240)),
+                                egui::StrokeKind::Inside,
+                            );
+                        } else if row_resp.hovered() {
+                            ui.painter().rect_filled(
+                                row_rect,
+                                4,
+                                Color32::from_rgba_unmultiplied(230, 242, 255, 180),
+                            );
+                        }
+                        if row_resp.double_clicked() {
+                            app.contact_forms.view_profile = Some(member.clone());
+                        }
+                        row_resp.context_menu(|ui| {
+                            if ui.button(tr("View profile...", "Ver perfil...")).clicked() {
+                                app.contact_forms.view_profile = Some(member.clone());
+                                ui.close();
+                            }
+                            if !own && ui.button(tr("Direct message", "Conversar no privado")).clicked() {
+                                app.send(Action::CreateConversation(CreateConversationRequest {
+                                    member_ids: vec![member.id],
+                                    title: None,
+                                    members_can_invite: true,
+                                }));
+                                ui.close();
+                            }
+                            if is_owner && !own {
+                                ui.separator();
+                                if ui.button(tr("Make administrator", "Tornar administrador")).clicked() {
+                                    app.send(Action::TransferGroupOwner(conversation.id, member.id));
+                                    ui.close();
+                                }
+                                if ui.button(tr("Remove from group", "Remover do grupo")).clicked() {
+                                    app.send(Action::RemoveMember(conversation.id, member.id));
+                                    ui.close();
+                                }
+                            }
+                        });
+
+                        ui.scope_builder(
+                            egui::UiBuilder::new().max_rect(row_rect.shrink2(Vec2::new(4.0, 2.0))),
+                            |ui| {
                                 ui.horizontal(|ui| {
-                                    ui.label(
-                                        RichText::new(&member.display_name)
-                                            .strong()
-                                            .color(nmessenger::HEADING),
-                                    );
-                                    if Some(member.id) == me {
-                                        ui.label(
-                                            RichText::new(tr("(You)", "(Você)")).small().color(nmessenger::BLUE),
+                                    theme::avatar(app, ui, member, 34.0);
+                                    ui.add_space(4.0);
+                                    ui.vertical(|ui| {
+                                        ui.horizontal(|ui| {
+                                            ui.label(
+                                                RichText::new(&member.display_name)
+                                                    .strong()
+                                                    .color(nmessenger::HEADING),
+                                            );
+                                            if own {
+                                                ui.label(
+                                                    RichText::new(tr("(You)", "(Você)")).small().color(nmessenger::BLUE),
+                                                );
+                                            } else if Some(member.id) == conversation.owner_id {
+                                                ui.label(
+                                                    RichText::new(tr("(Admin)", "(Admin)")).small().color(Color32::from_rgb(118, 139, 157)),
+                                                );
+                                            }
+                                        });
+                                        ui.horizontal(|ui| {
+                                            theme::status_dot(ui, member.presence);
+                                            ui.label(
+                                                RichText::new(nmessenger::status_label(member.presence))
+                                                    .small()
+                                                    .color(nmessenger::MUTED),
+                                            );
+                                        });
+                                    });
+                                    if conversation.kind == ConversationKind::Group && is_owner && !own {
+                                        ui.with_layout(
+                                            egui::Layout::right_to_left(egui::Align::Center),
+                                            |ui| {
+                                                if theme::danger_button(
+                                                    ui,
+                                                    RichText::new(tr("Remove", "Remover"))
+                                                        .color(Color32::from_rgb(180, 50, 50))
+                                                        .size(10.5),
+                                                    Vec2::new(65.0, 22.0),
+                                                )
+                                                .clicked()
+                                                {
+                                                    app.send(Action::RemoveMember(
+                                                        conversation.id,
+                                                        member.id,
+                                                    ));
+                                                }
+                                            },
                                         );
                                     }
                                 });
-                                ui.horizontal(|ui| {
-                                    theme::status_dot(ui, member.presence);
-                                    ui.label(
-                                        RichText::new(nmessenger::status_label(member.presence))
-                                            .small()
-                                            .color(nmessenger::MUTED),
-                                    );
-                                });
-                            });
-                            if conversation.kind == ConversationKind::Group && Some(member.id) != me
-                            {
-                                ui.with_layout(
-                                    egui::Layout::right_to_left(egui::Align::Center),
-                                    |ui| {
-                                        if theme::danger_button(
-                                            ui,
-                                            RichText::new(tr("Remove", "Remover"))
-                                                .color(Color32::from_rgb(180, 50, 50))
-                                                .size(10.5),
-                                            Vec2::new(65.0, 22.0),
-                                        )
-                                        .clicked()
-                                        {
-                                            app.send(Action::RemoveMember(
-                                                conversation.id,
-                                                member.id,
-                                            ));
-                                        }
-                                    },
-                                );
-                            }
-                        });
+                            },
+                        );
                     }
                 });
 
@@ -1258,66 +1415,78 @@ fn members(app: &mut MessengerApp, ctx: &egui::Context) {
                     .inner_margin(8)
                     .show(ui, |ui| {
                         ui.label(
-                            RichText::new(tr("Add a participant", "Adicionar novo participante"))
+                            RichText::new(tr("Invite a participant", "Convidar participante"))
                                 .strong()
                                 .size(11.0)
                                 .color(nmessenger::HEADING),
                         );
                         ui.add_space(6.0);
-                        let contacts = app
-                            .data
-                            .as_ref()
-                            .map(|d| d.contacts.clone())
-                            .unwrap_or_default();
-                        ui.horizontal(|ui| {
-                            let combo_width = (ui.available_width() - 110.0).max(140.0);
-                            egui::ComboBox::from_id_salt("invite-contact")
-                                .width(combo_width)
-                                .selected_text(
-                                    app.conversation_forms
-                                        .invite
-                                        .map(|u| app.name(u))
-                                        .unwrap_or_else(|| tr("Choose contact...", "Escolher contato...").into()),
-                                )
-                                .show_ui(ui, |ui| {
-                                    for contact in contacts.iter().filter(|c| {
-                                        !c.blocked
-                                            && c.state == ContactState::Accepted
-                                            && !conversation
+                        let is_owner = app.data.as_ref().is_some_and(|data| Some(data.me.id) == conversation.owner_id);
+                        if !conversation.members_can_invite && !is_owner {
+                            ui.label(
+                                RichText::new(tr(
+                                    "Only the administrator can invite participants to this group.",
+                                    "Apenas o administrador pode convidar participantes para este grupo.",
+                                ))
+                                .size(10.5)
+                                .color(nmessenger::MUTED),
+                            );
+                        } else {
+                            let contacts = app
+                                .data
+                                .as_ref()
+                                .map(|d| d.contacts.clone())
+                                .unwrap_or_default();
+                            ui.horizontal(|ui| {
+                                let combo_width = (ui.available_width() - 110.0).max(140.0);
+                                egui::ComboBox::from_id_salt("invite-contact")
+                                    .width(combo_width)
+                                    .selected_text(
+                                        app.conversation_forms
+                                            .invite
+                                            .map(|u| app.name(u))
+                                            .unwrap_or_else(|| tr("Choose contact to invite...", "Escolher contato para convidar...").into()),
+                                    )
+                                    .show_ui(ui, |ui| {
+                                        for contact in contacts.iter().filter(|c| {
+                                            !c.blocked
+                                                && c.state == ContactState::Accepted
+                                                && !conversation
                                                 .members
                                                 .iter()
                                                 .any(|m| m.id == c.user.id)
-                                    }) {
-                                        ui.selectable_value(
-                                            &mut app.conversation_forms.invite,
-                                            Some(contact.user.id),
-                                            contact.name(),
-                                        );
-                                    }
-                                });
-                            let can_invite = app.conversation_forms.invite.is_some();
-                            let invite_btn = if can_invite {
-                                theme::primary_button(
-                                    ui,
-                                    RichText::new(tr("+ Invite", "+ Convidar"))
-                                        .size(11.0)
-                                        .color(Color32::from_rgb(1, 45, 147))
-                                        .strong(),
-                                    Vec2::new(95.0, 24.0),
-                                )
-                            } else {
-                                ui.add_enabled(
-                                    false,
-                                    egui::Button::new(RichText::new(tr("+ Invite", "+ Convidar")).size(11.0))
-                                        .min_size(Vec2::new(95.0, 24.0)),
-                                )
-                            };
-                            if invite_btn.clicked()
-                                && let Some(user) = app.conversation_forms.invite.take()
-                            {
-                                app.send(Action::AddMember(conversation.id, user));
-                            }
-                        });
+                                        }) {
+                                            ui.selectable_value(
+                                                &mut app.conversation_forms.invite,
+                                                Some(contact.user.id),
+                                                contact.name(),
+                                            );
+                                        }
+                                    });
+                                let can_invite = app.conversation_forms.invite.is_some();
+                                let invite_btn = if can_invite {
+                                    theme::primary_button(
+                                        ui,
+                                        RichText::new(tr("+ Invite", "+ Convidar"))
+                                            .size(11.0)
+                                            .color(Color32::from_rgb(1, 45, 147))
+                                            .strong(),
+                                        Vec2::new(95.0, 24.0),
+                                    )
+                                } else {
+                                    ui.add_enabled(
+                                        false,
+                                        egui::Button::new(RichText::new(tr("+ Invite", "+ Convidar")).size(11.0))
+                                            .min_size(Vec2::new(95.0, 24.0)),
+                                    )
+                                };
+                                if invite_btn.clicked()
+                                    && let Some(user) = app.conversation_forms.invite.take()
+                                {
+                                    app.send(Action::AddMember(conversation.id, user));
+                                }
+                            });
+                        }
                     });
 
                 ui.add_space(8.0);

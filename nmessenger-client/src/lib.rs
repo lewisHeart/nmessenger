@@ -18,25 +18,6 @@ mod ui;
 
 #[cfg(not(target_os = "android"))]
 pub fn run_desktop() -> eframe::Result {
-    #[cfg(target_os = "linux")]
-    {
-        let has_x11 = std::env::var("DISPLAY").map(|v| !v.is_empty()).unwrap_or(false);
-        let force_wayland = std::env::var("WAYLAND_FORCE").ok().as_deref() == Some("1")
-            || std::env::var("WINIT_UNIX_BACKEND").ok().as_deref() == Some("wayland");
-
-        if has_x11 && !force_wayland {
-            // Under Wayland, winit's multi-window immediate viewports (chats, settings,
-            // dialogs) suffer from compositor buffer scaling artifacts during interactive
-            // resize because child viewports cannot render synchronously with configure.
-            // X11 / XWayland provides rock-solid multi-window resizing and matches the
-            // packaging intent (packaging/linux/nmessenger-launch).
-            unsafe {
-                std::env::remove_var("WAYLAND_DISPLAY");
-                std::env::remove_var("WAYLAND_SOCKET");
-            }
-        }
-    }
-
     let options = eframe::NativeOptions {
         viewport: eframe::egui::ViewportBuilder::default()
             .with_title("NMessenger")
@@ -45,12 +26,40 @@ pub fn run_desktop() -> eframe::Result {
             .with_decorations(false)
             .with_transparent(true)
             .with_icon(ui::nmessenger::app_icon()),
+        glow_options: eframe::egui_glow::GlowConfiguration {
+            vsync: false,
+            ..Default::default()
+        },
         ..Default::default()
     };
     eframe::run_native(
         "NMessenger",
         options,
-        Box::new(|cc| Ok(Box::new(app::MessengerApp::new(cc)))),
+        Box::new(|cc| {
+            let app = std::sync::Arc::new(std::sync::Mutex::new(app::MessengerApp::new(cc)));
+            app.lock().unwrap().shared = Some(std::sync::Arc::clone(&app));
+            Ok(Box::new(DesktopApp { app }))
+        }),
     )
+}
+
+#[cfg(not(target_os = "android"))]
+struct DesktopApp {
+    app: std::sync::Arc<std::sync::Mutex<app::MessengerApp>>,
+}
+
+#[cfg(not(target_os = "android"))]
+impl eframe::App for DesktopApp {
+    fn clear_color(&self, visuals: &eframe::egui::Visuals) -> [f32; 4] {
+        self.app.lock().unwrap().clear_color(visuals)
+    }
+
+    fn logic(&mut self, ctx: &eframe::egui::Context, frame: &mut eframe::Frame) {
+        self.app.lock().unwrap().logic(ctx, frame);
+    }
+
+    fn ui(&mut self, ui: &mut eframe::egui::Ui, frame: &mut eframe::Frame) {
+        self.app.lock().unwrap().ui(ui, frame);
+    }
 }
 mod secure;

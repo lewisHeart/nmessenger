@@ -33,6 +33,7 @@ async fn bootstrap(state: web::Data<AppState>, session: Session) -> Result<web::
         contacts: contacts::list(&state, session.user_id).await?,
         categories: contacts::categories(&state, session.user_id).await?,
         conversations: conversations::list(&state, session.user_id).await?,
+        conversation_invites: conversations::invites(&state, session.user_id).await?,
         settings: settings(&state, session.user_id).await?,
         sessions: auth::list(&state, &session).await?,
         assets: assets::list(&state, session.user_id).await?,

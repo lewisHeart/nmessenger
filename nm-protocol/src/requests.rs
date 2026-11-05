@@ -66,15 +66,33 @@ pub struct CategoryRequest {
     pub name: String,
 }
 
+fn default_true() -> bool {
+    true
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CreateConversationRequest {
     pub member_ids: Vec<Uuid>,
     pub title: Option<String>,
+    #[serde(default = "default_true")]
+    pub members_can_invite: bool,
+}
+
+impl Default for CreateConversationRequest {
+    fn default() -> Self {
+        Self {
+            member_ids: Vec::new(),
+            title: None,
+            members_can_invite: true,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UpdateConversationRequest {
     pub title: String,
+    #[serde(default)]
+    pub members_can_invite: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

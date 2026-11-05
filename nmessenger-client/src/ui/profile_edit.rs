@@ -10,10 +10,29 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
         return;
     }
 
+    let title = tr("Edit My Profile - NMessenger", "Editar Meu Perfil - NMessenger");
+
+    if let Some(shared) = app.shared.clone() {
+        if !ctx.embed_viewports() && !crate::platform::is_mobile() {
+            dialog::show_deferred(
+                shared,
+                ctx,
+                "user-profile-edit",
+                &title,
+                [540.0, 620.0],
+                content,
+                |app| {
+                    app.contact_forms.edit_profile_open = false;
+                },
+            );
+            return;
+        }
+    }
+
     let open = dialog::show(
         ctx,
         "user-profile-edit",
-        tr("Edit My Profile - NMessenger", "Editar Meu Perfil - NMessenger"),
+        &title,
         [540.0, 620.0],
         |ui| content(app, ui),
     );

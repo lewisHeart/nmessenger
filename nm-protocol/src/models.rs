@@ -125,6 +125,10 @@ pub enum ConversationKind {
     Group,
 }
 
+fn default_true() -> bool {
+    true
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Conversation {
     pub id: Uuid,
@@ -133,9 +137,27 @@ pub struct Conversation {
     pub title: Option<String>,
     pub kind: ConversationKind,
     pub members: Vec<Profile>,
+    #[serde(default = "default_true")]
+    pub members_can_invite: bool,
     pub updated_at: DateTime<Utc>,
     pub unread: i64,
     pub last_message: Option<Message>,
+}
+
+impl Default for Conversation {
+    fn default() -> Self {
+        Self {
+            id: Uuid::nil(),
+            owner_id: None,
+            title: None,
+            kind: ConversationKind::Direct,
+            members: Vec::new(),
+            members_can_invite: true,
+            updated_at: DateTime::default(),
+            unread: 0,
+            last_message: None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -279,6 +301,7 @@ pub struct UserSettings {
     pub font: MessageStyle,
     pub theme: String,
     pub receive_directory: String,
+    pub require_group_invite: bool,
 }
 
 impl Default for UserSettings {
@@ -301,8 +324,19 @@ impl Default for UserSettings {
             font: MessageStyle::default(),
             theme: "azul".into(),
             receive_directory: "downloads".into(),
+            require_group_invite: false,
         }
     }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ConversationInvite {
+    pub id: Uuid,
+    pub conversation_id: Uuid,
+    pub conversation_title: Option<String>,
+    pub inviter: Profile,
+    pub member_count: i64,
+    pub created_at: DateTime<Utc>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -311,6 +345,8 @@ pub struct Bootstrap {
     pub contacts: Vec<Contact>,
     pub categories: Vec<Category>,
     pub conversations: Vec<Conversation>,
+    #[serde(default)]
+    pub conversation_invites: Vec<ConversationInvite>,
     pub settings: UserSettings,
     pub sessions: Vec<SessionInfo>,
     pub assets: Vec<UserAsset>,

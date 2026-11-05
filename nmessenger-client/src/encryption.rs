@@ -198,6 +198,7 @@ mod tests {
             title: Some("Private group".into()),
             kind: ConversationKind::Group,
             members: vec![profile(alice.user), profile(bob.user)],
+            members_can_invite: true,
             updated_at: chrono::Utc::now(),
             unread: 0,
             last_message: None,

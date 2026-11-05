@@ -101,6 +101,9 @@ pub enum Action {
     Conversations,
     CreateConversation(CreateConversationRequest),
     RenameConversation(Uuid, String),
+    SetGroupInvitePermission(Uuid, bool),
+    AcceptGroupInvite(Uuid),
+    DeclineGroupInvite(Uuid),
     AddMember(Uuid, Uuid),
     TransferGroupOwner(Uuid, Uuid),
     RemoveMember(Uuid, Uuid),
@@ -219,6 +222,8 @@ pub enum Update {
     Category(Category),
     CategoryRemoved(Uuid),
     Conversations(Vec<Conversation>),
+    ConversationInvites(Vec<ConversationInvite>),
+    InviteDeclined(Uuid),
     Conversation {
         conversation: Conversation,
         open: bool,

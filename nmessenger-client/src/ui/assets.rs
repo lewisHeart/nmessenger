@@ -346,12 +346,12 @@ fn collect_system_font_paths() -> HashMap<String, PathBuf> {
 
     #[cfg(target_os = "linux")]
     {
-        search_dirs.push(PathBuf::from("/usr/share/fonts"));
-        search_dirs.push(PathBuf::from("/usr/local/share/fonts"));
         if let Ok(home) = std::env::var("HOME") {
             search_dirs.push(PathBuf::from(&home).join(".fonts"));
             search_dirs.push(PathBuf::from(&home).join(".local/share/fonts"));
         }
+        search_dirs.push(PathBuf::from("/usr/local/share/fonts"));
+        search_dirs.push(PathBuf::from("/usr/share/fonts"));
     }
 
     #[cfg(target_os = "android")]
@@ -429,6 +429,73 @@ fn font_definitions() -> egui::FontDefinitions {
         }
     }
 
+    // Universal fallbacks for emojis, enclosed/math symbols, ancient/runic scripts, and CJK
+    let mut universal_fallbacks: Vec<String> = Vec::new();
+
+    // 1. Emojis (Segoe UI Emoji, Noto Color Emoji, Apple Color Emoji, Twemoji)
+    for (candidate, id) in [
+        ("seguiemj.ttf", "system_segoe_emoji"),
+        ("notocoloremoji.ttf", "system_noto_color_emoji"),
+        ("noto-color-emoji.ttf", "system_noto_color_emoji2"),
+        ("apple color emoji.ttf", "system_apple_emoji"),
+        ("apple color emoji.ttc", "system_apple_emoji_ttc"),
+        ("twemoji.ttf", "system_twemoji"),
+    ] {
+        if let Some(path) = font_map.get(candidate) {
+            if let Ok(bytes) = std::fs::read(path) {
+                fonts.font_data.insert(
+                    id.to_string(),
+                    egui::FontData::from_owned(bytes).into(),
+                );
+                if !universal_fallbacks.contains(&id.to_string()) {
+                    universal_fallbacks.push(id.to_string());
+                }
+                break;
+            }
+        }
+    }
+
+    // 2. Comprehensive Unicode glyph coverage: Math alphanumeric (bold, italic, script),
+    // Fraktur, Runes, Enclosed alphanumerics, Small Caps, Turned letters, Phonetics, and CJK.
+    // Load all present candidates so no script or aesthetic Unicode style is left as tofu.
+    for (candidate, id) in [
+        ("freeserif.otf", "system_freeserif_otf"),
+        ("freeserif.ttf", "system_freeserif_ttf"),
+        ("seguisym.ttf", "system_segoe_symbol"),
+        ("seguihis.ttf", "system_segoe_historic"),
+        ("freesans.otf", "system_freesans_otf"),
+        ("freesans.ttf", "system_freesans_ttf"),
+        ("freemono.otf", "system_freemono_otf"),
+        ("freemono.ttf", "system_freemono_ttf"),
+        ("symbola.ttf", "system_symbola"),
+        ("dejavumathtexgyre.ttf", "system_dejavu_math"),
+        ("dejavuserif-bolditalic.ttf", "system_dejavu_serif_bi"),
+        ("dejavuserif.ttf", "system_dejavu_serif"),
+        ("dejavusans.ttf", "system_dejavu_sans"),
+        ("unifont.ttf", "system_unifont"),
+        ("adwaitamono-regular.ttf", "system_adwaita_mono"),
+        ("malgun.ttf", "system_malgun"),
+        ("malgunbd.ttf", "system_malgun_bd"),
+        ("notosanscjk-regular.ttc", "system_notosans_cjk"),
+        ("droidsansfallback.ttf", "system_droid_cjk"),
+        ("wqy-microhei.ttc", "system_wqy_microhei"),
+        ("meiryo.ttf", "system_meiryo"),
+        ("msjhl.ttf", "system_msjhl"),
+        ("yugothic.ttf", "system_yugothic"),
+    ] {
+        if let Some(path) = font_map.get(candidate) {
+            if let Ok(bytes) = std::fs::read(path) {
+                fonts.font_data.insert(
+                    id.to_string(),
+                    egui::FontData::from_owned(bytes).into(),
+                );
+                if !universal_fallbacks.contains(&id.to_string()) {
+                    universal_fallbacks.push(id.to_string());
+                }
+            }
+        }
+    }
+
     for target in TARGETS {
         let mut loaded = false;
         for &candidate in target.file_candidates {
@@ -500,6 +567,38 @@ fn font_definitions() -> egui::FontDefinitions {
         }
     }
 
+    // Ensure the global Proportional family used for general UI (labels, headers, profile, contact list)
+    // uses the preferred interface font and has full access to emojis and Unicode fallbacks:
+    let prop_family = fonts.families.entry(egui::FontFamily::Proportional).or_default();
+    if fonts.font_data.contains_key("segoe_ui_regular") {
+        let id = "segoe_ui_regular".to_string();
+        if !prop_family.contains(&id) {
+            prop_family.insert(0, id);
+        }
+    }
+    for fb in &universal_fallbacks {
+        if !prop_family.contains(fb) {
+            prop_family.push(fb.clone());
+        }
+    }
+
+    // Ensure Monospace also has Unicode and emoji fallbacks:
+    let mono_family = fonts.families.entry(egui::FontFamily::Monospace).or_default();
+    for fb in &universal_fallbacks {
+        if !mono_family.contains(fb) {
+            mono_family.push(fb.clone());
+        }
+    }
+
+    // Ensure every named font family (e.g., "Segoe UI Bold", "Comic Sans MS") has Unicode & emoji fallbacks:
+    for family in fonts.families.values_mut() {
+        for fb in &universal_fallbacks {
+            if !family.contains(fb) {
+                family.push(fb.clone());
+            }
+        }
+    }
+
     fonts
 }
 
@@ -536,5 +635,55 @@ mod tests {
             assert!(!family.is_empty());
             assert!(family.iter().any(|f| fallback.contains(f)));
         }
+    }
+
+    #[test]
+    fn unicode_and_emojis_render_without_panics() {
+        let ctx = egui::Context::default();
+        install_fonts(&ctx);
+
+        let test_samples = [
+            "𝑴𝑬𝑵𝑺𝑨𝑮𝑬𝑴 𝑫𝑬 𝑻𝑬𝑺𝑻𝑬",
+            "𐌌𐌄𐌍𐌔𐌀𐌂𐌄𐌌 𐌃𐌄 𐌕𐌄𐌔𐌕𐌄",
+            "𝔐𝔈𝔑𝔖𝔄𝔊𝔈𝔐 𝔇𝔈 𝔗𝔈𝔖𝔗𝔈",
+            "𝕸𝕰𝕹𝕾𝕬𝕲𝕰𝕸 𝕯𝕰 𝕿𝕰𝕾𝕿𝕰",
+            "əʇsəʇ əp ɯəɓɐsuəW",
+            "ᴹᵉⁿˢᵃᵍᵉᵐ ᵈᵉ ᵗᵉˢᵗᵉ",
+            "ᴍᴇɴsᴀɢᴇᴍ ᴅᴇ ᴛᴇsᴛᴇ",
+            "⒨⒠⒩⒮⒜⒢⒠⒨ ⒟⒠ ⒯⒠⒮⒯⒠",
+            "ℳℰ𝒩𝒮𝒜𝒢ℰ𝑴 𝒟ℰ 𝒯ℰ𝒮𝒯ℰ",
+            "ᛗᛖᚾᛊᚨᚷᛖᛗ ᛞᛖ ᛏᛖᛊᛏᛖ",
+            "MᕮᘉSᗩGᕮM Dᕮ TᕮSTᕮ",
+            "MΣПƧΛGΣM DΣ TΣƧTΣ",
+            "MᕮᏁᏕᎯᎶᕮM Dᕮ ᎿᕮᏕᎿᕮ",
+            "😀 🔥 ❤️ ✨ 🎉 🚀 👍",
+        ];
+
+        let mut output = ctx.run_ui(egui::RawInput::default(), |ui| {
+            for sample in test_samples {
+                ui.label(egui::RichText::new(sample));
+                ui.label(egui::RichText::new(sample).family(egui::FontFamily::Name("Segoe UI Bold".into())));
+            }
+        });
+        output.textures_delta.clear();
+
+        ctx.fonts_mut(|fonts| {
+            for sample in test_samples {
+                let galley = fonts.layout_no_wrap(
+                    sample.to_string(),
+                    egui::FontId::new(14.0, egui::FontFamily::Name("Segoe UI Bold".into())),
+                    egui::Color32::WHITE,
+                );
+                for row in &galley.rows {
+                    for g in &row.glyphs {
+                        assert_ne!(
+                            g.chr, '\u{FFFD}',
+                            "Character '{}' (U+{:04X}) was replaced with U+FFFD in sample '{}'",
+                            g.chr, g.chr as u32, sample
+                        );
+                    }
+                }
+            }
+        });
     }
 }

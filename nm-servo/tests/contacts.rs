@@ -18,6 +18,7 @@ async fn consent_categories_private_details_and_import_export() {
             .json(&CreateConversationRequest {
                 member_ids: vec![b.user.id],
                 title: None,
+                members_can_invite: true,
             })
             .send()
             .await
@@ -196,6 +197,7 @@ async fn consent_categories_private_details_and_import_export() {
             .json(&CreateConversationRequest {
                 member_ids: vec![a.user.id],
                 title: None,
+                members_can_invite: true,
             })
             .send()
             .await

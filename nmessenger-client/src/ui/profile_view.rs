@@ -24,6 +24,23 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
         tr("User Profile - NMessenger", "Perfil de Usuário - NMessenger").to_string()
     };
 
+    if let Some(shared) = app.shared.clone() {
+        if !ctx.embed_viewports() && !crate::platform::is_mobile() {
+            dialog::show_deferred(
+                shared,
+                ctx,
+                "user-profile-view",
+                &title,
+                [480.0, 580.0],
+                content,
+                |app| {
+                    app.contact_forms.view_profile = None;
+                },
+            );
+            return;
+        }
+    }
+
     let open = dialog::show(ctx, "user-profile-view", &title, [480.0, 580.0], |ui| {
         content(app, ui)
     });
@@ -214,6 +231,7 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
                     CreateConversationRequest {
                         member_ids: vec![profile.id],
                         title: None,
+                        members_can_invite: true,
                     },
                 ));
                 done = true;

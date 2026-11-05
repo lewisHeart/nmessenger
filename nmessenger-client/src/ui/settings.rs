@@ -46,76 +46,99 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
         .with_decorations(super::window::system_titlebars(ctx))
         .with_transparent(true);
     if !is_mobile {
-        builder = builder
-            .with_inner_size(super::window::initial_size(ctx, "settings", [780.0, 590.0]))
-            .with_min_inner_size([680.0, 520.0]);
+        builder = builder.with_min_inner_size([680.0, 520.0]);
+        if !super::window::has_viewport_initialized(ctx, "settings") {
+            builder = builder.with_inner_size(super::window::initial_size(ctx, "settings", [780.0, 590.0]));
+            super::window::mark_viewport_initialized(ctx, "settings");
+        }
     }
+    let viewport_id = egui::ViewportId::from_hash_of("nmessenger-settings");
+
+    if let Some(shared) = app.shared.clone() {
+        if !ctx.embed_viewports() {
+            ctx.show_viewport_deferred(
+                viewport_id,
+                builder,
+                move |ui, class| {
+                    let mut guard = shared.lock().unwrap();
+                    render_settings_window(&mut *guard, ui, class, is_mobile);
+                },
+            );
+            return;
+        }
+    }
+
     ctx.show_viewport_immediate(
-        egui::ViewportId::from_hash_of("nmessenger-settings"),
+        viewport_id,
         builder,
         |ui, class| {
-            if class != egui::ViewportClass::EmbeddedWindow { super::window::record_size(ui.ctx(), "settings"); }
-            if !is_mobile {
-                super::window::minimum(ui.ctx(), Vec2::new(680.0, 520.0));
-            }
-            if ui.ctx().input(|i| i.viewport().close_requested()) {
-                app.options.open = false;
-            }
-            if class == egui::ViewportClass::EmbeddedWindow {
-                let mut open = app.options.open;
-                let mut close = false;
-                let screen = ui.ctx().content_rect();
-                let win_w = if is_mobile {
-                    screen.width()
-                } else {
-                    (screen.width() - 16.0).min(750.0)
-                };
-                let win_h = if is_mobile {
-                    screen.height()
-                } else {
-                    (screen.height() - 24.0).min(560.0)
-                };
-                let mut window = egui::Window::new(tr("Settings", "Configurações"))
-                    .title_bar(false)
-                    .collapsible(false)
-                    .vscroll(false)
-                    .hscroll(false)
-                    .frame(if is_mobile {
-                        egui::Frame::new()
-                            .fill(Color32::from_rgb(245, 248, 252))
-                            .inner_margin(egui::Margin::symmetric(10, 8))
-                    } else {
-                        super::dialog::frame()
-                    })
-                    .open(&mut open);
-                if is_mobile {
-                    window = window.fixed_pos(screen.min).fixed_size([win_w, win_h]);
-                } else {
-                    window = window.default_size([win_w, win_h]).max_size([win_w, win_h]);
-                }
-                window.show(ui.ctx(), |ui| {
-                    close |= super::dialog::embedded_title(ui, tr("Settings", "Configurações"));
-                    content(app, ui);
-                });
-                app.options.open = open && !close;
-            } else {
-                theme::window_bar_with_controls(
-                    ui,
-                    tr("Settings - NMessenger", "Configurações - NMessenger"),
-                    theme::WindowControls::CloseOnly,
-                );
-                egui::CentralPanel::default()
-                    .frame(
-                        egui::Frame::new()
-                            .fill(Color32::TRANSPARENT)
-                            .inner_margin(12),
-                    )
-                    .show(ui, |ui| content(app, ui));
-            }
-            super::announcements::show(app, ui.ctx());
+            render_settings_window(app, ui, class, is_mobile);
         },
     );
     if !app.options.open { super::window::forget_initial_size(ctx, "settings"); }
+}
+
+fn render_settings_window(app: &mut MessengerApp, ui: &mut egui::Ui, class: egui::ViewportClass, is_mobile: bool) {
+    if class != egui::ViewportClass::EmbeddedWindow { super::window::record_size(ui.ctx(), "settings"); }
+    if !is_mobile {
+        super::window::minimum(ui.ctx(), Vec2::new(680.0, 520.0));
+    }
+    if ui.ctx().input(|i| i.viewport().close_requested()) {
+        app.options.open = false;
+        super::window::forget_initial_size(ui.ctx(), "settings");
+    }
+    if class == egui::ViewportClass::EmbeddedWindow {
+        let mut open = app.options.open;
+        let mut close = false;
+        let screen = ui.ctx().content_rect();
+        let win_w = if is_mobile {
+            screen.width()
+        } else {
+            (screen.width() - 16.0).min(750.0)
+        };
+        let win_h = if is_mobile {
+            screen.height()
+        } else {
+            (screen.height() - 24.0).min(560.0)
+        };
+        let mut window = egui::Window::new(tr("Settings", "Configurações"))
+            .title_bar(false)
+            .collapsible(false)
+            .vscroll(false)
+            .hscroll(false)
+            .frame(if is_mobile {
+                egui::Frame::new()
+                    .fill(Color32::from_rgb(245, 248, 252))
+                    .inner_margin(egui::Margin::symmetric(10, 8))
+            } else {
+                super::dialog::frame()
+            })
+            .open(&mut open);
+        if is_mobile {
+            window = window.fixed_pos(screen.min).fixed_size([win_w, win_h]);
+        } else {
+            window = window.default_size([win_w, win_h]).max_size([win_w, win_h]);
+        }
+        window.show(ui.ctx(), |ui| {
+            close |= super::dialog::embedded_title(ui, tr("Settings", "Configurações"));
+            content(app, ui);
+        });
+        app.options.open = open && !close;
+    } else {
+        theme::window_bar_with_controls(
+            ui,
+            tr("Settings - NMessenger", "Configurações - NMessenger"),
+            theme::WindowControls::CloseOnly,
+        );
+        egui::CentralPanel::default()
+            .frame(
+                egui::Frame::new()
+                    .fill(Color32::TRANSPARENT)
+                    .inner_margin(12),
+            )
+            .show(ui, |ui| content(app, ui));
+    }
+    super::announcements::show(app, ui.ctx());
 }
 
 fn content(app: &mut MessengerApp, ui: &mut egui::Ui) {
@@ -1225,6 +1248,10 @@ fn privacy(app: &mut MessengerApp, ui: &mut egui::Ui) {
         ui.checkbox(
             &mut app.options.settings.allow_strangers,
             tr("Allow messages from people outside my contact list", "Permitir mensagens de pessoas fora da minha lista"),
+        );
+        ui.checkbox(
+            &mut app.options.settings.require_group_invite,
+            tr("Only join groups via invitation", "Só entrar em grupo via convite"),
         );
     });
     card(ui, |ui| {

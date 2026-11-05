@@ -644,6 +644,7 @@ fn group(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
                 member_ids: app.contact_forms.group_members.clone(),
                 title: Some(app.contact_forms.group_title.trim().to_owned())
                     .filter(|s| !s.is_empty()),
+                members_can_invite: true,
             }));
             app.contact_forms.group_members.clear();
             app.contact_forms.group_title.clear();

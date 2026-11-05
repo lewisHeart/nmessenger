@@ -122,6 +122,27 @@ pub fn show(app: &mut MessengerApp, ui: &mut egui::Ui, activity: &Activity) {
                 });
             }
             let me = app.data.as_ref().map(|data| data.me.id);
+            if activity.kind == ActivityKind::VideoCall {
+                let live_tiles: Vec<_> = app.live_frames.iter()
+                    .filter(|((id, _), _)| *id == activity.id)
+                    .map(|((_, user_id), texture)| (*user_id, texture.clone()))
+                    .collect();
+                if !live_tiles.is_empty() {
+                    ui.add_space(6.0);
+                    ui.horizontal_wrapped(|ui| {
+                        for (user_id, texture) in live_tiles {
+                            let size = texture.size_vec2();
+                            let aspect = if size.y > 0.0 { (size.x / size.y).clamp(0.5, 2.0) } else { 1.33 };
+                            let h = 90.0_f32;
+                            let w = h * aspect;
+                            ui.vertical(|ui| {
+                                ui.image((texture.id(), Vec2::new(w, h)));
+                                ui.label(RichText::new(app.name(user_id)).size(10.0).color(nmessenger::MUTED));
+                            });
+                        }
+                    });
+                }
+            }
             let shared = app.screen_frames.iter()
                 .find(|((id, user), _)| *id == activity.id && Some(*user) != me)
                 .or_else(|| app.screen_frames.iter().find(|((id, _), _)| *id == activity.id))

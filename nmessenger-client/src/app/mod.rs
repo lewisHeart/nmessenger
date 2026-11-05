@@ -21,6 +21,7 @@ use zeroize::Zeroize;
 pub const TOAST_SECONDS: f32 = 9.0;
 
 pub struct MessengerApp {
+    pub shared: Option<std::sync::Arc<std::sync::Mutex<MessengerApp>>>,
     pub transport: Transport,
     pub generation: u64,
     pub login: Login,
@@ -107,6 +108,7 @@ impl MessengerApp {
         #[cfg(target_os = "android")]
         cc.egui_ctx.set_embed_viewports(true);
         Self {
+            shared: None,
             transport: Transport::new(cc.egui_ctx.clone()),
             generation: 0,
             login: Login::default(),
@@ -189,6 +191,7 @@ impl MessengerApp {
     pub fn new_for_test() -> Self {
         let ctx = eframe::egui::Context::default();
         Self {
+            shared: None,
             transport: Transport::new(ctx),
             generation: 0,
             login: Login::default(),

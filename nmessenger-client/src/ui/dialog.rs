@@ -1,6 +1,75 @@
 use super::theme;
 use eframe::egui::{self, Color32, Vec2};
 
+pub fn show_deferred(
+    shared: std::sync::Arc<std::sync::Mutex<crate::app::MessengerApp>>,
+    ctx: &egui::Context,
+    identity: &'static str,
+    title: &str,
+    size: [f32; 2],
+    render: impl Fn(&mut crate::app::MessengerApp, &mut egui::Ui) -> bool + Send + Sync + 'static,
+    on_close: impl Fn(&mut crate::app::MessengerApp) + Send + Sync + 'static,
+) {
+    let mut builder = egui::ViewportBuilder::default()
+        .with_title(title)
+        .with_decorations(super::window::system_titlebars(ctx))
+        .with_transparent(true);
+    if !crate::platform::is_mobile() {
+        builder = builder.with_min_inner_size([size[0].min(460.0), size[1].min(320.0)]);
+        if !super::window::has_viewport_initialized(ctx, identity) {
+            builder = builder.with_inner_size(super::window::initial_size(ctx, identity, size));
+            super::window::mark_viewport_initialized(ctx, identity);
+        }
+    }
+
+    let viewport_id = egui::ViewportId::from_hash_of(identity);
+    let title_str = title.to_string();
+
+    ctx.show_viewport_deferred(
+        viewport_id,
+        builder,
+        move |ui, class| {
+            let mut guard = shared.lock().unwrap();
+            let app = &mut *guard;
+            if class != egui::ViewportClass::EmbeddedWindow {
+                super::window::record_size(ui.ctx(), identity);
+            }
+            if !crate::platform::is_mobile() {
+                super::window::minimum(ui.ctx(), Vec2::new(size[0].min(460.0), size[1].min(320.0)));
+            }
+
+            let mut close = ui
+                .ctx()
+                .input(|i| i.viewport().close_requested() || i.key_pressed(egui::Key::Escape));
+
+            theme::window_bar_with_controls(ui, &title_str, theme::WindowControls::CloseOnly);
+            egui::CentralPanel::default()
+                .frame(
+                    egui::Frame::new()
+                        .fill(Color32::TRANSPARENT)
+                        .inner_margin(16),
+                )
+                .show(ui, |ui| {
+                    if matches!(identity, "user-profile-view" | "user-profile-edit") {
+                        super::scroll::vertical()
+                            .id_salt((identity, "viewport-scroll"))
+                            .auto_shrink([false, false])
+                            .show(ui, |ui| {
+                                close |= ui.push_id(identity, |ui| render(app, ui)).inner;
+                            });
+                    } else {
+                        close |= ui.push_id(identity, |ui| render(app, ui)).inner;
+                    }
+                });
+
+            if close {
+                super::window::forget_initial_size(ui.ctx(), identity);
+                on_close(app);
+            }
+        },
+    );
+}
+
 /// A dialog owns a viewport instead of being clipped to the compact contact list.
 /// `content` returns true when the operation is submitted or cancelled.
 pub fn show(
@@ -27,9 +96,11 @@ pub fn show(
         .with_decorations(super::window::system_titlebars(ctx))
         .with_transparent(true);
     if !is_mobile {
-        builder = builder
-            .with_inner_size(super::window::initial_size(ctx, identity, size))
-            .with_min_inner_size([size[0].min(460.0), size[1].min(320.0)]);
+        builder = builder.with_min_inner_size([size[0].min(460.0), size[1].min(320.0)]);
+        if !super::window::has_viewport_initialized(ctx, identity) {
+            builder = builder.with_inner_size(super::window::initial_size(ctx, identity, size));
+            super::window::mark_viewport_initialized(ctx, identity);
+        }
     }
     ctx.show_viewport_immediate(
         egui::ViewportId::from_hash_of(identity),

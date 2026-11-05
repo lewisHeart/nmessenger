@@ -221,6 +221,61 @@ fn list(app: &mut MessengerApp, ui: &mut egui::Ui) {
             });
         ui.add_space(4.0);
     }
+    let pending_group_invites = app
+        .data
+        .as_ref()
+        .map(|d| d.conversation_invites.clone())
+        .unwrap_or_default();
+    if !pending_group_invites.is_empty() {
+        for invite in &pending_group_invites {
+            egui::Frame::new()
+                .fill(Color32::from_rgb(240, 246, 255))
+                .stroke(Stroke::new(1.0, Color32::from_rgb(170, 210, 245)))
+                .corner_radius(4)
+                .inner_margin(egui::Margin::symmetric(8, 6))
+                .show(ui, |ui| {
+                    ui.horizontal(|ui| {
+                        let inviter_name = invite.inviter.display_name.clone();
+                        let group_name = invite
+                            .conversation_title
+                            .clone()
+                            .unwrap_or_else(|| tr("Group", "Grupo").into());
+                        ui.label(
+                            RichText::new(format!(
+                                "📬 {} convidou você para '{}'",
+                                inviter_name, group_name
+                            ))
+                            .size(11.0)
+                            .color(nmessenger::HEADING),
+                        );
+                        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                            if ui
+                                .button(
+                                    RichText::new(tr("Decline", "Recusar"))
+                                        .size(10.5)
+                                        .color(Color32::from_rgb(150, 40, 40)),
+                                )
+                                .clicked()
+                            {
+                                app.send(Action::DeclineGroupInvite(invite.conversation_id));
+                            }
+                            if ui
+                                .button(
+                                    RichText::new(tr("Accept", "Aceitar"))
+                                        .size(10.5)
+                                        .color(nmessenger::BLUE)
+                                        .strong(),
+                                )
+                                .clicked()
+                            {
+                                app.send(Action::AcceptGroupInvite(invite.conversation_id));
+                            }
+                        });
+                    });
+                });
+            ui.add_space(4.0);
+        }
+    }
     if app.contact_filter == ContactFilter::Requests {
         friend_requests_view(app, ui, &contacts);
         return;
@@ -720,6 +775,7 @@ fn row(app: &mut MessengerApp, ui: &mut egui::Ui, contact: &Contact, size: Conta
             app.send(Action::CreateConversation(CreateConversationRequest {
                 member_ids: vec![contact.user.id],
                 title: None,
+                members_can_invite: true,
             }));
         }
         response.context_menu(|ui| {
@@ -727,6 +783,7 @@ fn row(app: &mut MessengerApp, ui: &mut egui::Ui, contact: &Contact, size: Conta
                 app.send(Action::CreateConversation(CreateConversationRequest {
                     member_ids: vec![contact.user.id],
                     title: None,
+                    members_can_invite: true,
                 }));
                 ui.close();
             }
@@ -1036,7 +1093,7 @@ fn group_row(
             app.open_conversation(group.id);
             ui.close();
         }
-        if ui.button(tr("Manage members / name...", "Gerenciar participantes / nome...")).clicked() {
+        if ui.button(tr("Invite / Manage members...", "Convidar / Gerenciar participantes...")).clicked() {
             app.open_conversation(group.id);
             app.conversation_forms.conversation = Some(group.id);
             app.conversation_forms.viewport = Some(if is_mobile {

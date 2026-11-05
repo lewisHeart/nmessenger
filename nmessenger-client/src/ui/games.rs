@@ -53,7 +53,7 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
                     ui.label(RichText::new("Jogo da velha").size(16.0).strong());
                     ui.label("Dois jogadores · partida em tempo real");
                     ui.add_space(8.0);
-                    if ui.add_enabled(conversation.members.len() == 2, egui::Button::new("Convidar para jogar")).clicked() {
+                    if ui.add_enabled(conversation.members.len() >= 2, egui::Button::new("Convidar para jogar")).clicked() {
                         app.send(Action::Activity(id, ActivityRequest { kind: ActivityKind::Game, payload: serde_json::json!({"game":"tic_tac_toe","version":1}) }));
                     }
                 });

@@ -59,6 +59,7 @@ fn conversation_window_title_formats_direct_with_email_and_group() {
         sessions: vec![],
         assets: vec![],
         activities: vec![],
+        conversation_invites: vec![],
     });
     let direct_conv = Conversation {
         id: Uuid::new_v4(),
@@ -81,6 +82,7 @@ fn conversation_window_title_formats_direct_with_email_and_group() {
                 badges: vec![],
             },
         ],
+        members_can_invite: true,
         updated_at: chrono::Utc::now(),
         unread: 0,
         last_message: None,
@@ -95,6 +97,7 @@ fn conversation_window_title_formats_direct_with_email_and_group() {
         title: Some("Galera do MSN".into()),
         kind: ConversationKind::Group,
         members: vec![],
+        members_can_invite: true,
         updated_at: chrono::Utc::now(),
         unread: 0,
         last_message: None,
