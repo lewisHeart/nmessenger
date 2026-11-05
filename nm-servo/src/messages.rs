@@ -278,7 +278,6 @@ async fn send(
         .await?;
     let message = row.model()?;
     crate::outbox::enqueue(&mut tx, &members, &message).await?;
-    crate::push::enqueue(&mut tx, &peers, message.id).await?;
     tx.commit().await?;
     Ok(web::Json(message))
 }

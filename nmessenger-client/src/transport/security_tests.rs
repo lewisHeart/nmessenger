@@ -5,6 +5,63 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use reqwest::Method;
 
 #[actix_web::test]
+async fn group_member_changes_do_not_require_manual_verification() {
+    let Some(server) = server::TestServer::start().await else { return; };
+    let alice = server.register("Alice").await;
+    let bob = server.register("Bob").await;
+    let carol = server.register("Carol").await;
+    server.befriend(&alice, &bob).await;
+    server.befriend(&alice, &carol).await;
+    let group = server.group(&alice, &[&bob]).await;
+    let connect = |user: &AuthResponse| api::authenticate(server.url.clone(), user.user.email.clone(),
+        "test password 123".into(), "Group test".into(), None, Presence::Available, None);
+    let (a, _) = connect(&alice).await.unwrap();
+    let (_b, _) = connect(&bob).await.unwrap();
+    let (c, _) = connect(&carol).await.unwrap();
+    let added: Conversation = a.json(Method::POST, &format!("/conversations/{}/members", group.id), &MemberRequest { user_id: carol.user.id }).await.unwrap();
+    assert_eq!(added.members.len(), 3);
+    let _: Vec<Conversation> = c.get("/conversations").await.unwrap();
+    let message: Message = a.json(Method::POST, &format!("/conversations/{}/messages", group.id), &server::send_request("grupo atualizado")).await.unwrap();
+    let history = c.history(group.id, None, "").await.unwrap();
+    assert_eq!(history.iter().find(|entry| entry.id == message.id).unwrap().body, "grupo atualizado");
+    a.empty(Method::DELETE, &format!("/conversations/{}/members/{}", group.id, carol.user.id)).await.unwrap();
+    let _: Vec<Conversation> = a.get("/conversations").await.unwrap();
+    let _: Message = a.json(Method::POST, &format!("/conversations/{}/messages", group.id), &server::send_request("grupo após remoção")).await.unwrap();
+    server.shutdown().await;
+}
+
+#[actix_web::test]
+async fn encrypted_group_history_can_be_restored_on_a_new_device() {
+    let Some(server) = server::TestServer::start().await else { return; };
+    let alice = server.register("Sender").await;
+    let bob = server.register("Recipient").await;
+    server.befriend(&alice, &bob).await;
+    let group = server.group(&alice, &[&bob]).await;
+    let connect = |account: &AuthResponse| api::authenticate(server.url.clone(), account.user.email.clone(),
+        "test password 123".into(), "History test".into(), None, Presence::Available, None);
+    let (sender, _) = connect(&alice).await.unwrap();
+    let (old, _) = connect(&bob).await.unwrap();
+    let sent: Message = sender.json(Method::POST, &format!("/conversations/{}/messages", group.id), &server::send_request("histórico privado")).await.unwrap();
+    assert_eq!(old.history(group.id, None, "").await.unwrap().last().unwrap().body, "histórico privado");
+    let (_, export) = super::opaque::login(&old.client, &old.base, &bob.user.email, "test password 123", "History test").await.unwrap().unwrap();
+    old.sync_cloud_history(&export).await.unwrap();
+    let old_device = old.crypto.as_ref().unwrap().device;
+    let account = crate::secure::account(&old.base, &bob.user.id.to_string());
+    let directory = crate::storage::directory().join("identities");
+    for suffix in ["json", "pins.json", "files", "rosters", "history"] {
+        let path = directory.join(format!("{account}.{suffix}"));
+        if tokio::fs::try_exists(&path).await.unwrap() {
+            tokio::fs::rename(&path, directory.join(format!("{account}.{suffix}.history-test"))).await.unwrap();
+        }
+    }
+    let (new, _) = connect(&bob).await.unwrap();
+    assert_ne!(new.crypto.as_ref().unwrap().device, old_device);
+    let history = new.history(group.id, None, "").await.unwrap();
+    assert_eq!(history.iter().find(|message| message.id == sent.id).unwrap().body, "histórico privado");
+    server.shutdown().await;
+}
+
+#[actix_web::test]
 async fn custom_emoticon_is_uploaded_and_sent_as_an_encrypted_attachment() {
     let Some(server) = server::TestServer::start().await else { return; };
     let sender = server.register("Emoticon sender").await;
@@ -128,6 +185,36 @@ async fn password_reset_keeps_the_existing_device_identity() {
     assert_eq!(after.crypto.as_ref().unwrap().device, old_device);
     let (again, _) = login("new test password", None).await.unwrap();
     assert_eq!(again.crypto.as_ref().unwrap().device, old_device);
+    server.shutdown().await;
+}
+
+#[actix_web::test]
+async fn password_reset_history_recovery_works_on_a_fresh_device() {
+    let Some(server) = server::TestServer::start().await else { return; };
+    let admin = server.register("Administrator").await;
+    let user = server.register("History user").await;
+    sqlx::query("INSERT INTO app_admins(user_id) VALUES($1)").bind(admin.user.id).execute(&server.state.db).await.unwrap();
+    let login = |password: &str, old: Option<&str>| api::authenticate(server.url.clone(), user.user.email.clone(),
+        password.to_owned(), "History reset".into(), None, Presence::Available, old.map(str::to_owned));
+    let (before, _) = login("test password 123", None).await.unwrap();
+    let old_device = before.crypto.as_ref().unwrap().device;
+    let response = server.request(Method::POST, &format!("/admin/users/{}/password", user.user.id), &admin)
+        .json(&serde_json::json!({"password":"new test password", "confirmation_password":"test password 123"})).send().await.unwrap();
+    assert!(response.status().is_success());
+    let account = crate::secure::account(&before.base, &user.user.id.to_string());
+    let directory = crate::storage::directory().join("identities");
+    for suffix in ["json", "pins.json", "files", "rosters", "history"] {
+        let path = directory.join(format!("{account}.{suffix}"));
+        if tokio::fs::try_exists(&path).await.unwrap() {
+            tokio::fs::rename(&path, directory.join(format!("{account}.{suffix}.reset-test"))).await.unwrap();
+        }
+    }
+    let error = match login("new test password", None).await { Ok(_) => panic!("old backup must not be overwritten"), Err(error) => error };
+    assert!(error.contains("Não foi possível desbloquear a identidade local"));
+    let (after, _) = login("new test password", Some("test password 123")).await.unwrap();
+    assert_ne!(after.crypto.as_ref().unwrap().device, old_device);
+    let (again, _) = login("new test password", None).await.unwrap();
+    assert_eq!(again.crypto.as_ref().unwrap().device, after.crypto.as_ref().unwrap().device);
     server.shutdown().await;
 }
 

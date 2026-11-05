@@ -5,6 +5,7 @@ mod encryption;
 mod events;
 mod models;
 mod requests;
+pub mod secure_auth;
 
 pub use announcements::*;
 pub use admin::*;

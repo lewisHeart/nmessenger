@@ -1,5 +1,7 @@
 #[cfg(target_os = "android")]
 mod android;
+#[cfg(target_os = "android")]
+mod background_socket;
 mod app;
 pub mod bot_sdk;
 mod encryption;

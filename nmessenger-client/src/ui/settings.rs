@@ -255,14 +255,10 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) {
                             let text = page_label(*page, label);
                             let font = FontId::proportional(12.0);
                             let text_w = ui.fonts_mut(|f| f.layout_no_wrap(text.to_string(), font.clone(), Color32::WHITE).size().x);
-                            let (rect, resp) = ui.allocate_exact_size(Vec2::new(text_w + 22.0, 30.0), egui::Sense::click_and_drag());
+                            let (rect, resp) = ui.allocate_exact_size(Vec2::new(text_w + 22.0, 30.0), egui::Sense::click());
                             let resp = resp.on_hover_cursor(egui::CursorIcon::PointingHand);
                             let held = resp.is_pointer_button_down_on();
                             let hovered = resp.hovered();
-
-                            if selected {
-                                resp.scroll_to_me(Some(egui::Align::Center));
-                            }
 
                             let (bg, stroke, text_color) = if selected {
                                 if held {
@@ -388,7 +384,8 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) {
         .id_salt("settings-content")
         .auto_shrink([false, false])
         .show(ui, |ui| {
-            ui.set_min_width(ui.available_width());
+            let inner_w = ui.available_width();
+            ui.set_width(inner_w);
             if let Some(error) = &app.options.error {
                 ui.colored_label(Color32::from_rgb(185, 28, 28), error);
                 ui.add_space(8.0);
@@ -430,22 +427,18 @@ fn heading(ui: &mut egui::Ui, title: &str, subtitle: &str) {
 
 fn card(ui: &mut egui::Ui, contents: impl FnOnce(&mut egui::Ui)) {
     let is_mob = crate::platform::is_mobile();
-    let avail_w = if is_mob {
-        ui.available_width()
-    } else {
-        (ui.available_width() - 8.0).max(0.0)
-    };
+    let pad_h = if is_mob { 12 } else { 14 };
+    let pad_v = if is_mob { 10 } else { 14 };
     egui::Frame::new()
         .fill(Color32::from_white_alpha(226))
         .corner_radius(8)
-        .inner_margin(if is_mob {
-            egui::Margin::symmetric(12, 10)
-        } else {
-            egui::Margin::same(14)
-        })
+        .inner_margin(egui::Margin::symmetric(pad_h, pad_v))
         .stroke(egui::Stroke::new(0.8_f32, Color32::from_rgb(217, 230, 242)))
         .show(ui, |ui| {
-            ui.set_min_width(avail_w);
+            let inner_w = ui.available_width();
+            ui.set_max_width(inner_w);
+            ui.set_width(inner_w);
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             super::glass::gloss_line(ui);
             contents(ui);
         });
@@ -705,10 +698,15 @@ fn interface(app: &mut MessengerApp, ui: &mut egui::Ui) {
                     .small()
                     .color(nmessenger::MUTED),
             );
+            let default_lbl = if crate::platform::is_mobile() {
+                "125%"
+            } else {
+                tr("125% (Default)", "125% (Padrão)")
+            };
             for (scale, label) in [
                 (0.80, "80%"),
                 (1.0, "100%"),
-                (1.25, tr("125% (Default)", "125% (Padrão)")),
+                (1.25, default_lbl),
                 (1.50, "150%"),
             ] {
                 let active = (app.options.local.ui_scale - scale).abs() < 0.03;

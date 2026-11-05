@@ -15,6 +15,7 @@ mod identity;
 mod messages;
 mod models;
 mod outbox;
+mod opaque_auth;
 mod presence;
 mod privacy;
 mod push;
@@ -156,6 +157,7 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
             .route("/health", web::get().to(health))
             .route("/events", web::get().to(ws::upgrade))
             .configure(auth::routes)
+            .configure(opaque_auth::routes)
             .configure(admin::routes)
             .configure(bots::routes)
             .configure(encryption::routes)

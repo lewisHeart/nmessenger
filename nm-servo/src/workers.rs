@@ -30,7 +30,6 @@ pub async fn start(state: &AppState) -> Result<Workers> {
     let state = state.clone();
     let sweep_state = state.clone();
     let outbox_state = state.clone();
-    let push_state = state.clone();
     let subscriber = tokio::spawn(async move {
         loop {
             {
@@ -69,6 +68,5 @@ pub async fn start(state: &AppState) -> Result<Workers> {
         }
     });
     let outbox = tokio::spawn(crate::outbox::run(outbox_state));
-    let push = tokio::spawn(crate::push::run(push_state));
-    Ok(Workers(vec![subscriber, sweeper, outbox, push]))
+    Ok(Workers(vec![subscriber, sweeper, outbox]))
 }

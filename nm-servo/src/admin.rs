@@ -132,6 +132,9 @@ async fn reset_password(state: web::Data<AppState>, session: Session, target: we
     auth::valid_on(&state, &mut *tx, &session).await?;
     let changed = sqlx::query("UPDATE users SET password_hash=$2 WHERE id=$1 AND deleted_at IS NULL").bind(*target).bind(hash).execute(&mut *tx).await?;
     if changed.rows_affected() == 0 { return Err(Error::missing()); }
+    sqlx::query("INSERT INTO opaque_recovery_credentials(user_id,record) SELECT user_id,record FROM opaque_credentials WHERE user_id=$1 ON CONFLICT(user_id) DO NOTHING")
+        .bind(*target).execute(&mut *tx).await?;
+    sqlx::query("DELETE FROM opaque_credentials WHERE user_id=$1").bind(*target).execute(&mut *tx).await?;
     let revoked: Vec<Uuid> = sqlx::query_scalar("UPDATE auth_sessions SET revoked_at=clock_timestamp() WHERE user_id=$1 AND revoked_at IS NULL RETURNING id").bind(*target).fetch_all(&mut *tx).await?;
     audit(&mut tx, session.user_id, "user.reset_password", Some(*target), None, serde_json::json!({})).await?;
     tx.commit().await?;

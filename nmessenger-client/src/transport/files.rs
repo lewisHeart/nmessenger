@@ -110,6 +110,9 @@ pub async fn import_identity_backup(api: &Api, bus: &Bus, password: String) -> R
     if bytes.len() > 32768 { return Err("Arquivo de identidade inválido".into()); }
     api.crypto.as_ref().ok_or("Criptografia não iniciada")?
         .import_identity_backup(bytes, password.to_string()).await?;
+    if let Some(key) = api.crypto.as_ref().ok_or("Criptografia não iniciada")?.history_export_key()? {
+        api.sync_cloud_history(&key).await?;
+    }
     bus.send(Update::HistoryBackupFinished { imported: true, result: Ok(true) });
     Ok(())
 }

@@ -22,12 +22,12 @@ futures-util = "0.3"
 hex = "0.4.3"
 hmac = "0.13"
 rand = "0.10.3"
-reqwest = { version = "0.13.5", default-features = false, features = ["json", "multipart", "query", "rustls"] }
+rustls = { version = "0.23", default-features = false, features = ["aws_lc_rs"] }
 redis = { version = "1.8.1", features = ["tokio-comp", "connection-manager"] }
 sha2 = "0.11.1"
 sqlx = { version = "0.9.0", features = ["runtime-tokio", "tls-rustls-ring-webpki", "postgres", "uuid", "chrono", "json", "migrate"] }
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
-web-push = { version = "0.11", default-features = false }
 
 [dev-dependencies]
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "multipart", "query", "rustls"] }
 tokio-tungstenite = "0.30.0"

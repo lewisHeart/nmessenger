@@ -109,6 +109,7 @@ pub struct AppState {
 impl AppState {
     /// Migrations run for every server/test instance; SQLx takes a PostgreSQL advisory lock.
     pub async fn connect(config: &Config) -> Result<Self> {
+        let _ = rustls::crypto::aws_lc_rs::default_provider().install_default();
         let db = PgPoolOptions::new()
             .max_connections(20)
             .after_connect(|connection, _| {

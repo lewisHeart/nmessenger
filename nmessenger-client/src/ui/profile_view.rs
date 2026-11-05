@@ -68,7 +68,10 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
         .corner_radius(8)
         .inner_margin(egui::Margin::symmetric(14, 12))
         .show(ui, |ui| {
-            ui.set_min_width(ui.available_width());
+            let inner_w = ui.available_width();
+            ui.set_max_width(inner_w);
+            ui.set_width(inner_w);
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             ui.horizontal(|ui| {
                 // Large Avatar (64x64) with status frame
                 theme::avatar(app, ui, &profile, 64.0);
@@ -148,7 +151,10 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
         .corner_radius(8)
         .inner_margin(egui::Margin::symmetric(10, 8))
         .show(ui, |ui| {
-            ui.set_min_width(ui.available_width());
+            let inner_w = ui.available_width();
+            ui.set_max_width(inner_w);
+            ui.set_width(inner_w);
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
             if profile.badges.is_empty() {
                 ui.vertical_centered(|ui| {
                     ui.add_space(6.0);
@@ -186,15 +192,24 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
         .corner_radius(8)
         .inner_margin(egui::Margin::symmetric(12, 10))
         .show(ui, |ui| {
-            ui.set_min_width(ui.available_width());
-            ui.set_min_height(120.0);
-            ui.set_max_height(180.0);
-            super::scroll::vertical()
-                .auto_shrink([false, false])
-                .id_salt("profile-bio-scroll")
-                .show(ui, |ui| {
-                    super::markdown::render(app, ui, &profile.bio);
-                });
+            let inner_w = ui.available_width();
+            ui.set_max_width(inner_w);
+            ui.set_width(inner_w);
+            ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
+            let is_mob = crate::platform::is_mobile();
+            if is_mob {
+                ui.set_min_height(80.0);
+                super::markdown::render(app, ui, &profile.bio);
+            } else {
+                ui.set_min_height(120.0);
+                ui.set_max_height(180.0);
+                super::scroll::vertical()
+                    .auto_shrink([false, false])
+                    .id_salt("profile-bio-scroll")
+                    .show(ui, |ui| {
+                        super::markdown::render(app, ui, &profile.bio);
+                    });
+            }
         });
 
     ui.add_space(14.0);

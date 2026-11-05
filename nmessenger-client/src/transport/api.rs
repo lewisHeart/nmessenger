@@ -35,6 +35,7 @@ pub fn base(server: &str) -> Result<String, String> {
 }
 
 pub(crate) fn client() -> Result<Client, String> {
+    let _ = rustls::crypto::aws_lc_rs::default_provider().install_default();
     let mut root_store = rustls::RootCertStore::empty();
     root_store.extend(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
     let tls_config = rustls::ClientConfig::builder()
@@ -314,6 +315,12 @@ pub async fn authenticate(
     let identity_password = identity_password.map(Zeroizing::new);
     let client = client()?;
     let base = base(&server)?;
+    let secure = if name.is_none() {
+        super::opaque::login(&client, &base, &email, &password, &device_name).await?
+    } else { None };
+    let (auth, mut export_key) = if let Some((auth, key)) = secure {
+        (auth, Some(key))
+    } else {
     let response = if let Some(display_name) = name {
         let mut request = RegisterRequest {
             email,
@@ -371,6 +378,8 @@ pub async fn authenticate(
             }
         })?;
     let auth: AuthResponse = bounded_json(response).await?;
+    (auth, None)
+    };
     let api = Api {
         client,
         base,
@@ -381,13 +390,26 @@ pub async fn authenticate(
     };
     let mut api = api;
     let result = async {
-        if let Some(old_password) = identity_password {
-            let account = crate::secure::account(&api.base, &api.user_id.to_string());
-            crate::identity_vault::rewrap(&account, &old_password, &password).await?;
-        }
-        let crypto = Arc::new(crate::encryption::Crypto::load(&api.base, api.user_id, &password).await?);
+        let crypto = match crate::encryption::Crypto::load(&api.base, api.user_id, &password).await {
+            Ok(crypto) => crypto,
+            Err(error) => if let Some(old_password) = identity_password.as_deref() {
+                let account = crate::secure::account(&api.base, &api.user_id.to_string());
+                crate::identity_vault::rewrap(&account, old_password, &password).await?;
+                crate::encryption::Crypto::load(&api.base, api.user_id, &password).await?
+            } else { return Err(error); },
+        };
+        let crypto = Arc::new(crypto);
         api.crypto = Some(crypto.clone());
+        let previous_key = if let Some(old_password) = identity_password.as_deref() {
+            super::opaque::recover(&api, old_password).await?
+        } else { None };
+        if export_key.is_none() { export_key = super::opaque::enroll(&api, &password).await?; }
         api.json::<EncryptionKey, _>(Method::POST, "/encryption/keys", &crypto.registration()).await?;
+        if let Some(key) = &export_key {
+            api.sync_cloud_history_with_previous(key, previous_key.as_deref().map(|value| value.as_slice())).await?;
+            crypto.set_history_export_key(key)?;
+            if previous_key.is_some() { api.empty(Method::POST, "/auth/opaque/recovery/complete").await?; }
+        }
         api.json::<Profile, _>(Method::PATCH, "/me", &UpdateProfileRequest {
             presence: Some(presence),
             ..Default::default()

@@ -300,7 +300,8 @@ fn tab_navigation(app: &mut MessengerApp, ui: &mut egui::Ui) {
                         })
                         .corner_radius(16)
                         .min_size(Vec2::new(0.0, 32.0));
-                    if ui.add(btn).clicked() {
+                    let resp = ui.add(btn);
+                    if resp.clicked() {
                         app.admin.tab = index;
                         app.admin.offset = 0;
                         app.admin.pending = None;
@@ -423,13 +424,18 @@ fn search_bar(app: &mut MessengerApp, ui: &mut egui::Ui) {
 }
 
 fn card(ui: &mut egui::Ui, content: impl FnOnce(&mut egui::Ui)) {
+    let is_mob = crate::platform::is_mobile();
+    let margin = if is_mob { 10 } else { 12 };
     let frame = egui::Frame::new()
         .fill(Color32::WHITE)
         .stroke(egui::Stroke::new(1.0, Color32::from_rgb(220, 233, 245)))
         .corner_radius(8)
-        .inner_margin(12);
+        .inner_margin(margin);
     frame.show(ui, |ui| {
-        ui.set_min_width((ui.available_width() - 2.0).max(0.0));
+        let w = ui.available_width();
+        ui.set_max_width(w);
+        ui.set_width(w);
+        ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
         glass::gloss_line(ui);
         content(ui);
     });
@@ -443,16 +449,20 @@ fn kpi_card(
     subtitle: &str,
     icon: &str,
     accent: Color32,
-    width: f32,
+    outer_width: f32,
 ) {
+    let margin = 10;
     let frame = egui::Frame::new()
         .fill(Color32::WHITE)
         .stroke(egui::Stroke::new(1.0, Color32::from_rgb(218, 232, 245)))
         .corner_radius(8)
-        .inner_margin(12);
+        .inner_margin(margin);
 
+    let inner_width = (outer_width - (margin as f32 * 2.0)).max(60.0);
     frame.show(ui, |ui| {
-        ui.set_width(width);
+        ui.set_max_width(inner_width);
+        ui.set_width(inner_width);
+        ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
         ui.vertical(|ui| {
             ui.horizontal(|ui| {
                 ui.label(RichText::new(icon).size(14.0));
@@ -482,10 +492,11 @@ fn overview(app: &MessengerApp, ui: &mut egui::Ui) {
 
     ui.add_space(4.0);
     let is_mob = crate::platform::is_mobile();
+    let spacing_x = ui.spacing().item_spacing.x;
     let card_width = if is_mob {
-        ((ui.available_width() - 16.0) / 2.0).max(120.0)
+        ((ui.available_width() - spacing_x - 4.0) / 2.0).floor().max(90.0)
     } else {
-        ((ui.available_width() - 80.0) / 3.0).max(150.0)
+        ((ui.available_width() - spacing_x * 2.0 - 4.0) / 3.0).floor().max(140.0)
     };
 
     // Row 1 of KPI cards

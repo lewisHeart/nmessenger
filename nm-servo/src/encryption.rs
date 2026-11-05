@@ -7,6 +7,7 @@ use crate::{
 use actix_web::web;
 use base64::{Engine, engine::general_purpose::STANDARD};
 use nm_protocol::{EncryptionKey, RegisterEncryptionKey};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 async fn register(
@@ -107,11 +108,43 @@ async fn keys(
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/encryption/keys", web::post().to(register))
+        .service(web::resource("/encryption/history-backup")
+            .route(web::get().to(get_history_backup))
+            .route(web::put().to(put_history_backup)))
         .route("/conversations/{id}/encryption/keys", web::get().to(keys))
         .route(
             "/activities/{id}/encryption/keys",
             web::get().to(activity_keys),
         );
+}
+
+#[derive(Serialize)]
+struct BackupResponse { revision: i64, ciphertext: String }
+#[derive(Deserialize)]
+struct BackupUpdate { revision: i64, ciphertext: String }
+
+async fn get_history_backup(state: web::Data<AppState>, session: Session) -> Result<actix_web::HttpResponse> {
+    let row: Option<(i64, String)> = sqlx::query_as("SELECT revision,ciphertext FROM encrypted_history_backups WHERE user_id=$1")
+        .bind(session.user_id).fetch_optional(&state.db).await?;
+    Ok(match row { Some((revision, ciphertext)) => actix_web::HttpResponse::Ok().json(BackupResponse { revision, ciphertext }), None => actix_web::HttpResponse::NoContent().finish() })
+}
+
+async fn put_history_backup(state: web::Data<AppState>, session: Session, body: web::Json<BackupUpdate>) -> Result<web::Json<BackupResponse>> {
+    if body.revision < 0 || body.ciphertext.len() > 131072 || body.ciphertext.is_empty() {
+        return Err(Error::bad("Backup criptografado inválido"));
+    }
+    state.rate(&format!("history-backup:{}", session.user_id), 30, 60).await?;
+    let mut tx = state.db.begin().await?;
+    // Serialize first creation too: concurrent devices must never overwrite one another.
+    sqlx::query("SELECT id FROM users WHERE id=$1 FOR UPDATE").bind(session.user_id).fetch_one(&mut *tx).await?;
+    let current: Option<i64> = sqlx::query_scalar("SELECT revision FROM encrypted_history_backups WHERE user_id=$1")
+        .bind(session.user_id).fetch_optional(&mut *tx).await?;
+    if current.unwrap_or(0) != body.revision { return Err(Error::conflict("Backup alterado em outro dispositivo")); }
+    let revision = body.revision.checked_add(1).ok_or_else(Error::internal)?;
+    sqlx::query("INSERT INTO encrypted_history_backups(user_id,revision,ciphertext) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET revision=EXCLUDED.revision,ciphertext=EXCLUDED.ciphertext,updated_at=now()")
+        .bind(session.user_id).bind(revision).bind(&body.ciphertext).execute(&mut *tx).await?;
+    tx.commit().await?;
+    Ok(web::Json(BackupResponse { revision, ciphertext: body.ciphertext.clone() }))
 }
 
 async fn activity_keys(

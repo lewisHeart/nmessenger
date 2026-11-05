@@ -5,6 +5,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+opaque-ke = { version = "3.0", features = ["argon2", "ristretto255"] }
+argon2 = "0.5"
+rand = "0.8"
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true

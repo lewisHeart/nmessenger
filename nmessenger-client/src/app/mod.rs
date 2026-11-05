@@ -1133,6 +1133,23 @@ impl eframe::App for MessengerApp {
             && self.data.as_ref().is_some_and(|data| data.conversations.iter().any(|item| item.id == conversation)) {
             self.open_conversation(conversation);
         }
+        #[cfg(target_os = "android")]
+        if self.data.is_some() && let Some(action) = crate::android::take_notification_action()
+            && let Some(conversation) = action.get("conversation").and_then(|v| v.as_str()).and_then(|v| v.parse::<Uuid>().ok())
+            && self.data.as_ref().is_some_and(|data| data.conversations.iter().any(|item| item.id == conversation)) {
+            match action.get("type").and_then(|v| v.as_str()) {
+                Some("read") => {
+                    let message = action.get("message").and_then(|v| v.as_str()).and_then(|v| v.parse::<Uuid>().ok());
+                    if let Some(message) = message { self.send(Action::Read(conversation, Some(message))); }
+                }
+                Some("reply") => {
+                    if let Some(text) = action.get("text").and_then(|v| v.as_str()).filter(|v| !v.trim().is_empty()) {
+                        self.send_message(conversation, MessageKind::Text, text.to_owned(), None);
+                    }
+                }
+                _ => {}
+            }
+        }
         if ctx.input(|i| i.viewport().close_requested()) && !self.quitting {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));

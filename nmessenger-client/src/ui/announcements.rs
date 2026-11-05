@@ -328,7 +328,11 @@ pub fn modal(app: &mut MessengerApp, ctx: &egui::Context) {
     let current_pos = items.iter().position(|it| it.id == item.id);
 
     let screen = ctx.content_rect();
-    let modal_width = (screen.width() - 32.0).min(340.0).max(260.0);
+    let is_mob = crate::platform::is_mobile();
+    let margin_x = if is_mob { 24.0 } else { 36.0 };
+    let frame_pad_x = 32.0; // 16px de cada lado do inner_margin
+    let max_inner = (screen.width() - (margin_x * 2.0) - frame_pad_x).max(180.0);
+    let modal_width = max_inner.min(360.0);
     let modal = egui::Modal::new(egui::Id::unique("announcement-detail-modal"))
         .backdrop_color(Color32::from_black_alpha(130))
         .frame(
@@ -349,6 +353,7 @@ pub fn modal(app: &mut MessengerApp, ctx: &egui::Context) {
     let mut next_item = None;
 
     let response = modal.show(ctx, |ui| {
+        ui.set_max_width(modal_width);
         ui.set_width(modal_width);
 
         // Header: Category, pagination if multiple, and close button

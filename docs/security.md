@@ -33,13 +33,19 @@ Cryptographic keypairs are generated strictly on the client device and are never
 
 ## 3. Multi-Device & Historical Message Recovery
 
-Because keys are stored locally on each client device:
+A newly registered device generates its own device keypair. On login, it merges
+the account's encrypted history-key archive and publishes its own key into the
+archive. The archive is protected using an OPAQUE export key and an authenticated
+cipher; the server stores ciphertext and a revision number. Concurrent updates
+are merged using compare-and-swap.
 
-- A newly registered or secondary device generates its own device keypair.
-- To decrypt historical messages on a new device, the user can export their cryptographic identity from an existing active device:
-  1. Open **Options > Privacy > Recover older messages** on the active device.
-  2. Export the encrypted identity backup file.
-  3. Import the backup file on the new device, unlocking it with the account password.
+Existing devices must log in with a version that supports this archive before
+their historical keys can be restored elsewhere. Keys already lost cannot be
+reconstructed. An administrator password reset requires the previous password
+to recover and re-encrypt the archive. The legacy registration and migration
+paths still send the password to the server; therefore this is not yet a
+zero-knowledge authentication system for every account lifecycle operation.
+Manual identity export and import remain available for older devices.
 
 ---
 
@@ -51,4 +57,3 @@ Because keys are stored locally on each client device:
   Unencrypted HTTP and WS are permitted exclusively on loopback addresses (`127.0.0.1` and `localhost`) to facilitate local container development and automated testing.
 - **Session Tokens**:
   Authentication bearer tokens are cryptographically randomized UUIDv4/hex strings stored in Redis with an enforced TTL (`SESSION_TTL_SECS`).
-

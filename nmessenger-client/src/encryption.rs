@@ -44,6 +44,7 @@ mod tests {
             files: Mutex::new(HashMap::new()),
             historical: Mutex::new(Vec::new()),
             historical_write: tokio::sync::Mutex::new(()),
+            history_export_key: Mutex::new(None),
         }
     }
     fn public(crypto: &Crypto) -> EncryptionKey {
@@ -75,6 +76,26 @@ mod tests {
         assert_ne!(current.device, old.device);
         all_keys.retain(|key| key.device_id != old.device);
         assert!(current.open(&envelope, &binding, &all_keys).is_err());
+    }
+
+    #[tokio::test]
+    async fn encrypted_cloud_archive_restores_old_device_messages_and_rejects_tampering() {
+        let user = Uuid::new_v4();
+        let sender = identity(Uuid::new_v4());
+        let old = identity(user);
+        let current = identity(user);
+        let binding = Binding::message(Uuid::new_v4(), sender.user, Uuid::new_v4(), MessageKind::Text, None);
+        let mut keys = vec![public(&sender), public(&old)];
+        let envelope = sender.seal(b"group history", &binding, &keys).unwrap();
+        keys.push(public(&current));
+        let archive = old.seal_cloud_history(&[7; 64]).unwrap();
+        assert!(current.merge_cloud_history(&archive, &[8; 64]).await.is_err());
+        let mut tampered = archive.clone();
+        *tampered.last_mut().unwrap() ^= 1;
+        assert!(current.merge_cloud_history(&tampered, &[7; 64]).await.is_err());
+        current.merge_cloud_history(&archive, &[7; 64]).await.unwrap();
+        assert_eq!(current.open(&envelope, &binding, &keys).unwrap().as_slice(), b"group history");
+        assert_ne!(current.device, old.device);
     }
 
     #[tokio::test]
@@ -175,7 +196,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn participants_and_call_type_cannot_be_silently_replaced() {
+    async fn group_membership_updates_automatically_and_call_type_remains_bound() {
         let alice = identity(Uuid::new_v4());
         let bob = identity(Uuid::new_v4());
         let outsider = identity(Uuid::new_v4());
@@ -210,22 +231,12 @@ mod tests {
         alice.observe_conversation(&conversation).await.unwrap();
         let mut changed = keys;
         changed.push(public(&outsider));
-        assert!(alice.check_roster(conversation.id, &changed, true).is_err());
-        assert!(
-            alice
-                .verify_roster(conversation.id, &changed, "wrong-code")
-                .await
-                .is_err()
-        );
-        alice
-            .verify_roster(
-                conversation.id,
-                &changed,
-                &Crypto::roster_fingerprint(conversation.id, &changed),
-            )
-            .await
-            .unwrap();
         alice.check_roster(conversation.id, &changed, true).unwrap();
+        assert!(alice.check_roster(conversation.id, &changed[..2], true).is_err());
+        conversation.members.pop();
+        alice.observe_conversation(&conversation).await.unwrap();
+        alice.check_roster(conversation.id, &changed[..2], true).unwrap();
+        assert!(alice.check_roster(conversation.id, &changed, true).is_err());
         let mut activity = Activity {
             id: Uuid::new_v4(),
             conversation_id: conversation.id,
@@ -281,6 +292,7 @@ pub struct Crypto {
     pub files: Mutex<HashMap<Uuid, ProtectedAttachment>>,
     historical: Mutex<Vec<HistoricalKey>>,
     historical_write: tokio::sync::Mutex<()>,
+    history_export_key: Mutex<Option<Zeroizing<Vec<u8>>>>,
 }
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -295,6 +307,53 @@ struct IdentityBackup {
     user: Uuid,
     account: String,
     vault: String,
+}
+
+#[derive(Serialize, Deserialize)]
+struct HistoryArchive {
+    version: u8,
+    user: Uuid,
+    keys: Vec<HistoricalKey>,
+}
+
+fn history_archive_key(export_key: &[u8], user: Uuid) -> Result<Zeroizing<[u8; 32]>, String> {
+    use sha2::{Digest, Sha256};
+    if export_key.len() < 32 { return Err("Chave de recuperação inválida".into()); }
+    let mut hash = Sha256::new();
+    hash.update(b"nmessenger-history-archive-v1\0");
+    hash.update(user.as_bytes());
+    hash.update(export_key);
+    Ok(Zeroizing::new(hash.finalize().into()))
+}
+
+fn seal_history_archive(archive: &HistoryArchive, export_key: &[u8]) -> Result<Vec<u8>, String> {
+    let key = history_archive_key(export_key, archive.user)?;
+    let nonce = XNonce::generate();
+    let clear = Zeroizing::new(serde_json::to_vec(archive).map_err(|e| e.to_string())?);
+    let encrypted = XChaCha20Poly1305::new(&Key::from(*key))
+        .encrypt(&nonce, ChaChaPayload { msg: &clear, aad: archive.user.as_bytes() })
+        .map_err(|_| "Não foi possível proteger o histórico")?;
+    let mut output = nonce.to_vec();
+    output.extend_from_slice(&encrypted);
+    Ok(output)
+}
+
+fn open_history_archive(bytes: &[u8], export_key: &[u8], user: Uuid) -> Result<HistoryArchive, String> {
+    if !(40..=65536).contains(&bytes.len()) { return Err("Backup de histórico inválido".into()); }
+    let key = history_archive_key(export_key, user)?;
+    let nonce: [u8; 24] = bytes[..24].try_into().map_err(|_| "Backup inválido")?;
+    let clear = Zeroizing::new(XChaCha20Poly1305::new(&Key::from(*key))
+        .decrypt(&XNonce::from(nonce), ChaChaPayload { msg: &bytes[24..], aad: user.as_bytes() })
+        .map_err(|_| "Não foi possível autenticar o backup de histórico")?);
+    let archive: HistoryArchive = serde_json::from_slice(&clear).map_err(|_| "Backup de histórico inválido")?;
+    if archive.version != 1 || archive.user != user || archive.keys.len() > 16 {
+        return Err("Backup de histórico incompatível".into());
+    }
+    let mut seen = std::collections::HashSet::new();
+    if archive.keys.iter().any(|key| key.device.is_nil() || !seen.insert(key.device)) {
+        return Err("Identidades duplicadas no backup".into());
+    }
+    Ok(archive)
 }
 
 impl Drop for HistoricalKey {
@@ -328,6 +387,46 @@ fn fixed<const N: usize>(text: &str) -> Result<[u8; N], String> {
 }
 
 impl Crypto {
+    pub fn set_history_export_key(&self, key: &[u8]) -> Result<(), String> {
+        *self.history_export_key.lock().map_err(|_| "Estado de chaves indisponível")? = Some(Zeroizing::new(key.to_vec()));
+        Ok(())
+    }
+
+    pub fn history_export_key(&self) -> Result<Option<Zeroizing<Vec<u8>>>, String> {
+        Ok(self.history_export_key.lock().map_err(|_| "Estado de chaves indisponível")?.clone())
+    }
+    #[allow(dead_code)]
+    pub fn seal_cloud_history(&self, export_key: &[u8]) -> Result<Vec<u8>, String> {
+        let mut keys = self.historical.lock().map_err(|_| "Estado de chaves indisponível")?.clone();
+        keys.retain(|key| key.device != self.device);
+        if keys.len() >= 16 { return Err("Limite de identidades antigas atingido".into()); }
+        keys.push(HistoricalKey { device: self.device, secret: self.secret.to_bytes() });
+        seal_history_archive(&HistoryArchive { version: 1, user: self.user, keys }, export_key)
+    }
+
+    #[allow(dead_code)]
+    pub async fn merge_cloud_history(&self, bytes: &[u8], export_key: &[u8]) -> Result<(), String> {
+        let _write = self.historical_write.lock().await;
+        let archive = open_history_archive(bytes, export_key, self.user)?;
+        let mut keys = self.historical.lock().map_err(|_| "Estado de chaves indisponível")?.clone();
+        for incoming in archive.keys {
+            if incoming.device == self.device {
+                if incoming.secret != self.secret.to_bytes() { return Err("Chave de dispositivo divergente no backup".into()); }
+            } else if let Some(existing) = keys.iter().find(|key| key.device == incoming.device) {
+                if existing.secret != incoming.secret { return Err("Chave histórica divergente no backup".into()); }
+            } else {
+                if keys.len() >= 16 { return Err("Limite de identidades antigas atingido".into()); }
+                keys.push(incoming.clone());
+            }
+        }
+        let clear = Zeroizing::new(serde_json::to_vec(&keys).map_err(|e| e.to_string())?);
+        let protected = self.protect_local(&clear)?;
+        let path = crate::storage::directory().join("identities").join(format!("{}.history", self.account));
+        crate::secure::write_private(&path, &protected).await?;
+        *self.historical.lock().map_err(|_| "Estado de chaves indisponível")? = keys;
+        Ok(())
+    }
+
     pub fn remember_activity(&self, activity: &Activity) -> Result<(), String> {
         let identity = ChannelIdentity {
             conversation: activity.conversation_id,
@@ -381,6 +480,7 @@ impl Crypto {
             files: Mutex::new(HashMap::new()),
             historical: Mutex::new(Vec::new()),
             historical_write: tokio::sync::Mutex::new(()),
+            history_export_key: Mutex::new(None),
         };
         let path = crate::storage::directory()
             .join("identities")
@@ -482,11 +582,15 @@ impl Crypto {
             .collect();
         members.sort_unstable();
         members.dedup();
+        if !members.contains(&self.user) { return Err("Conversa não pertence a esta conta".into()); }
+        let changed = self.conversations.lock().map_err(|_| "Estado de participantes indisponível")?
+            .get(&conversation.id).is_some_and(|previous| previous != &members);
         self.observed_conversations
             .lock()
             .map_err(|_| "Estado de participantes indisponível")?
             .insert(conversation.id, members.clone());
-        self.commit_roster(conversation.id, members, false).await?;
+        self.commit_roster(conversation.id, members, conversation.kind == ConversationKind::Group).await?;
+        if changed { self.key_cache.lock().await.remove(&conversation.id); }
         Ok(())
     }
 
@@ -503,7 +607,7 @@ impl Crypto {
             .lock()
             .map_err(|_| "Estado de participantes indisponível")?
             .clone();
-        if !replace && candidate.contains_key(&conversation) {
+        if candidate.get(&conversation) == Some(&members) || (!replace && candidate.contains_key(&conversation)) {
             return Ok(());
         }
         candidate.insert(conversation, members);

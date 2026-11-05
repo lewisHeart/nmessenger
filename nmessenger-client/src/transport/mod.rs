@@ -5,6 +5,7 @@ mod crypto_files;
 mod crypto_http;
 mod files;
 mod outbox;
+mod opaque;
 #[cfg(test)]
 mod security_tests;
 #[cfg(test)]
@@ -440,6 +441,8 @@ async fn worker(mut commands: async_mpsc::UnboundedReceiver<(u64, Action)>, init
                 name,
                 presence,
             } => {
+                #[cfg(target_os = "android")]
+                crate::android::stop_message_notifications();
                 if let Some(task) = ws_task.take() {
                     task.abort();
                 }
@@ -448,12 +451,16 @@ async fn worker(mut commands: async_mpsc::UnboundedReceiver<(u64, Action)>, init
                 watches.lock().unwrap().clear();
                 bus.send(Update::Connection("Entrando…".into()));
                 match tokio::time::timeout(
-                    std::time::Duration::from_secs(15),
+                    std::time::Duration::from_secs(90),
                     api::authenticate(server, email, password, device, name, presence, identity_password),
                 )
                 .await
                 {
                     Ok(Ok((api, bootstrap))) => {
+                        #[cfg(target_os = "android")]
+                        if !matches!(crate::android::start_message_notifications(&api.base, api.token.as_str(), &crate::secure::account(&api.base, &api.user_id.to_string())), Ok(true)) {
+                            bus.send(Update::Error("Não foi possível iniciar as notificações em segundo plano.".into()));
+                        }
                         if let Some((server, email, password)) = remember_login.take()
                             && let Err(error) =
                                 crate::storage::save_saved_session(&server, &email, &password).await
@@ -499,6 +506,8 @@ async fn worker(mut commands: async_mpsc::UnboundedReceiver<(u64, Action)>, init
             }
             Action::Logout => {
                 remember_login = None;
+                #[cfg(target_os = "android")]
+                crate::android::stop_message_notifications();
                 if let Some(task) = ws_task.take() {
                     task.abort();
                 }

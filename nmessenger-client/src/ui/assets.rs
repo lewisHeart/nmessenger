@@ -11,6 +11,16 @@ struct FontTarget {
     file_candidates: &'static [&'static str],
 }
 
+// Guaranteed embedded fallback fonts:
+// Bundled directly into the app so Android, iOS, and minimal OS installs
+// always render emojis, Fraktur, Runes, Old Italic, Small Caps, Superscripts, etc.
+const EMBEDDED_EMOJIS: &[u8] = include_bytes!("../../assets/fonts/emojis_fallback.ttf");
+const EMBEDDED_SYMBOLS_MATH: &[u8] = include_bytes!("../../assets/fonts/symbols_math_fallback.otf");
+const EMBEDDED_SYMBOLS_HISTORIC: &[u8] = include_bytes!("../../assets/fonts/symbols_historic_fallback.otf");
+const EMBEDDED_SYMBOLS_SYLLABICS: &[u8] = include_bytes!("../../assets/fonts/symbols_syllabics_fallback.otf");
+const EMBEDDED_SYMBOLS_ENCLOSED: &[u8] = include_bytes!("../../assets/fonts/symbols_enclosed_fallback.ttf");
+const EMBEDDED_SYMBOLS_GAMER: &[u8] = include_bytes!("../../assets/fonts/symbols_gamer_fallback.ttf");
+
 const TARGETS: &[FontTarget] = &[
     FontTarget {
         family_name: "Segoe UI",
@@ -432,7 +442,44 @@ fn font_definitions() -> egui::FontDefinitions {
     // Universal fallbacks for emojis, enclosed/math symbols, ancient/runic scripts, and CJK
     let mut universal_fallbacks: Vec<String> = Vec::new();
 
-    // 1. Emojis (Segoe UI Emoji, Noto Color Emoji, Apple Color Emoji, Twemoji)
+    // 0. Guaranteed embedded fallback fonts:
+    fonts.font_data.insert(
+        "embedded_emojis".to_string(),
+        egui::FontData::from_static(EMBEDDED_EMOJIS).into(),
+    );
+    fonts.font_data.insert(
+        "embedded_symbols_math".to_string(),
+        egui::FontData::from_static(EMBEDDED_SYMBOLS_MATH).into(),
+    );
+    fonts.font_data.insert(
+        "embedded_symbols_historic".to_string(),
+        egui::FontData::from_static(EMBEDDED_SYMBOLS_HISTORIC).into(),
+    );
+    fonts.font_data.insert(
+        "embedded_symbols_syllabics".to_string(),
+        egui::FontData::from_static(EMBEDDED_SYMBOLS_SYLLABICS).into(),
+    );
+    fonts.font_data.insert(
+        "embedded_symbols_enclosed".to_string(),
+        egui::FontData::from_static(EMBEDDED_SYMBOLS_ENCLOSED).into(),
+    );
+    fonts.font_data.insert(
+        "embedded_symbols_gamer".to_string(),
+        egui::FontData::from_static(EMBEDDED_SYMBOLS_GAMER).into(),
+    );
+
+    for id in [
+        "embedded_emojis",
+        "embedded_symbols_math",
+        "embedded_symbols_historic",
+        "embedded_symbols_syllabics",
+        "embedded_symbols_enclosed",
+        "embedded_symbols_gamer",
+    ] {
+        universal_fallbacks.push(id.to_string());
+    }
+
+    // 1. System Emojis (Segoe UI Emoji, Noto Color Emoji, Apple Color Emoji, Twemoji)
     for (candidate, id) in [
         ("seguiemj.ttf", "system_segoe_emoji"),
         ("notocoloremoji.ttf", "system_noto_color_emoji"),
@@ -656,6 +703,8 @@ mod tests {
             "MᕮᘉSᗩGᕮM Dᕮ TᕮSTᕮ",
             "MΣПƧΛGΣM DΣ TΣƧTΣ",
             "MᕮᏁᏕᎯᎶᕮM Dᕮ ᎿᕮᏕᎿᕮ",
+            "𖤍•°᭄ Wellington ᭄•°𖤍",
+            "꧁•°Wellington°•᭄࿐",
             "😀 🔥 ❤️ ✨ 🎉 🚀 👍",
         ];
 
@@ -672,6 +721,93 @@ mod tests {
                 let galley = fonts.layout_no_wrap(
                     sample.to_string(),
                     egui::FontId::new(14.0, egui::FontFamily::Name("Segoe UI Bold".into())),
+                    egui::Color32::WHITE,
+                );
+                for row in &galley.rows {
+                    for g in &row.glyphs {
+                        assert_ne!(
+                            g.chr, '\u{FFFD}',
+                            "Character '{}' (U+{:04X}) was replaced with U+FFFD in sample '{}'",
+                            g.chr, g.chr as u32, sample
+                        );
+                    }
+                }
+            }
+        });
+    }
+
+    #[test]
+    fn embedded_fonts_render_without_any_system_fonts() {
+        let mut fonts = egui::FontDefinitions::empty();
+        fonts.font_data.insert(
+            "embedded_emojis".to_string(),
+            egui::FontData::from_static(EMBEDDED_EMOJIS).into(),
+        );
+        fonts.font_data.insert(
+            "embedded_symbols_math".to_string(),
+            egui::FontData::from_static(EMBEDDED_SYMBOLS_MATH).into(),
+        );
+        fonts.font_data.insert(
+            "embedded_symbols_historic".to_string(),
+            egui::FontData::from_static(EMBEDDED_SYMBOLS_HISTORIC).into(),
+        );
+        fonts.font_data.insert(
+            "embedded_symbols_syllabics".to_string(),
+            egui::FontData::from_static(EMBEDDED_SYMBOLS_SYLLABICS).into(),
+        );
+        fonts.font_data.insert(
+            "embedded_symbols_enclosed".to_string(),
+            egui::FontData::from_static(EMBEDDED_SYMBOLS_ENCLOSED).into(),
+        );
+        fonts.font_data.insert(
+            "embedded_symbols_gamer".to_string(),
+            egui::FontData::from_static(EMBEDDED_SYMBOLS_GAMER).into(),
+        );
+        fonts.families.insert(
+            egui::FontFamily::Proportional,
+            vec![
+                "embedded_emojis".to_string(),
+                "embedded_symbols_math".to_string(),
+                "embedded_symbols_historic".to_string(),
+                "embedded_symbols_syllabics".to_string(),
+                "embedded_symbols_enclosed".to_string(),
+                "embedded_symbols_gamer".to_string(),
+            ],
+        );
+        let ctx = egui::Context::default();
+        ctx.set_fonts(fonts);
+
+        let test_samples = [
+            "𝑴𝑬𝑵𝑺𝑨𝑮𝑬𝑴 𝑫𝑬 𝑻𝑬𝑺𝑻𝑬",
+            "𐌌𐌄𐌍𐌔𐌀𐌂𐌄𐌌 𐌃𐌄 𐌕𐌄𐌔𐌕𐌄",
+            "𝔐𝔈𝔑𝔖𝔄𝔊𝔈𝔐 𝔇𝔈 𝔗𝔈𝔖𝔗𝔈",
+            "𝕸𝕰𝕹𝕾𝕬𝕲𝕰𝕸 𝕯𝕰 𝕿𝕰𝕾𝕿𝕰",
+            "əʇsəʇ əp ɯəɓɐsuəW",
+            "ᴹᵉⁿˢᵃᵍᵉᵐ ᵈᵉ ᵗᵉˢᵗᵉ",
+            "ᴍᴇɴsᴀɢᴇᴍ ᴅᴇ ᴛᴇsᴛᴇ",
+            "⒨⒠⒩⒮⒜⒢⒠⒨ ⒟⒠ ⒯⒠⒮⒯⒠",
+            "ℳℰ𝒩𝒮𝒜𝒢ℰ𝑴 𝒟ℰ 𝒯ℰ𝒮𝒯ℰ",
+            "ᛗᛖᚾᛊᚨᚷᛖᛗ ᛞᛖ ᛏᛖᛊᛏᛖ",
+            "MᕮᘉSᗩGᕮM Dᕮ TᕮSTᕮ",
+            "MΣПƧΛGΣM DΣ TΣƧTΣ",
+            "MᕮᏁᏕᎯᎶᕮM Dᕮ ᎿᕮᏕᎿᕮ",
+            "𖤍•°᭄ Wellington ᭄•°𖤍",
+            "꧁•°Wellington°•᭄࿐",
+            "😀 🔥 ❤️ ✨ 🎉 🚀 👍",
+        ];
+
+        let mut output = ctx.run_ui(egui::RawInput::default(), |ui| {
+            for sample in test_samples {
+                ui.label(egui::RichText::new(sample));
+            }
+        });
+        output.textures_delta.clear();
+
+        ctx.fonts_mut(|fonts| {
+            for sample in test_samples {
+                let galley = fonts.layout_no_wrap(
+                    sample.to_string(),
+                    egui::FontId::new(14.0, egui::FontFamily::Proportional),
                     egui::Color32::WHITE,
                 );
                 for row in &galley.rows {

@@ -9,6 +9,7 @@ use std::{
     time::{Duration, Instant},
 };
 use uuid::Uuid;
+use base64::{Engine, engine::general_purpose::STANDARD};
 
 #[derive(Serialize, Deserialize)]
 struct Content {
@@ -18,7 +19,48 @@ struct Content {
     attachment: Option<crate::encryption::ProtectedAttachment>,
 }
 
+#[derive(Serialize, Deserialize)]
+struct CloudHistoryBackup { revision: i64, ciphertext: String }
+
 impl Api {
+    /// Merge the server's encrypted archive before publishing this device's key.
+    /// Conflicts are retried by reading and merging the newer archive; the
+    /// server never receives the OPAQUE export key or plaintext key material.
+    #[allow(dead_code)]
+    pub async fn sync_cloud_history(&self, export_key: &[u8]) -> Result<(), String> {
+        self.sync_cloud_history_with_previous(export_key, None).await
+    }
+
+    pub async fn sync_cloud_history_with_previous(&self, export_key: &[u8], previous_key: Option<&[u8]>) -> Result<(), String> {
+        let crypto = self.crypto.as_ref().ok_or("Criptografia não iniciada")?;
+        for _ in 0..5 {
+            let response = checked(self.request(reqwest::Method::GET, "/encryption/history-backup")
+                .send().await.map_err(|error| error.to_string())?).await?;
+            let revision = if response.status() == reqwest::StatusCode::NO_CONTENT {
+                0
+            } else {
+                let backup: CloudHistoryBackup = super::api::bounded_json(response).await?;
+                if backup.revision <= 0 || backup.ciphertext.len() > 131072 { return Err("Backup de histórico inválido".into()); }
+                let bytes = STANDARD.decode(&backup.ciphertext).map_err(|_| "Backup de histórico inválido")?;
+                if let Err(error) = crypto.merge_cloud_history(&bytes, export_key).await {
+                    if let Some(previous) = previous_key {
+                        crypto.merge_cloud_history(&bytes, previous).await?;
+                    } else {
+                        return Err(format!("Não foi possível desbloquear a identidade local. Informe a senha anterior para recuperar o histórico. {error}"));
+                    }
+                }
+                backup.revision
+            };
+            let ciphertext = STANDARD.encode(crypto.seal_cloud_history(export_key)?);
+            let response = self.request(reqwest::Method::PUT, "/encryption/history-backup")
+                .json(&CloudHistoryBackup { revision, ciphertext }).send().await.map_err(|error| error.to_string())?;
+            if response.status() == reqwest::StatusCode::CONFLICT { continue; }
+            checked(response).await?;
+            return Ok(());
+        }
+        Err("Não foi possível sincronizar o histórico após alterações simultâneas".into())
+    }
+
     pub(super) async fn raw_encryption_keys(
         &self,
         conversation: Uuid,

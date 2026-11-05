@@ -2,32 +2,38 @@ use eframe::egui::{self, Color32};
 
 pub struct Scroll(egui::ScrollArea);
 pub fn vertical() -> Scroll {
-    Scroll(
-        egui::ScrollArea::vertical()
-            .scroll_source(egui::scroll_area::ScrollSource {
-                scroll_bar: true,
-                mouse_wheel: true,
-                drag: if crate::platform::is_mobile() {
-                    egui::scroll_area::DragScroll::Always
-                } else {
-                    egui::scroll_area::DragScroll::OnTouch
-                },
-            })
-    )
+    let is_mobile = crate::platform::is_mobile();
+    let mut area = egui::ScrollArea::vertical()
+        .scroll_source(egui::scroll_area::ScrollSource {
+            scroll_bar: !is_mobile,
+            mouse_wheel: true,
+            drag: if is_mobile {
+                egui::scroll_area::DragScroll::Always
+            } else {
+                egui::scroll_area::DragScroll::OnTouch
+            },
+        });
+    if is_mobile {
+        area = area.scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden);
+    }
+    Scroll(area)
 }
 pub fn horizontal() -> Scroll {
-    Scroll(
-        egui::ScrollArea::horizontal()
-            .scroll_source(egui::scroll_area::ScrollSource {
-                scroll_bar: true,
-                mouse_wheel: true,
-                drag: if crate::platform::is_mobile() {
-                    egui::scroll_area::DragScroll::Always
-                } else {
-                    egui::scroll_area::DragScroll::OnTouch
-                },
-            })
-    )
+    let is_mobile = crate::platform::is_mobile();
+    let mut area = egui::ScrollArea::horizontal()
+        .scroll_source(egui::scroll_area::ScrollSource {
+            scroll_bar: !is_mobile,
+            mouse_wheel: true,
+            drag: if is_mobile {
+                egui::scroll_area::DragScroll::Always
+            } else {
+                egui::scroll_area::DragScroll::OnTouch
+            },
+        });
+    if is_mobile {
+        area = area.scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden);
+    }
+    Scroll(area)
 }
 
 impl Scroll {

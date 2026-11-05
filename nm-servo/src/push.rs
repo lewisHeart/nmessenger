@@ -1,131 +1,104 @@
-//! Per-session push registration for a configured UnifiedPush distributor.
-use crate::{auth::Session, error::{Error, Result}, state::AppState};
-use actix_web::{web, HttpResponse};
-use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
-use serde::Deserialize;
-use sqlx::PgConnection;
+//! Authenticated, content-free unread message hints for the Android service.
+use crate::{auth::{self, Session}, error::{Error, Result}, realtime, state::AppState};
+use actix_web::{web, HttpRequest, HttpResponse};
+use actix_ws::AggregatedMessage;
+use futures_util::StreamExt;
+use nm_protocol::{ClientEvent, ServerEvent};
+use serde::Serialize;
 use uuid::Uuid;
 
-pub async fn enqueue(db: &mut PgConnection, recipients: &[Uuid], message: Uuid) -> Result<()> {
-    sqlx::query("INSERT INTO push_queue(message_id,session_id) SELECT $1,p.session_id FROM push_devices p JOIN auth_sessions s ON s.id=p.session_id JOIN users u ON u.id=p.user_id WHERE p.user_id=ANY($2) AND s.revoked_at IS NULL AND s.expires_at>now() AND COALESCE((u.settings->>'message_alerts')::boolean,true) ON CONFLICT DO NOTHING")
-        .bind(message).bind(recipients).execute(db).await?;
-    Ok(())
+#[derive(Serialize, sqlx::FromRow)]
+struct Unread { conversation_id: Uuid, message_id: Uuid }
+
+async fn unread(state: web::Data<AppState>, session: Session) -> Result<web::Json<Vec<Unread>>> {
+    let rows = sqlx::query_as::<_, Unread>(
+        "SELECT conversation_id,message_id FROM (
+         SELECT DISTINCT ON (m.conversation_id) m.conversation_id,m.id AS message_id,m.created_at
+         FROM conversation_members mine JOIN messages m ON m.conversation_id=mine.conversation_id
+         JOIN users u ON u.id=mine.user_id
+         WHERE mine.user_id=$1 AND m.sender_id<>$1 AND m.created_at>mine.hidden_at
+         AND (m.created_at,m.id)>(mine.read_at,mine.read_id)
+         AND COALESCE((u.settings->>'message_alerts')::boolean,true)
+         AND NOT EXISTS(SELECT 1 FROM user_blocks b JOIN conversation_members x ON x.conversation_id=m.conversation_id AND x.user_id=b.owner_id
+             JOIN conversation_members y ON y.conversation_id=m.conversation_id AND y.user_id=b.user_id)
+         ORDER BY m.conversation_id,m.created_at DESC,m.id DESC
+         ) latest ORDER BY created_at DESC,message_id DESC LIMIT 50")
+        .bind(session.user_id).fetch_all(&state.db).await?;
+    Ok(web::Json(rows))
 }
 
-pub async fn run(state: AppState) {
-    let Ok(client) = reqwest::Client::builder().timeout(std::time::Duration::from_secs(8))
-        .redirect(reqwest::redirect::Policy::none()).build() else { return; };
-    let mut interval = tokio::time::interval(std::time::Duration::from_secs(2));
-    loop {
-        interval.tick().await;
-        if let Err(error) = dispatch(&state, &client).await {
-            tracing::warn!(code = error.code, "push queue delivery failed; will retry");
-        }
-    }
-}
-
-async fn dispatch(state: &AppState, client: &reqwest::Client) -> Result<()> {
-    let mut tx = state.db.begin().await?;
-    let rows: Vec<(Uuid, Uuid, String, String, String, Uuid)> = sqlx::query_as(
-        "SELECT q.message_id,q.session_id,p.endpoint,p.public_key,p.auth_secret,m.conversation_id
-         FROM push_queue q JOIN push_devices p ON p.session_id=q.session_id
-         JOIN auth_sessions s ON s.id=p.session_id JOIN messages m ON m.id=q.message_id
-         JOIN conversation_members cm ON cm.user_id=p.user_id AND cm.conversation_id=m.conversation_id
-         WHERE q.next_attempt_at<=now() AND s.revoked_at IS NULL AND s.expires_at>now()
-         ORDER BY q.created_at LIMIT 10 FOR UPDATE OF q SKIP LOCKED")
-        .fetch_all(&mut *tx).await?;
-    for (message, session, endpoint, key, secret, conversation) in rows {
-        let trusted = std::env::var("NTFY_ORIGIN").ok().is_some_and(|origin| validate_endpoint(&endpoint, &origin));
-        if !trusted {
-            sqlx::query("DELETE FROM push_queue WHERE message_id=$1 AND session_id=$2").bind(message).bind(session).execute(&mut *tx).await?;
-            continue;
-        }
-        let info = web_push::SubscriptionInfo::new(&endpoint, &key, &secret);
-        let mut builder = web_push::WebPushMessageBuilder::new(&info);
-        builder.set_ttl(3600);
-        let payload = serde_json::json!({"type":"message","conversation_id":conversation,"message_id":message}).to_string();
-        builder.set_payload(web_push::ContentEncoding::Aes128Gcm, payload.as_bytes());
-        let delivered = if let Ok(message) = builder.build() {
-            let request = web_push::request_builder::build_request::<Vec<u8>>(message);
-            let (parts, body) = request.into_parts();
-            let mut request = client.post(parts.uri.to_string()).body(body);
-            for (name, value) in &parts.headers {
-                if let (Ok(name), Ok(value)) = (reqwest::header::HeaderName::from_bytes(name.as_str().as_bytes()), reqwest::header::HeaderValue::from_bytes(value.as_bytes())) {
-                    request = request.header(name, value);
+/// A notification-only socket: it never changes the user's online presence and
+/// sends only resync hints, not message content or media.
+async fn events(req: HttpRequest, payload: web::Payload, state: web::Data<AppState>) -> Result<HttpResponse> {
+    let peer = req.peer_addr().map(|p| p.ip().to_string()).unwrap_or_else(|| "unknown".into());
+    state.rate(&format!("notification-ws-open:{peer}"), 60, 60).await?;
+    let (response, mut socket, stream) = actix_ws::handle(&req, payload).map_err(|_| Error::bad("WebSocket inválido"))?;
+    let mut stream = stream.max_frame_size(4096).aggregate_continuations().max_continuation_size(4096);
+    let mut events = state.events.subscribe();
+    actix_web::rt::spawn(async move {
+        let first = tokio::time::timeout(std::time::Duration::from_secs(10), stream.next()).await;
+        let session = match first {
+            Ok(Some(Ok(AggregatedMessage::Text(text)))) if text.len() <= 256 => {
+                match serde_json::from_str::<ClientEvent>(&text) {
+                    Ok(ClientEvent::Authenticate { token }) => auth::authenticate(&state, &token).await.ok(),
+                    _ => None,
                 }
             }
-            if let Ok(token) = std::env::var("NTFY_TOKEN") { if !token.is_empty() { request = request.bearer_auth(token); } }
-            request.send().await.is_ok_and(|response| response.status().is_success())
-        } else { false };
-        if delivered {
-            sqlx::query("DELETE FROM push_queue WHERE message_id=$1 AND session_id=$2").bind(message).bind(session).execute(&mut *tx).await?;
-        } else {
-            sqlx::query("UPDATE push_queue SET attempts=attempts+1,next_attempt_at=now()+make_interval(secs=>LEAST(300,power(2,LEAST(attempts,8))::int)) WHERE message_id=$1 AND session_id=$2")
-                .bind(message).bind(session).execute(&mut *tx).await?;
+            _ => None,
+        };
+        let Some(session) = session else { let _ = socket.close(None).await; return; };
+        let welcome = ServerEvent::Authenticated { user_id: session.user_id };
+        if socket.text(serde_json::to_string(&welcome).unwrap_or_default()).await.is_err() { return; }
+        let mut check = tokio::time::interval(std::time::Duration::from_secs(30));
+        let mut last_input = std::time::Instant::now();
+        loop {
+            tokio::select! {
+                incoming = stream.next() => match incoming {
+                    Some(Ok(AggregatedMessage::Text(text))) if text.len() <= 256 => {
+                        last_input = std::time::Instant::now();
+                        if state.rate(&format!("notification-ws-frames:{}", session.user_id), 30, 10).await.is_err() { break; }
+                        match serde_json::from_str::<ClientEvent>(&text) {
+                            Ok(ClientEvent::Ping) => {
+                                if socket.text("{\"type\":\"pong\"}").await.is_err() { break; }
+                            }
+                            _ => break,
+                        }
+                    }
+                    Some(Ok(AggregatedMessage::Ping(bytes))) => {
+                        last_input = std::time::Instant::now();
+                        if state.rate(&format!("notification-ws-control:{}", session.user_id), 30, 10).await.is_err() || socket.pong(&bytes).await.is_err() { break; }
+                    },
+                    Some(Ok(AggregatedMessage::Pong(_))) => { last_input = std::time::Instant::now(); },
+                    _ => break,
+                },
+                _ = check.tick() => if last_input.elapsed() > std::time::Duration::from_secs(90) || auth::valid(&state, &session).await.is_err() { break; },
+                event = events.recv() => match event {
+                    Ok(envelope) => {
+                        let broadcast = envelope.recipients.is_empty() && matches!(envelope.event, ServerEvent::ResyncRequired);
+                        if !broadcast && !envelope.recipients.contains(&session.user_id) { continue; }
+                        if matches!(&envelope.event, ServerEvent::SessionRevoked { session_id } if *session_id == session.id) { break; }
+                        let relevant = match &envelope.event {
+                            ServerEvent::Message { message } if message.sender_id != session.user_id => {
+                                matches!(realtime::can_deliver(&state, session.user_id, &envelope.event).await, Ok(true))
+                            }
+                            ServerEvent::ResyncRequired | ServerEvent::MessageDeleted { .. } | ServerEvent::Read { .. } => true,
+                            _ => false,
+                        };
+                        if relevant && socket.text("{\"type\":\"resync_required\"}").await.is_err() { break; }
+                    }
+                    Err(tokio::sync::broadcast::error::RecvError::Lagged(_)) => {
+                        if socket.text("{\"type\":\"resync_required\"}").await.is_err() { break; }
+                    }
+                    Err(_) => break,
+                }
+            }
         }
-    }
-    sqlx::query("DELETE FROM push_queue q WHERE q.created_at<now()-interval '24 hours' OR NOT EXISTS(SELECT 1 FROM push_devices p JOIN auth_sessions s ON s.id=p.session_id JOIN messages m ON m.id=q.message_id JOIN conversation_members cm ON cm.user_id=p.user_id AND cm.conversation_id=m.conversation_id WHERE p.session_id=q.session_id AND s.revoked_at IS NULL AND s.expires_at>now())")
-        .execute(&mut *tx).await?;
-    tx.commit().await?;
-    Ok(())
-}
-
-#[derive(Deserialize)]
-struct Registration { endpoint: String, public_key: String, auth_secret: String }
-
-fn validate_endpoint(endpoint: &str, configured_origin: &str) -> bool {
-    let Ok(endpoint) = reqwest::Url::parse(endpoint) else { return false; };
-    let Ok(origin) = reqwest::Url::parse(configured_origin) else { return false; };
-    endpoint.scheme() == "https" && origin.scheme() == "https"
-        && endpoint.origin() == origin.origin() && endpoint.username().is_empty()
-        && endpoint.password().is_none() && endpoint.fragment().is_none()
-        && endpoint.query().is_none() && endpoint.path().len() > 16 && endpoint.as_str().len() <= 1000
-}
-
-async fn register(state: web::Data<AppState>, session: Session, body: web::Json<Registration>) -> Result<HttpResponse> {
-    let origin = std::env::var("NTFY_ORIGIN").map_err(|_| Error::unavailable())?;
-    if !validate_endpoint(&body.endpoint, &origin) { return Err(Error::bad("Endpoint push inválido")); }
-    let key = URL_SAFE_NO_PAD.decode(&body.public_key).map_err(|_| Error::bad("Chave push inválida"))?;
-    let secret = URL_SAFE_NO_PAD.decode(&body.auth_secret).map_err(|_| Error::bad("Segredo push inválido"))?;
-    if key.len() != 65 || key[0] != 4 || secret.len() != 16 { return Err(Error::bad("Chaves push inválidas")); }
-    sqlx::query("INSERT INTO push_devices(session_id,user_id,endpoint,public_key,auth_secret) VALUES($1,$2,$3,$4,$5) ON CONFLICT(session_id) DO UPDATE SET endpoint=EXCLUDED.endpoint,public_key=EXCLUDED.public_key,auth_secret=EXCLUDED.auth_secret,updated_at=now() WHERE push_devices.user_id=EXCLUDED.user_id")
-        .bind(session.id).bind(session.user_id).bind(&body.endpoint).bind(&body.public_key).bind(&body.auth_secret)
-        .execute(&state.db).await?;
-    Ok(HttpResponse::NoContent().finish())
-}
-
-async fn unregister(state: web::Data<AppState>, session: Session) -> Result<HttpResponse> {
-    sqlx::query("DELETE FROM push_devices WHERE session_id=$1 AND user_id=$2")
-        .bind(session.id).bind(session.user_id).execute(&state.db).await?;
-    Ok(HttpResponse::NoContent().finish())
+        let _ = socket.close(None).await;
+    });
+    Ok(response)
 }
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/push/device", web::put().to(register)).route("/push/device", web::delete().to(unregister));
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn endpoint_must_match_secure_configured_origin() {
-        let origin = "https://push.example.test";
-        assert!(validate_endpoint("https://push.example.test/abcdef0123456789abcdef", origin));
-        assert!(!validate_endpoint("http://push.example.test/abcdef0123456789abcdef", origin));
-        assert!(!validate_endpoint("https://evil.test/abcdef0123456789abcdef", origin));
-        assert!(!validate_endpoint("https://push.example.test/abcdef0123456789abcdef?token=x", origin));
-    }
-    #[test]
-    fn web_push_payload_does_not_expose_notification_metadata() {
-        let info = web_push::SubscriptionInfo::new(
-            "https://push.example.test/abcdefghijk123456789",
-            "BGa4N1PI79lboMR_YrwCiCsgp35DRvedt7opHcf0yM3iOBTSoQYqQLwWxAfRKE6tsDnReWmhsImkhDF_DBdkNSU",
-            "EvcWjEgzr4rbvhfi3yds0A",
-        );
-        let mut builder = web_push::WebPushMessageBuilder::new(&info);
-        let secret = b"conversation_id";
-        builder.set_payload(web_push::ContentEncoding::Aes128Gcm, secret);
-        let request = web_push::request_builder::build_request::<Vec<u8>>(builder.build().unwrap());
-        assert!(!request.body().windows(secret.len()).any(|window| window == secret));
-    }
+    cfg.route("/notifications/unread", web::get().to(unread));
+    cfg.route("/notifications/events", web::get().to(events));
 }

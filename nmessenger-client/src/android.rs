@@ -100,6 +100,23 @@ pub fn system_locale() -> Option<String> {
     }).ok()
 }
 
+pub fn start_message_notifications(base: &str, token: &str, account: &str) -> Result<bool, String> {
+    with_activity(|env, activity| {
+        let base = JObject::from(env.new_string(base).map_err(|e| e.to_string())?);
+        let token = JObject::from(env.new_string(token).map_err(|e| e.to_string())?);
+        let account = JObject::from(env.new_string(account).map_err(|e| e.to_string())?);
+        env.call_method(activity, jni::jni_str!("startMessageNotifications"), jni::jni_sig!("(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z"), &[JValue::Object(&base), JValue::Object(&token), JValue::Object(&account)])
+            .and_then(|result| result.z()).map_err(|e| e.to_string())
+    })
+}
+
+pub fn stop_message_notifications() {
+    let _ = with_activity(|env, activity| {
+        env.call_method(activity, jni::jni_str!("stopMessageNotifications"), jni::jni_sig!("()V"), &[])
+            .map(|_| ()).map_err(|e| e.to_string())
+    });
+}
+
 pub fn notify_message(title: &str, body: &str, conversation: Option<uuid::Uuid>) -> Result<(), String> {
     with_activity(|env, activity| {
         let title = JObject::from(env.new_string(title).map_err(|error| error.to_string())?);
@@ -120,6 +137,18 @@ pub fn take_notification_conversation() -> Option<uuid::Uuid> {
         if value.is_null() { return Ok(None); }
         let value = env.cast_local::<JString>(value).map_err(|error| error.to_string())?;
         Ok(value.try_to_string(env).map_err(|error| error.to_string())?.parse().ok())
+    }).ok().flatten()
+}
+
+pub fn take_notification_action() -> Option<serde_json::Value> {
+    with_activity(|env, activity| {
+        let value = env.call_method(activity, jni::jni_str!("takeNotificationAction"),
+            jni::jni_sig!("()Ljava/lang/String;"), &[]).map_err(|error| error.to_string())?
+            .l().map_err(|error| error.to_string())?;
+        if value.is_null() { return Ok(None); }
+        let value = env.cast_local::<JString>(value).map_err(|error| error.to_string())?;
+        let text = value.try_to_string(env).map_err(|error| error.to_string())?;
+        Ok(serde_json::from_str(&text).ok())
     }).ok().flatten()
 }
 

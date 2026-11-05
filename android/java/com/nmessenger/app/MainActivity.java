@@ -16,6 +16,14 @@ import java.util.UUID;
 import java.util.concurrent.*;
 
 public final class MainActivity extends NativeActivity {
+    public boolean startMessageNotifications(String base, String token, String account) {
+        try {
+            MessageNotificationService.start(getApplicationContext(), base, token, account);
+            return true;
+        } catch (Exception error) { return false; }
+    }
+
+    public void stopMessageNotifications() { MessageNotificationService.stop(getApplicationContext()); }
     public String systemLocale() {
         return java.util.Locale.getDefault().toLanguageTag();
     }
@@ -84,6 +92,7 @@ public final class MainActivity extends NativeActivity {
     private String[] pendingNotification;
     private boolean notificationPermissionPending;
     private volatile String notificationConversation;
+    private volatile String notificationAction;
     private android.os.HandlerThread cameraThread;
     private android.os.Handler cameraHandler;
     private android.hardware.Camera camera;
@@ -629,10 +638,37 @@ public final class MainActivity extends NativeActivity {
         return conversation;
     }
 
+    public String takeNotificationAction() {
+        String result = notificationAction;
+        notificationAction = null;
+        return result;
+    }
+
+    private void receiveNotificationIntent(Intent intent) {
+        if (intent == null) return;
+        String conversation = intent.getStringExtra("conversation");
+        notificationConversation = conversation;
+        String action = intent.getAction();
+        if (conversation == null || action == null) return;
+        if (("com.nmessenger.app.NOTIFICATION_READ".equals(action) || "com.nmessenger.app.NOTIFICATION_REPLY".equals(action))
+            && !MessageNotificationService.validAction(this, intent.getStringExtra("push_token"))) return;
+        try {
+            if ("com.nmessenger.app.NOTIFICATION_READ".equals(action)) {
+                notificationAction = new org.json.JSONObject().put("type", "read").put("conversation", conversation)
+                    .put("message", intent.getStringExtra("message_id")).toString();
+            } else if ("com.nmessenger.app.NOTIFICATION_REPLY".equals(action)) {
+                android.os.Bundle input = android.app.RemoteInput.getResultsFromIntent(intent);
+                CharSequence reply = input == null ? null : input.getCharSequence("nm_reply");
+                if (reply != null && reply.length() > 0) notificationAction = new org.json.JSONObject()
+                    .put("type", "reply").put("conversation", conversation).put("text", reply.toString()).toString();
+            }
+        } catch (org.json.JSONException ignored) { }
+    }
+
     @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if (intent != null) notificationConversation = intent.getStringExtra("conversation");
+        receiveNotificationIntent(intent);
     }
 
     @Override public void onCreate(Bundle state) {
@@ -644,7 +680,7 @@ public final class MainActivity extends NativeActivity {
             notificationPermissionPending = true;
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATIONS);
         }
-        if (getIntent() != null) notificationConversation = getIntent().getStringExtra("conversation");
+        receiveNotificationIntent(getIntent());
         getWindow().setStatusBarColor(0xffc2ddf4);
         getWindow().setNavigationBarColor(0xffeff8fa);
         getWindow().getDecorView().setSystemUiVisibility(android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

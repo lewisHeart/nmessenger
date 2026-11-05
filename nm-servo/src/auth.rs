@@ -145,7 +145,7 @@ async fn verify_password(password: String, hash: Option<String>) -> Result<bool>
     .map_err(|_| Error::internal())?
 }
 
-async fn create_session(
+pub(crate) async fn create_session(
     db: &mut PgConnection,
     user: Uuid,
     device: &str,
@@ -173,7 +173,7 @@ async fn create_session(
     Ok((token, id))
 }
 
-async fn auth_ip_rate(state: &AppState, request: &HttpRequest) -> Result<()> {
+pub(crate) async fn auth_ip_rate(state: &AppState, request: &HttpRequest) -> Result<()> {
     let ip = request
         .peer_addr()
         .map(|a| a.ip().to_string())
@@ -265,6 +265,11 @@ async fn login(
     let current_hash: Option<String> = sqlx::query_scalar("SELECT password_hash FROM users WHERE id=$1 FOR UPDATE")
         .bind(user_id).fetch_optional(&mut *tx).await?;
     if current_hash.as_deref() != Some(verified_hash.as_str()) { return Err(Error::unauthorized()); }
+    let migrated: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM opaque_credentials WHERE user_id=$1)")
+        .bind(user_id).fetch_one(&mut *tx).await?;
+    if migrated {
+        return Err(Error::new(actix_web::http::StatusCode::CONFLICT, "secure_auth_required", "Esta conta requer autenticação segura."));
+    }
     let (token, session_id) =
         create_session(&mut tx, user_id, &body.device_name, state.session_ttl_secs).await?;
     let user: ProfileRow = sqlx::query_as("SELECT * FROM users WHERE id=$1")
