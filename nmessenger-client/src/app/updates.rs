@@ -4,6 +4,17 @@ use crate::transport::Update;
 impl MessengerApp {
     pub(super) fn apply(&mut self, ctx: &egui::Context, update: Update) {
         match update {
+            Update::HistoryKeysRestored => {
+                let histories: Vec<_> = self.histories.iter().filter(|(_, history)| history.loaded)
+                    .map(|(id, history)| (*id, history.query.clone())).collect();
+                for (id, query) in histories {
+                    if let Some(history) = self.histories.get_mut(&id) {
+                        history.messages.clear();
+                        history.loaded = false;
+                    }
+                    self.load_history(id, None, query);
+                }
+            }
             Update::ReleaseDownload(result) => {
                 self.release_downloading = false;
                 match result {

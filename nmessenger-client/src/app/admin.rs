@@ -24,6 +24,7 @@ pub struct Admin {
     pub overview: Option<AdminOverview>,
     pub overview_refreshed: Option<std::time::Instant>,
     pub users: Option<AdminPage<AdminUser>>,
+    pub selected_user: Option<Uuid>,
     pub sessions: Option<AdminPage<AdminSession>>,
     pub audit: Option<AdminPage<AdminAuditEntry>>,
     pub badges: Option<Vec<AdminBadge>>,

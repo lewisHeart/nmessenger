@@ -1,7 +1,7 @@
-//! Rich "now playing" presence from the desktop, with manual override.
+//! Rich "now playing" presence from supported media sessions.
 //!
 //! On Linux the track is read from any MPRIS player (Spotify, Rhythmbox,
-//! browsers…). The manual value in the profile always wins while it is set.
+//! browsers…). Android uses active media sessions with notification access.
 use std::sync::{
     Arc,
     atomic::{AtomicBool, Ordering},
@@ -26,12 +26,14 @@ impl Drop for Watcher {
     }
 }
 
-/// Automatic presence must never overwrite something the user typed or set on another client.
+/// A newly detected track replaces stale or manual values; unchanged playback
+/// does not repeatedly override a value the user has edited.
 pub fn should_publish(
     enabled: bool,
     current: &str,
     published: Option<&str>,
     track: Option<&str>,
+    track_changed: bool,
 ) -> Option<String> {
     if !enabled {
         if !current.is_empty() && published == Some(current) {
@@ -41,7 +43,7 @@ pub fn should_publish(
     }
     // If the song was not published by this watcher, consider it manual or from another client.
     let manual = !current.is_empty() && published != Some(current);
-    if manual {
+    if manual && !track_changed {
         return None;
     }
     // If this watcher published the track, but no track is playing anymore, clear it.
@@ -55,7 +57,7 @@ pub fn should_publish(
     (desired != current).then(|| desired.to_owned())
 }
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "android"))]
 pub fn watch() -> Option<Watcher> {
     use std::{sync::mpsc, time::Duration};
     let (sender, receiver) = mpsc::channel();
@@ -66,7 +68,10 @@ pub fn watch() -> Option<Watcher> {
         .spawn(move || {
             let mut last: Option<Option<String>> = None;
             while !thread_stop.load(Ordering::Relaxed) {
+                #[cfg(target_os = "linux")]
                 let value = read_linux();
+                #[cfg(target_os = "android")]
+                let value = crate::android::current_playing_music();
                 if last.as_ref() != Some(&value) {
                     if sender.send(value.clone()).is_err() {
                         return;
@@ -85,7 +90,7 @@ pub fn watch() -> Option<Watcher> {
     Some(Watcher { receiver, stop })
 }
 
-#[cfg(not(target_os = "linux"))]
+#[cfg(not(any(target_os = "linux", target_os = "android")))]
 pub fn watch() -> Option<Watcher> {
     None
 }
@@ -176,35 +181,36 @@ mod tests {
     use super::should_publish;
 
     #[test]
-    fn manual_music_is_kept_and_automatic_tracks_publish_only_on_change() {
+    fn new_tracks_replace_manual_values_but_unchanged_playback_does_not() {
         assert_eq!(
-            should_publish(true, "", None, Some("A — B")),
+            should_publish(true, "", None, Some("A — B"), true),
             Some("A — B".into())
         );
         assert_eq!(
-            should_publish(true, "A — B", Some("A — B"), Some("A — B")),
+            should_publish(true, "A — B", Some("A — B"), Some("A — B"), false),
             None
         );
         assert_eq!(
-            should_publish(true, "A — B", Some("A — B"), None),
+            should_publish(true, "A — B", Some("A — B"), None, true),
             Some(String::new())
         );
         assert_eq!(
-            should_publish(true, "Minha música", Some("A — B"), Some("C — D")),
-            None
+            should_publish(true, "Minha música", Some("A — B"), Some("C — D"), true),
+            Some("C — D".into())
         );
-        assert_eq!(should_publish(false, "", None, Some("A — B")), None);
+        assert_eq!(should_publish(true, "Manual", None, Some("A — B"), false), None);
+        assert_eq!(should_publish(false, "", None, Some("A — B"), true), None);
         assert_eq!(
-            should_publish(false, "A — B", Some("A — B"), Some("A — B")),
+            should_publish(false, "A — B", Some("A — B"), Some("A — B"), true),
             Some(String::new())
         );
-        assert_eq!(should_publish(false, "Manual", None, Some("A — B")), None);
+        assert_eq!(should_publish(false, "Manual", None, Some("A — B"), true), None);
         assert_eq!(
-            should_publish(true, "Minha música", None, None),
+            should_publish(true, "Minha música", None, None, false),
             None
         );
         assert_eq!(
-            should_publish(true, "Música do PC", None, None),
+            should_publish(true, "Música do PC", None, None, false),
             None
         );
     }

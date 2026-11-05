@@ -180,6 +180,11 @@ async fn backoff(outgoing: &mut Receiver<ClientEvent>, seconds: u64) -> bool {
 }
 
 async fn resync(api: Api, bus: Bus, watches: Watches) {
+    if let Some(crypto) = &api.crypto
+        && let Ok(Some(key)) = crypto.history_export_key()
+        && matches!(api.sync_cloud_history(&key).await, Ok(true)) {
+        bus.send(Update::HistoryKeysRestored);
+    }
     tokio::spawn(check_release(api.clone(), bus.clone()));
     let bootstrap = match api.get::<Bootstrap>("/bootstrap").await {
         Ok(value) => value,

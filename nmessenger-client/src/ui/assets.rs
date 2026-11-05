@@ -20,6 +20,8 @@ const EMBEDDED_SYMBOLS_HISTORIC: &[u8] = include_bytes!("../../assets/fonts/symb
 const EMBEDDED_SYMBOLS_SYLLABICS: &[u8] = include_bytes!("../../assets/fonts/symbols_syllabics_fallback.otf");
 const EMBEDDED_SYMBOLS_ENCLOSED: &[u8] = include_bytes!("../../assets/fonts/symbols_enclosed_fallback.ttf");
 const EMBEDDED_SYMBOLS_GAMER: &[u8] = include_bytes!("../../assets/fonts/symbols_gamer_fallback.ttf");
+// GNU FreeFont (FreeSerif), subset to Unicode symbols and dingbats.
+const EMBEDDED_SYMBOLS_GENERAL: &[u8] = include_bytes!("../../assets/fonts/symbols_general_fallback.otf");
 
 const TARGETS: &[FontTarget] = &[
     FontTarget {
@@ -467,8 +469,10 @@ fn font_definitions() -> egui::FontDefinitions {
         "embedded_symbols_gamer".to_string(),
         egui::FontData::from_static(EMBEDDED_SYMBOLS_GAMER).into(),
     );
+    fonts.font_data.insert("embedded_symbols_general".to_string(), egui::FontData::from_static(EMBEDDED_SYMBOLS_GENERAL).into());
 
     for id in [
+        "embedded_symbols_general",
         "embedded_emojis",
         "embedded_symbols_math",
         "embedded_symbols_historic",
@@ -656,6 +660,22 @@ pub fn install_fonts(ctx: &egui::Context) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn embedded_general_symbols_cover_common_display_name_stars() {
+        let mut definitions = egui::FontDefinitions::empty();
+        definitions.font_data.insert("symbols".into(), egui::FontData::from_static(EMBEDDED_SYMBOLS_GENERAL).into());
+        definitions.families.insert(egui::FontFamily::Proportional, vec!["symbols".into()]);
+        let ctx = egui::Context::default();
+        ctx.set_fonts(definitions);
+        let mut output = ctx.run_ui(egui::RawInput::default(), |ui| { ui.label("⋆ ★ ✦ ✧ ☆"); });
+        output.textures_delta.clear();
+        ctx.fonts_mut(|fonts| {
+            for character in ['⋆', '★', '✦', '✧', '☆'] {
+                assert!(fonts.has_glyph(&egui::FontId::proportional(14.0), character), "missing {character}");
+            }
+        });
+    }
 
     #[test]
     fn named_interface_fonts_have_real_fallbacks() {

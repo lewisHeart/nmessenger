@@ -7,6 +7,10 @@ use eframe::egui::{self, Color32, Pos2, Rect, RichText, Vec2};
 use nm_protocol::*;
 use zeroize::Zeroize;
 
+fn compact(ui: &egui::Ui) -> bool {
+    crate::platform::is_mobile() || ui.available_width() < 550.0
+}
+
 pub fn refresh(app: &mut MessengerApp) {
     app.admin.error = None;
     if app.admin.tab == 0 {
@@ -30,6 +34,7 @@ pub fn open(app: &mut MessengerApp) {
     app.admin.tab = 0;
     app.admin.offset = 0;
     app.admin.search.clear();
+    app.admin.selected_user = None;
     refresh(app);
 }
 
@@ -117,7 +122,7 @@ pub fn show(app: &mut MessengerApp, ctx: &egui::Context) {
 }
 
 fn header_banner(app: &mut MessengerApp, ui: &mut egui::Ui) {
-    if crate::platform::is_mobile() {
+    if compact(ui) {
         ui.horizontal_wrapped(|ui| {
             ui.label(RichText::new("Administração").size(16.0).strong().color(nmessenger::HEADING));
             if ui.add_enabled(!app.admin.busy, egui::Button::new("Atualizar")).clicked() { refresh(app); }
@@ -131,7 +136,7 @@ fn header_banner(app: &mut MessengerApp, ui: &mut egui::Ui) {
         .corner_radius(8)
         .inner_margin(egui::Margin::symmetric(14, 10));
 
-    if crate::platform::is_mobile() {
+    if compact(ui) {
         header_frame.show(ui, |ui| {
             ui.horizontal(|ui| {
                 let (icon_rect, _) = ui.allocate_exact_size(Vec2::splat(32.0), egui::Sense::hover());
@@ -266,17 +271,16 @@ fn tab_navigation(app: &mut MessengerApp, ui: &mut egui::Ui) {
         .corner_radius(7)
         .inner_margin(4);
 
-    if crate::platform::is_mobile() {
-        scroll::horizontal().id_salt("admin-mobile-tabs").show(ui, |ui| {
-            ui.horizontal(|ui| {
-                ui.spacing_mut().item_spacing.x = 6.0;
+    if compact(ui) {
+        let width = ((ui.available_width() - 6.0) / 2.0).max(1.0);
+        egui::Grid::new("admin-mobile-tabs").num_columns(2).spacing(Vec2::splat(6.0)).show(ui, |ui| {
                 for (index, title) in [
-                    (0, "📊 Visão geral"),
-                    (1, "👥 Usuários"),
-                    (2, "💻 Sessões"),
-                    (3, "📢 Anúncios"),
-                    (4, "⚖️ Auditoria"),
-                    (5, "🏆 Selos"),
+                    (0, "Visão geral"),
+                    (1, "Usuários"),
+                    (2, "Sessões"),
+                    (3, "Anúncios"),
+                    (4, "Auditoria"),
+                    (5, "Selos"),
                 ] {
                     let is_selected = app.admin.tab == index;
                     let text = RichText::new(title)
@@ -300,7 +304,7 @@ fn tab_navigation(app: &mut MessengerApp, ui: &mut egui::Ui) {
                         })
                         .corner_radius(16)
                         .min_size(Vec2::new(0.0, 32.0));
-                    let resp = ui.add(btn);
+                    let resp = ui.add_sized([width, 32.0], btn);
                     if resp.clicked() {
                         app.admin.tab = index;
                         app.admin.offset = 0;
@@ -310,8 +314,8 @@ fn tab_navigation(app: &mut MessengerApp, ui: &mut egui::Ui) {
                         app.admin.search.clear();
                         refresh(app);
                     }
+                    if index % 2 == 1 { ui.end_row(); }
                 }
-            });
         });
         return;
     }
@@ -370,8 +374,8 @@ fn tab_navigation(app: &mut MessengerApp, ui: &mut egui::Ui) {
 }
 
 fn search_bar(app: &mut MessengerApp, ui: &mut egui::Ui) {
-    let is_mob = crate::platform::is_mobile();
-    ui.horizontal(|ui| {
+    let is_mob = compact(ui);
+    let content = |ui: &mut egui::Ui| {
         let frame = egui::Frame::new()
             .fill(Color32::WHITE)
             .stroke(egui::Stroke::new(1.0, Color32::from_rgb(195, 215, 235)))
@@ -420,11 +424,12 @@ fn search_bar(app: &mut MessengerApp, ui: &mut egui::Ui) {
             app.admin.offset = 0;
             refresh(app);
         }
-    });
+    };
+    if is_mob { ui.vertical(content); } else { ui.horizontal_wrapped(content); }
 }
 
 fn card(ui: &mut egui::Ui, content: impl FnOnce(&mut egui::Ui)) {
-    let is_mob = crate::platform::is_mobile();
+    let is_mob = compact(ui);
     let margin = if is_mob { 10 } else { 12 };
     let frame = egui::Frame::new()
         .fill(Color32::WHITE)
@@ -464,7 +469,7 @@ fn kpi_card(
         ui.set_width(inner_width);
         ui.style_mut().wrap_mode = Some(egui::TextWrapMode::Wrap);
         ui.vertical(|ui| {
-            ui.horizontal(|ui| {
+            ui.horizontal_wrapped(|ui| {
                 ui.label(RichText::new(icon).size(14.0));
                 ui.label(RichText::new(title).size(10.5).color(nmessenger::MUTED));
             });
@@ -491,16 +496,16 @@ fn overview(app: &MessengerApp, ui: &mut egui::Ui) {
     };
 
     ui.add_space(4.0);
-    let is_mob = crate::platform::is_mobile();
+    let is_mob = compact(ui);
     let spacing_x = ui.spacing().item_spacing.x;
     let card_width = if is_mob {
-        ((ui.available_width() - spacing_x - 4.0) / 2.0).floor().max(90.0)
+        ui.available_width().max(1.0)
     } else {
         ((ui.available_width() - spacing_x * 2.0 - 4.0) / 3.0).floor().max(140.0)
     };
 
     // Row 1 of KPI cards
-    ui.horizontal_wrapped(|ui| {
+    let first_row = |ui: &mut egui::Ui| {
         kpi_card(
             ui,
             "Usuários cadastrados",
@@ -528,12 +533,13 @@ fn overview(app: &MessengerApp, ui: &mut egui::Ui) {
             Color32::from_rgb(0, 110, 200),
             card_width,
         );
-    });
+    };
+    if is_mob { ui.vertical(first_row); } else { ui.horizontal_wrapped(first_row); }
 
     ui.add_space(8.0);
 
     // Row 2 of KPI cards
-    ui.horizontal_wrapped(|ui| {
+    let second_row = |ui: &mut egui::Ui| {
         kpi_card(
             ui,
             "Mensagens trocadas",
@@ -572,13 +578,14 @@ fn overview(app: &MessengerApp, ui: &mut egui::Ui) {
             },
             card_width,
         );
-    });
+    };
+    if is_mob { ui.vertical(second_row); } else { ui.horizontal_wrapped(second_row); }
 
     ui.add_space(14.0);
 
     // System Information & Storage Policy
     card(ui, |ui| {
-        ui.horizontal(|ui| {
+        ui.horizontal_wrapped(|ui| {
             ui.label(
                 RichText::new("Armazenamento e Políticas do Servidor")
                     .size(13.5)
@@ -656,10 +663,31 @@ fn users(app: &mut MessengerApp, ui: &mut egui::Ui) {
                 ui.add_space(20.0);
             });
         });
+        pagination(app, ui, page.total, 0);
         return;
     }
+    if app.admin.selected_user.is_some_and(|selected| !page.items.iter().any(|user| user.id == selected)) {
+        app.admin.selected_user = None;
+    }
+    if app.admin.selected_user.is_none() {
+        for user in &page.items {
+            let status = if user.banned { "Banido" } else if user.disabled_at.is_some() { "Suspenso" } else if user.administrator { "Administrador" } else { "Ativo" };
+            let label = format!("{}  ·  {}\n{}", user.display_name, status, user.email);
+            if ui.add_sized([ui.available_width(), 52.0], egui::Button::new(RichText::new(label).size(12.0).color(nmessenger::HEADING)).wrap()).clicked() {
+                app.admin.selected_user = Some(user.id);
+            }
+            ui.add_space(4.0);
+        }
+        pagination(app, ui, page.total, page.items.len());
+        return;
+    }
+    if ui.button("‹  Voltar à lista de usuários").clicked() {
+        app.admin.selected_user = None;
+        return;
+    }
+    ui.add_space(6.0);
     let me = app.data.as_ref().map(|data| data.me.id);
-    for user in &page.items {
+    for user in page.items.iter().filter(|user| Some(user.id) == app.admin.selected_user).cloned().collect::<Vec<_>>() {
         let is_me = Some(user.id) == me;
         card(ui, |ui| {
             ui.horizontal(|ui| {
@@ -710,6 +738,7 @@ fn users(app: &mut MessengerApp, ui: &mut egui::Ui) {
 
                 ui.add_space(8.0);
                 ui.vertical(|ui| {
+                    ui.set_width(ui.available_width());
                     ui.horizontal_wrapped(|ui| {
                         ui.label(
                             RichText::new(&user.display_name)
@@ -902,7 +931,6 @@ fn users(app: &mut MessengerApp, ui: &mut egui::Ui) {
             });
         });
     }
-    pagination(app, ui, page.total, page.items.len());
 }
 
 fn sessions(app: &mut MessengerApp, ui: &mut egui::Ui) {
@@ -931,7 +959,7 @@ fn sessions(app: &mut MessengerApp, ui: &mut egui::Ui) {
     }
     for session in &page.items {
         card(ui, |ui| {
-            if crate::platform::is_mobile() {
+            if compact(ui) {
                 ui.vertical(|ui| {
                     ui.horizontal(|ui| {
                         let (icon_rect, _) =
@@ -1265,7 +1293,7 @@ fn pagination(app: &mut MessengerApp, ui: &mut egui::Ui, total: i64, count: usiz
         app.admin.offset + 1
     };
     let end = (app.admin.offset + count as i64).min(total);
-    if crate::platform::is_mobile() {
+    if compact(ui) {
         ui.vertical(|ui| {
             ui.label(
                 RichText::new(format!("Exibindo {start}–{end} de {total} registros"))
@@ -1666,7 +1694,7 @@ fn user_badges_modal(app: &mut MessengerApp, ui: &mut egui::Ui) {
 }
 
 fn badges(app: &mut MessengerApp, ui: &mut egui::Ui) {
-    let is_mob = crate::platform::is_mobile();
+    let is_mob = compact(ui);
     if is_mob {
         ui.vertical(|ui| {
             ui.label(
@@ -2039,5 +2067,68 @@ fn badges(app: &mut MessengerApp, ui: &mut egui::Ui) {
             }
         });
         ui.add_space(4.0);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn overview_fits_narrow_admin_page() {
+        let mut app = MessengerApp::new_for_test();
+        app.admin.overview = Some(AdminOverview { users: 12, suspended_users: 0, active_sessions: 4,
+            conversations: 20, messages: 80, files: 3, stored_bytes: 1024,
+            published_announcements: 2, user_upload_quota: 536870912, session_ttl_secs: 3600 });
+        for screen_width in [280.0, 320.0, 400.0] {
+            let ctx = egui::Context::default();
+            let mut width = 0.0;
+            let mut output = ctx.run_ui(egui::RawInput {
+                screen_rect: Some(Rect::from_min_size(Pos2::ZERO, Vec2::new(screen_width, 700.0))), ..Default::default()
+            }, |ui| { overview(&app, ui); width = ui.min_rect().width(); });
+            output.textures_delta.clear();
+            assert!(width <= screen_width + 2.0, "painel excedeu {screen_width}: {width}");
+        }
+    }
+
+    #[test]
+    fn compact_navigation_fits_without_horizontal_scrolling() {
+        let mut app = MessengerApp::new_for_test();
+        let ctx = egui::Context::default();
+        let mut width = 0.0;
+        let mut output = ctx.run_ui(egui::RawInput {
+            screen_rect: Some(Rect::from_min_size(Pos2::ZERO, Vec2::new(280.0, 700.0))), ..Default::default()
+        }, |ui| { tab_navigation(&mut app, ui); width = ui.min_rect().width(); });
+        output.textures_delta.clear();
+        assert!(width <= 282.0, "abas excederam a tela: {width}");
+    }
+
+    #[test]
+    fn compact_user_list_opens_details_and_fits_mobile_width() {
+        let mut app = MessengerApp::new_for_test();
+        let id = uuid::Uuid::new_v4();
+        app.admin.users = Some(AdminPage { items: vec![AdminUser {
+            id, email: "contact@example.test".into(), display_name: "Pessoa de teste".into(),
+            created_at: chrono::Utc::now(), disabled_at: None, banned: false,
+            administrator: false, active_sessions: 1, stored_bytes: 0, badges: Vec::new(),
+        }], total: 1, offset: 0 });
+        let ctx = egui::Context::default();
+        let screen = Rect::from_min_size(Pos2::ZERO, Vec2::new(320.0, 700.0));
+        let input = |events| egui::RawInput { screen_rect: Some(screen), events, ..Default::default() };
+        let mut origin = Pos2::ZERO;
+        let mut output = ctx.run_ui(input(vec![]), |ui| { origin = ui.cursor().min; users(&mut app, ui); });
+        output.textures_delta.clear();
+        let pos = origin + Vec2::new(70.0, 25.0);
+        for pressed in [true, false] {
+            let mut output = ctx.run_ui(input(vec![egui::Event::PointerMoved(pos), egui::Event::PointerButton {
+                pos, button: egui::PointerButton::Primary, pressed, modifiers: egui::Modifiers::NONE,
+            }]), |ui| users(&mut app, ui));
+            output.textures_delta.clear();
+        }
+        assert_eq!(app.admin.selected_user, Some(id));
+        let mut width = 0.0;
+        let mut output = ctx.run_ui(input(vec![]), |ui| { users(&mut app, ui); width = ui.min_rect().width(); });
+        output.textures_delta.clear();
+        assert!(width <= 322.0, "detalhes excederam a tela: {width}");
     }
 }

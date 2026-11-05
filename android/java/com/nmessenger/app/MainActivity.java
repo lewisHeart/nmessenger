@@ -16,6 +16,41 @@ import java.util.UUID;
 import java.util.concurrent.*;
 
 public final class MainActivity extends NativeActivity {
+    public boolean musicAccessGranted() {
+        android.content.ComponentName listener = new android.content.ComponentName(this, MusicNotificationListener.class);
+        if (android.os.Build.VERSION.SDK_INT >= 27) {
+            android.app.NotificationManager manager = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            return manager != null && manager.isNotificationListenerAccessGranted(listener);
+        }
+        String enabled = android.provider.Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
+        if (enabled == null) return false;
+        for (String item : enabled.split(":")) if (listener.equals(android.content.ComponentName.unflattenFromString(item))) return true;
+        return false;
+    }
+
+    public void requestMusicAccess() {
+        runOnUiThread(() -> startActivity(new Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)));
+    }
+
+    public String currentPlayingMusic() {
+        if (!musicAccessGranted()) return null;
+        try {
+            android.media.session.MediaSessionManager manager = (android.media.session.MediaSessionManager) getSystemService(MEDIA_SESSION_SERVICE);
+            if (manager == null) return null;
+            for (android.media.session.MediaController player : manager.getActiveSessions(new android.content.ComponentName(this, MusicNotificationListener.class))) {
+                android.media.session.PlaybackState state = player.getPlaybackState();
+                if (state == null || state.getState() != android.media.session.PlaybackState.STATE_PLAYING) continue;
+                android.media.MediaMetadata metadata = player.getMetadata();
+                if (metadata == null) continue;
+                String title = metadata.getString(android.media.MediaMetadata.METADATA_KEY_TITLE);
+                if (title == null || title.trim().isEmpty()) continue;
+                String artist = metadata.getString(android.media.MediaMetadata.METADATA_KEY_ARTIST);
+                if (artist == null || artist.trim().isEmpty()) artist = metadata.getString(android.media.MediaMetadata.METADATA_KEY_ALBUM_ARTIST);
+                return artist == null || artist.trim().isEmpty() ? title : artist + " — " + title;
+            }
+        } catch (SecurityException ignored) { }
+        return null;
+    }
     public boolean startMessageNotifications(String base, String token, String account) {
         try {
             MessageNotificationService.start(getApplicationContext(), base, token, account);

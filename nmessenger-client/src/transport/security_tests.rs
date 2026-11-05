@@ -5,6 +5,53 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use reqwest::Method;
 
 #[actix_web::test]
+async fn old_device_upload_refreshes_history_on_an_already_connected_new_device() {
+    let Some(server) = server::TestServer::start().await else { return; };
+    let alice = server.register("Sender").await;
+    let bob = server.register("Recipient").await;
+    server.befriend(&alice, &bob).await;
+    let group = server.group(&alice, &[&bob]).await;
+    let base = api::base(&server.url).unwrap();
+    let old_crypto = std::sync::Arc::new(crate::encryption::Crypto::load(&base, bob.user.id, "test password 123").await.unwrap());
+    let old = Api { client: api::client().unwrap(), base: base.clone(), token: std::sync::Arc::new(zeroize::Zeroizing::new(bob.token.clone())),
+        user_id: bob.user.id, session_id: bob.session_id, crypto: Some(old_crypto.clone()) };
+    old.json::<EncryptionKey, _>(Method::POST, "/encryption/keys", &old_crypto.registration()).await.unwrap();
+    let _: Bootstrap = old.get("/bootstrap").await.unwrap();
+    let (sender, _) = api::authenticate(server.url.clone(), alice.user.email.clone(), "test password 123".into(),
+        "Sender".into(), None, Presence::Available, None).await.unwrap();
+    let sent: Message = sender.json(Method::POST, &format!("/conversations/{}/messages", group.id), &server::send_request("mensagem anterior")).await.unwrap();
+    let account = crate::secure::account(&base, &bob.user.id.to_string());
+    let directory = crate::storage::directory().join("identities");
+    for suffix in ["json", "pins.json", "files", "rosters", "history"] {
+        let path = directory.join(format!("{account}.{suffix}"));
+        if tokio::fs::try_exists(&path).await.unwrap() {
+            tokio::fs::rename(&path, directory.join(format!("{account}.{suffix}.late-sync-test"))).await.unwrap();
+        }
+    }
+    let (new, _) = api::authenticate(server.url.clone(), bob.user.email.clone(), "test password 123".into(),
+        "New device".into(), None, Presence::Available, None).await.unwrap();
+    let before = new.history(group.id, None, "").await.unwrap();
+    assert!(before.iter().find(|message| message.id == sent.id).unwrap().body.contains("indisponível"));
+    let url = format!("{}/v1/events", server.url.replacen("http://", "ws://", 1));
+    let (mut socket, _) = tokio_tungstenite::connect_async(url).await.unwrap();
+    server::send_event(&mut socket, &ClientEvent::Authenticate { token: new.token.to_string() }).await;
+    assert!(matches!(server::next_event(&mut socket).await, ServerEvent::Authenticated { .. }));
+    let (_, export) = super::opaque::login(&old.client, &old.base, &bob.user.email, "test password 123", "Old device").await.unwrap().unwrap();
+    old.sync_cloud_history(&export).await.unwrap();
+    assert!(matches!(server::event_matching(&mut socket, |event| matches!(event, ServerEvent::ResyncRequired)).await, ServerEvent::ResyncRequired));
+    let new_key = new.crypto.as_ref().unwrap().history_export_key().unwrap().unwrap();
+    assert!(new.sync_cloud_history(&new_key).await.unwrap());
+    let before_revision: serde_json::Value = new.get("/encryption/history-backup").await.unwrap();
+    assert!(!new.sync_cloud_history(&new_key).await.unwrap());
+    let after_revision: serde_json::Value = new.get("/encryption/history-backup").await.unwrap();
+    assert_eq!(before_revision["revision"], after_revision["revision"], "unchanged keyrings must not publish a new revision");
+    let restored = new.history(group.id, None, "").await.unwrap();
+    assert_eq!(restored.iter().find(|message| message.id == sent.id).unwrap().body, "mensagem anterior");
+    drop(socket);
+    server.shutdown().await;
+}
+
+#[actix_web::test]
 async fn group_member_changes_do_not_require_manual_verification() {
     let Some(server) = server::TestServer::start().await else { return; };
     let alice = server.register("Alice").await;

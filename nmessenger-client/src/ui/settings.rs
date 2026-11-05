@@ -552,10 +552,11 @@ fn account(app: &mut MessengerApp, ui: &mut egui::Ui) {
             tr("Detect and share what I'm listening to (Rich Presence / Spotify)", "Detectar e compartilhar o que estou ouvindo (Rich Presence / Spotify)"),
         );
         ui.label(
-            RichText::new(tr("Reads tracks playing in Spotify and other MPRIS players. Leave the field above empty to use automatic detection.", "Lê músicas em reprodução no Spotify e outros players (MPRIS). Deixe o campo acima vazio para usar a detecção automática."))
+            RichText::new(tr("A newly playing track replaces the current value.", "Uma música nova em reprodução substitui o valor atual."))
                 .size(10.0)
                 .color(nmessenger::MUTED),
         );
+        music_access(ui, app.options.settings.music_status);
     });
     card(ui, |ui| {
         ui.label(
@@ -1036,6 +1037,22 @@ fn notifications(app: &mut MessengerApp, ui: &mut egui::Ui) {
     card(ui, |ui| super::sounds::show(app, ui));
 }
 
+fn music_access(ui: &mut egui::Ui, enabled: bool) {
+    #[cfg(target_os = "android")]
+    if enabled {
+        if crate::android::music_access_granted() {
+            ui.label(RichText::new(tr("Music access enabled", "Acesso à música ativado")).small().color(nmessenger::MUTED));
+        } else {
+            ui.label(RichText::new(tr("Allow notification access to detect active music players.", "Permita o acesso às notificações para detectar músicas em reprodução.")).small().color(nmessenger::MUTED));
+            if ui.button(tr("Open notification access", "Abrir acesso às notificações")).clicked() {
+                crate::android::request_music_access();
+            }
+        }
+    }
+    #[cfg(not(target_os = "android"))]
+    let _ = (ui, enabled);
+}
+
 fn device_menu(ui: &mut egui::Ui, id: &str, value: &mut String, values: &[String]) {
     let combo_w = (ui.available_width() - 12.0).clamp(160.0, 330.0);
     egui::ComboBox::from_id_salt(id)
@@ -1237,9 +1254,10 @@ fn privacy(app: &mut MessengerApp, ui: &mut egui::Ui) {
         );
         ui.checkbox(
             &mut app.options.settings.music_status,
-            tr("Share music detected from Spotify or another player (Linux/MPRIS)", "Compartilhar música detectada no Spotify ou em outro player (Linux/MPRIS)"),
+            tr("Share music detected from a player", "Compartilhar música detectada em um player"),
         );
-        ui.label(RichText::new(tr("Text entered under Account > Music or activity takes precedence. Leave it empty for automatic detection.", "O texto preenchido manualmente em Conta > Música ou atividade tem prioridade. Deixe-o vazio para usar a detecção automática.")).small().color(nmessenger::HEADING));
+        ui.label(RichText::new(tr("A newly playing track replaces the current value.", "Uma música nova em reprodução substitui o valor atual.")).small().color(nmessenger::HEADING));
+        music_access(ui, app.options.settings.music_status);
         ui.label(RichText::new(tr("Read receipts and typing settings are also enforced by the server. Disabling read receipts still updates your own unread counts.", "As opções de leitura e digitação também são aplicadas pelo servidor. Desativar leitura mantém seus próprios contadores de mensagens atualizados.")).small().color(nmessenger::HEADING));
     });
     card(ui, |ui| {

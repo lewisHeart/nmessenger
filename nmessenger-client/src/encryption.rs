@@ -44,6 +44,7 @@ mod tests {
             files: Mutex::new(HashMap::new()),
             historical: Mutex::new(Vec::new()),
             historical_write: tokio::sync::Mutex::new(()),
+            cloud_sync: tokio::sync::Mutex::new(()),
             history_export_key: Mutex::new(None),
         }
     }
@@ -292,6 +293,7 @@ pub struct Crypto {
     pub files: Mutex<HashMap<Uuid, ProtectedAttachment>>,
     historical: Mutex<Vec<HistoricalKey>>,
     historical_write: tokio::sync::Mutex<()>,
+    pub cloud_sync: tokio::sync::Mutex<()>,
     history_export_key: Mutex<Option<Zeroizing<Vec<u8>>>>,
 }
 
@@ -404,11 +406,23 @@ impl Crypto {
         seal_history_archive(&HistoryArchive { version: 1, user: self.user, keys }, export_key)
     }
 
+    pub fn cloud_history_contains_local(&self, bytes: &[u8], export_key: &[u8]) -> Result<bool, String> {
+        let archive = open_history_archive(bytes, export_key, self.user)?;
+        let keys = self.historical.lock().map_err(|_| "Estado de chaves indisponível")?;
+        let own = archive.keys.iter().any(|key| key.device == self.device && key.secret == self.secret.to_bytes());
+        Ok(own && keys.iter().all(|local| archive.keys.iter().any(|key| key.device == local.device && key.secret == local.secret)))
+    }
+
+    pub fn historical_key_count(&self) -> Result<usize, String> {
+        Ok(self.historical.lock().map_err(|_| "Estado de chaves indisponível")?.len())
+    }
+
     #[allow(dead_code)]
     pub async fn merge_cloud_history(&self, bytes: &[u8], export_key: &[u8]) -> Result<(), String> {
         let _write = self.historical_write.lock().await;
         let archive = open_history_archive(bytes, export_key, self.user)?;
         let mut keys = self.historical.lock().map_err(|_| "Estado de chaves indisponível")?.clone();
+        let original_count = keys.len();
         for incoming in archive.keys {
             if incoming.device == self.device {
                 if incoming.secret != self.secret.to_bytes() { return Err("Chave de dispositivo divergente no backup".into()); }
@@ -419,6 +433,7 @@ impl Crypto {
                 keys.push(incoming.clone());
             }
         }
+        if keys.len() == original_count { return Ok(()); }
         let clear = Zeroizing::new(serde_json::to_vec(&keys).map_err(|e| e.to_string())?);
         let protected = self.protect_local(&clear)?;
         let path = crate::storage::directory().join("identities").join(format!("{}.history", self.account));
@@ -480,6 +495,7 @@ impl Crypto {
             files: Mutex::new(HashMap::new()),
             historical: Mutex::new(Vec::new()),
             historical_write: tokio::sync::Mutex::new(()),
+            cloud_sync: tokio::sync::Mutex::new(()),
             history_export_key: Mutex::new(None),
         };
         let path = crate::storage::directory()

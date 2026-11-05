@@ -217,6 +217,7 @@ pub enum Update {
     Sessions(Vec<SessionInfo>),
     EncryptionKeys(Uuid, Vec<EncryptionKey>),
     HistoryBackupFinished { imported: bool, result: Result<bool, String> },
+    HistoryKeysRestored,
     Contacts(Vec<Contact>),
     Contact(Contact),
     ContactRemoved(Uuid),

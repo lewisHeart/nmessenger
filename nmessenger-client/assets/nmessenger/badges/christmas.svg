@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="250" y1="53.681" x2="250" y2="446.319" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#87d47c"/>
+      <stop offset="0.22" stop-color="#68b96a"/>
+      <stop offset="0.65" stop-color="#458e55"/>
+      <stop offset="1" stop-color="#2c633b"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="250" y1="68.405" x2="250" y2="431.595" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#357848"/>
+      <stop offset="0.55" stop-color="#2c663d"/>
+      <stop offset="1" stop-color="#204d2e"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="250" y1="92.331" x2="250" y2="407.669" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6fc070"/>
+      <stop offset="0.5" stop-color="#4c995b"/>
+      <stop offset="1" stop-color="#316b3f"/>
+    </linearGradient>
+    <radialGradient id="radial-gradient-1" cx="250" cy="214.515" r="171.509" fx="250" fy="184.945" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#428e4c"/>
+      <stop offset="0.38" stop-color="#26643a"/>
+      <stop offset="0.78" stop-color="#1c4e2e"/>
+      <stop offset="1" stop-color="#153e24"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-2" cx="250" cy="181.988" r="94.626" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e8f569" stop-opacity="0.82"/>
+      <stop offset="0.4" stop-color="#8cd95b" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#26643a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="linear-gradient-4" x1="230.368" y1="328.528" x2="269.632" y2="328.528" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#54290c"/>
+      <stop offset="0.38" stop-color="#7c4219"/>
+      <stop offset="0.75" stop-color="#633210"/>
+      <stop offset="1" stop-color="#3e1d07"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-5" x1="249.387" y1="243.865" x2="249.387" y2="344.596" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#75be5c"/>
+      <stop offset="1" stop-color="#569e49"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-6" x1="248.773" y1="251.84" x2="248.773" y2="336.536" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#194f2c"/>
+      <stop offset="0.45" stop-color="#246639"/>
+      <stop offset="1" stop-color="#1c522e"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-7" x1="251.406" y1="202.761" x2="251.406" y2="299.08" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#92d464"/>
+      <stop offset="1" stop-color="#6cb353"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-8" x1="252.002" y1="210.736" x2="252.002" y2="291.104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#256638"/>
+      <stop offset="0.35" stop-color="#388547"/>
+      <stop offset="1" stop-color="#28693b"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-9" x1="250.214" y1="170.245" x2="250.214" y2="254.294" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d4f266"/>
+      <stop offset="0.5" stop-color="#9ed95b"/>
+      <stop offset="1" stop-color="#7bc054"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-10" x1="250.315" y1="176.994" x2="250.315" y2="245.706" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b9e858"/>
+      <stop offset="0.35" stop-color="#74b84b"/>
+      <stop offset="0.8" stop-color="#499146"/>
+      <stop offset="1" stop-color="#3b7d3f"/>
+    </linearGradient>
+  </defs>
+  <title>Fazendo 3.svg</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <g>
+      <circle cx="250" cy="250" r="200" fill="#0d2616"/>
+      <circle cx="250" cy="250" r="196.319" fill="url(#linear-gradient-1)"/>
+      <circle cx="250" cy="250" r="184.049" fill="#1c472a"/>
+      <circle cx="250" cy="250" r="181.595" fill="url(#linear-gradient-2)"/>
+      <circle cx="250" cy="250" r="160.123" fill="#173d23"/>
+      <circle cx="250" cy="250" r="157.669" fill="url(#linear-gradient-3)"/>
+      <circle cx="250" cy="250" r="150.307" fill="#11301c"/>
+      <circle cx="250" cy="250" r="147.853" fill="url(#radial-gradient-1)"/>
+      <circle cx="250" cy="250" r="139.877" fill="none" stroke="#2d6e43" stroke-width="2.5" opacity="0.7"/>
+      <circle cx="250" cy="250" r="147.853" fill="url(#radial-gradient-2)"/>
+      <g>
+        <polygon points="234.049,328.528 230.368,380.675 269.632,380.675 265.951,328.528" fill="url(#linear-gradient-4)" stroke="#0c2614" stroke-width="8.5" stroke-linejoin="round"/>
+        <polygon points="234.663,333.436 265.337,345.706 265.951,331.595" fill="#3b1b06" opacity="0.85"/>
+        <polyline points="245.092,342.025 258.589,353.067 259.816,374.54" fill="none" stroke="#965425" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+        <path d="M250 243.865 C214.417 274.54 181.288 299.08 151.84 323.62 C144.479 329.755 149.387 338.344 161.656 338.344 C173.926 338.344 187.423 334.049 197.239 326.687 C198.466 337.117 207.669 345.706 218.712 344.479 C229.141 343.252 239.571 335.89 248.773 327.914 C257.975 335.89 269.632 343.865 280.675 344.479 C291.104 345.092 299.693 337.117 300.92 326.687 C311.35 334.049 324.847 338.344 337.117 338.344 C349.387 338.344 354.294 329.755 346.933 323.62 C317.485 299.08 285.583 274.54 250 243.865 Z" fill="url(#linear-gradient-5)" stroke="#0c2614" stroke-width="9" stroke-linejoin="round"/>
+        <path d="M250 251.84 C218.098 279.448 187.423 300.92 160.429 323.006 C155.521 327.301 158.589 331.595 165.951 331.595 C176.994 331.595 189.264 326.074 199.693 318.098 C199.693 328.528 207.055 337.117 217.485 336.503 C227.301 335.89 238.957 327.301 248.773 319.325 C258.589 327.301 270.859 335.89 280.675 336.503 C289.877 337.117 296.626 329.141 296.626 318.098 C307.055 326.074 320.552 331.595 331.595 331.595 C338.957 331.595 342.025 327.301 337.117 323.006 C310.123 300.92 281.902 279.448 250 251.84 Z" fill="url(#linear-gradient-6)"/>
+        <path d="M309.39 297.08 C295.02 307.179 292.367 297.52 292.367 297.52 C292.367 297.52 286.464 310.371 268.44 309.265 C250.417 308.16 248.809 302.71 248.809 302.71 C248.809 302.71 246.551 309.282 221.713 309.444 C204.137 309.558 192.367 293.839 192.367 293.839 L213.931 274.207 L242.674 262.59 L284.339 276.074 C284.339 276.074 310.686 296.169 309.39 297.08 Z" fill="#18583e"/>
+        <path d="M250 202.761 C221.779 231.595 196.012 254.908 173.926 275.767 C167.178 281.902 172.086 289.877 183.129 289.877 C192.331 289.877 202.147 286.196 209.509 280.061 C208.896 290.491 216.871 299.08 226.687 298.466 C235.89 297.853 244.479 289.877 250.613 281.902 C257.362 291.104 265.951 299.08 275.767 299.08 C284.969 299.08 292.945 289.877 294.172 279.448 C302.147 286.196 312.577 289.877 321.779 289.877 C331.595 289.877 335.276 281.902 328.528 275.767 C305.215 254.908 278.221 231.595 250 202.761 Z" fill="url(#linear-gradient-7)" stroke="#0c2614" stroke-width="9" stroke-linejoin="round"/>
+        <path d="M250 210.736 C225.46 235.89 202.147 256.135 182.515 274.54 C178.221 278.834 180.675 282.515 187.423 282.515 C196.626 282.515 206.442 278.221 213.804 270.859 C211.963 281.902 218.098 290.491 226.687 290.491 C234.663 290.491 243.865 281.902 250.613 272.699 C257.362 282.515 265.337 291.104 274.54 291.104 C282.515 291.104 289.264 282.515 290.491 270.859 C298.466 278.221 308.896 282.515 317.485 282.515 C323.006 282.515 326.074 278.834 321.166 274.54 C300.307 256.135 274.54 235.89 250 210.736 Z" fill="url(#linear-gradient-8)"/>
+        <path d="M301.534 255.853 C287.164 265.951 274.308 252.14 274.308 252.14 C274.308 252.14 270.656 263.682 252.633 262.577 C234.609 261.471 230.557 252.882 230.557 252.882 C230.557 252.882 224.87 260.275 221.046 261.569 C207.609 266.112 197.239 257.761 197.239 257.761 L225.661 228.139 L259.816 216.871 L281.73 233.617 C281.73 233.617 302.831 254.941 301.534 255.853 Z" fill="#236742"/>
+        <path d="M250 170.245 C242.025 170.245 235.89 176.994 228.528 186.81 C216.871 202.761 205.828 219.325 194.785 233.436 C189.264 240.184 193.558 247.546 203.988 247.546 C215.031 247.546 226.687 242.638 234.663 234.663 C238.957 246.319 244.479 254.294 251.227 254.294 C257.975 254.294 263.497 246.319 267.178 234.663 C275.153 242.638 286.196 247.546 297.239 247.546 C307.055 247.546 311.35 240.184 305.215 233.436 C294.172 219.325 283.129 202.761 271.472 186.81 C264.11 176.994 257.975 170.245 250 170.245 Z" fill="url(#linear-gradient-9)" stroke="#0c2614" stroke-width="9" stroke-linejoin="round"/>
+        <path d="M250 176.994 C243.865 176.994 238.957 183.129 232.822 191.104 C222.393 205.215 211.963 219.325 202.147 232.209 C198.466 236.503 201.534 240.184 208.282 240.184 C218.712 240.184 229.755 234.049 238.344 225.46 C241.411 237.73 245.706 245.706 251.227 245.706 C256.748 245.706 261.043 237.73 264.11 225.46 C272.086 234.049 283.129 240.184 292.945 240.184 C299.08 240.184 302.147 236.503 298.466 232.209 C288.037 219.325 277.607 205.215 267.178 191.104 C261.043 183.129 256.135 176.994 250 176.994 Z" fill="url(#linear-gradient-10)"/>
+        <circle cx="236.503" cy="200.92" r="3.374" fill="#b9f075" opacity="0.88"/>
+        <circle cx="279.448" cy="265.951" r="3.374" fill="#e8faee"/>
+        <circle cx="193.558" cy="311.35" r="3.681" fill="#e8faee"/>
+        <circle cx="296.626" cy="313.804" r="3.067" fill="#e8faee"/>
+      </g>
+      <g>
+        <polygon points="250,127.182 258.561,143.915 276.074,145.861 262.842,158.704 266.345,176.994 250,168.043 233.655,176.994 237.158,158.704 223.926,145.861 241.439,143.915" fill="#f5b82e" stroke="#d38f14" stroke-width="14" stroke-linejoin="round" opacity="0.9"/>
+        <polygon points="250,127.182 258.561,143.915 276.074,145.861 262.842,158.704 266.345,176.994 250,168.043 233.655,176.994 237.158,158.704 223.926,145.861 241.439,143.915" fill="#f5b82e" stroke="#de971b" stroke-width="6" stroke-linejoin="round"/>
+        <g>
+          <polygon points="250,157.147 250,127.182 241.439,143.915" fill="#fcfba4"/>
+          <polygon points="250,157.147 258.561,143.915 250,127.182" fill="#fff772"/>
+          <polygon points="250,157.147 258.561,143.915 276.074,145.861" fill="#fff772"/>
+          <polygon points="250,157.147 276.074,145.861 262.842,158.704" fill="#fee026"/>
+          <polygon points="250,157.147 262.842,158.704 266.345,176.994" fill="#fee026"/>
+          <polygon points="250,157.147 266.345,176.994 250,168.043" fill="#fee026"/>
+          <polygon points="250,157.147 250,168.043 233.655,176.994" fill="#fee026"/>
+          <polygon points="250,157.147 233.655,176.994 237.158,158.704" fill="#fdf852"/>
+          <polygon points="250,157.147 237.158,158.704 223.926,145.861" fill="#fdf852"/>
+          <polygon points="250,157.147 223.926,145.861 241.439,143.915" fill="#fff08a"/>
+        </g>
+      </g>
+      <g id="layer-snowflakes">
+        <g>
+          <line x1="181.273" y1="176.815" x2="178.85" y2="188.216" fill="#000000" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="175.74" y1="178.649" x2="184.383" y2="186.382" fill="#000000" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="174.541" y1="184.29" x2="185.582" y2="180.741" fill="#000000" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round"/>
+          <path d="M181.261 182.771 C181.121 183.433 180.469 183.856 179.806 183.715 C179.144 183.575 178.72 182.923 178.861 182.26 C179.002 181.598 179.653 181.174 180.317 181.315 C180.979 181.456 181.402 182.107 181.261 182.771 Z" fill="#dcf5e3"/>
+        </g>
+        <g>
+          <line x1="316.273" y1="176.815" x2="318.696" y2="188.216" fill="#000000" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="311.964" y1="180.741" x2="323.005" y2="184.29" fill="#000000" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="313.163" y1="186.382" x2="321.806" y2="178.649" fill="#000000" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round"/>
+          <path d="M318.685 182.26 C318.826 182.923 318.402 183.575 317.74 183.715 C317.077 183.856 316.425 183.433 316.285 182.771 C316.144 182.107 316.567 181.456 317.229 181.315 C317.893 181.174 318.544 181.598 318.685 182.26 Z" fill="#dcf5e3"/>
+        </g>
+        <g>
+          <g>
+            <line x1="146.933" y1="234.049" x2="144.286" y2="215.216" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="140.877,226.227 146.335,229.796 150.598,224.861" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="138.808,220.322 145.566,224.329 150.959,218.615" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M145.537 214.42 C145.64 215.158 145.126 215.841 144.388 215.945 C143.65 216.048 142.967 215.534 142.864 214.796 C142.76 214.058 143.274 213.375 144.012 213.272 C144.75 213.168 145.433 213.682 145.537 214.42 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="146.933" y1="234.049" x2="161.919" y2="222.34" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="150.679,224.894 150.317,231.405 156.722,232.629" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="154.758,220.15 154.667,228.006 162.312,229.818" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M163.234 223.026 C162.646 223.485 161.798 223.381 161.339 222.793 C160.88 222.206 160.984 221.358 161.572 220.899 C162.159 220.44 163.007 220.544 163.466 221.131 C163.925 221.719 163.821 222.567 163.234 223.026 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="146.933" y1="234.049" x2="164.566" y2="241.174" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="156.734,232.716 150.914,235.658 153.058,241.817" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="162.882,233.877 156.034,237.726 158.286,245.253" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M164.629 242.655 C163.938 242.375 163.604 241.589 163.883 240.898 C164.163 240.207 164.949 239.872 165.64 240.152 C166.332 240.431 166.666 241.218 166.386 241.909 C166.107 242.6 165.32 242.934 164.629 242.655 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="146.933" y1="234.049" x2="149.579" y2="252.882" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="152.988,241.871 147.53,238.302 143.267,243.237" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="155.057,247.776 148.299,243.769 142.906,249.483" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M148.328 253.678 C148.225 252.94 148.739 252.257 149.477 252.153 C150.215 252.05 150.898 252.564 151.001 253.302 C151.105 254.04 150.591 254.723 149.853 254.826 C149.115 254.93 148.432 254.416 148.328 253.678 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="146.933" y1="234.049" x2="131.946" y2="245.758" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="143.186,243.204 143.548,236.693 137.143,235.469" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="139.107,247.948 139.198,240.093 131.553,238.28" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M130.631 245.072 C131.219 244.613 132.067 244.717 132.526 245.305 C132.985 245.892 132.881 246.74 132.293 247.199 C131.706 247.658 130.858 247.554 130.399 246.967 C129.94 246.379 130.044 245.531 130.631 245.072 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="146.933" y1="234.049" x2="129.299" y2="226.925" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="137.131,235.382 142.951,232.44 140.807,226.281" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="130.983,234.221 137.831,230.372 135.579,222.845" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M129.236 225.444 C129.927 225.723 130.261 226.509 129.982 227.201 C129.702 227.891 128.916 228.226 128.225 227.946 C127.533 227.667 127.199 226.88 127.479 226.189 C127.758 225.498 128.545 225.164 129.236 225.444 Z" fill="#dcf5e3"/>
+          </g>
+          <path d="M149.363 233.707 C149.552 235.05 148.616 236.291 147.274 236.479 C145.932 236.668 144.691 235.733 144.502 234.391 C144.313 233.048 145.249 231.807 146.591 231.619 C147.933 231.43 149.174 232.366 149.363 233.707 Z" fill="#dcf5e3"/>
+        </g>
+        <g>
+          <g>
+            <line x1="349.387" y1="234.049" x2="352.033" y2="215.216" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="345.721,224.861 349.984,229.796 355.442,226.227" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="345.36,218.615 350.753,224.329 357.511,220.322" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M353.455 214.796 C353.352 215.534 352.669 216.048 351.931 215.945 C351.193 215.841 350.679 215.158 350.782 214.42 C350.886 213.682 351.569 213.168 352.307 213.272 C353.045 213.375 353.559 214.058 353.455 214.796 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="349.387" y1="234.049" x2="367.02" y2="226.925" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="355.512,226.281 353.368,232.44 359.188,235.382" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="360.74,222.845 358.488,230.372 365.336,234.221" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M368.094 227.946 C367.403 228.226 366.617 227.891 366.337 227.201 C366.058 226.509 366.392 225.723 367.083 225.444 C367.774 225.164 368.561 225.498 368.841 226.189 C369.12 226.88 368.786 227.667 368.094 227.946 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="349.387" y1="234.049" x2="364.373" y2="245.758" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="359.176,235.469 352.771,236.693 353.133,243.204" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="364.766,238.28 357.121,240.093 357.212,247.948" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M364.026 247.199 C363.438 246.74 363.334 245.892 363.793 245.305 C364.252 244.717 365.1 244.613 365.688 245.072 C366.275 245.531 366.379 246.379 365.92 246.967 C365.461 247.554 364.613 247.658 364.026 247.199 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="349.387" y1="234.049" x2="346.74" y2="252.882" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="353.052,243.237 348.789,238.302 343.331,241.871" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="353.413,249.483 348.02,243.769 341.262,247.776" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M345.318 253.302 C345.421 252.564 346.104 252.05 346.842 252.153 C347.58 252.257 348.094 252.94 347.991 253.678 C347.887 254.416 347.204 254.93 346.466 254.826 C345.728 254.723 345.214 254.04 345.318 253.302 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="349.387" y1="234.049" x2="331.753" y2="241.174" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="343.261,241.817 345.405,235.658 339.585,232.716" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="338.033,245.253 340.285,237.726 333.437,233.877" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M330.679 240.152 C331.37 239.872 332.156 240.207 332.436 240.898 C332.715 241.589 332.381 242.375 331.69 242.655 C330.999 242.934 330.212 242.6 329.933 241.909 C329.653 241.218 329.987 240.431 330.679 240.152 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="349.387" y1="234.049" x2="334.4" y2="222.34" fill="none" stroke="#dcf5e3" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="339.597,232.629 346.002,231.405 345.64,224.894" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="334.007,229.818 341.652,228.006 341.561,220.15" fill="none" stroke="#dcf5e3" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M334.747 220.899 C335.335 221.358 335.439 222.206 334.98 222.793 C334.521 223.381 333.673 223.485 333.085 223.026 C332.498 222.567 332.394 221.719 332.853 221.131 C333.312 220.544 334.16 220.44 334.747 220.899 Z" fill="#dcf5e3"/>
+          </g>
+          <path d="M351.817 234.391 C351.628 235.733 350.387 236.668 349.045 236.479 C347.703 236.291 346.767 235.05 346.956 233.707 C347.145 232.366 348.386 231.43 349.728 231.619 C351.07 231.807 352.006 233.048 351.817 234.391 Z" fill="#dcf5e3"/>
+        </g>
+        <g>
+          <g>
+            <line x1="137.117" y1="301.534" x2="140.134" y2="290.274" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="135.466,293.47 138.228,297.386 142.577,295.375" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M141.24 289.936 C141.1 290.46 140.562 290.771 140.038 290.63 C139.515 290.49 139.204 289.952 139.344 289.428 C139.485 288.904 140.023 288.593 140.546 288.734 C141.07 288.874 141.381 289.412 141.24 289.936 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="137.117" y1="301.534" x2="148.376" y2="298.517" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="143.275,296.073 141.264,300.422 145.18,303.184" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M149.223 299.306 C148.699 299.447 148.161 299.136 148.02 298.612 C147.88 298.088 148.191 297.55 148.714 297.41 C149.238 297.269 149.776 297.58 149.917 298.104 C150.057 298.628 149.746 299.166 149.223 299.306 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="137.117" y1="301.534" x2="145.359" y2="309.776" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="144.925,304.137 140.153,304.571 139.72,309.342" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M145.099 310.904 C144.715 310.521 144.715 309.899 145.099 309.516 C145.482 309.133 146.104 309.133 146.487 309.516 C146.87 309.899 146.87 310.521 146.487 310.904 C146.104 311.287 145.482 311.287 145.099 310.904 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="137.117" y1="301.534" x2="134.099" y2="312.793" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="138.767,309.598 136.005,305.682 131.656,307.692" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M132.993 313.131 C133.133 312.608 133.671 312.297 134.195 312.437 C134.718 312.578 135.029 313.116 134.889 313.64 C134.748 314.163 134.21 314.474 133.687 314.334 C133.163 314.193 132.852 313.655 132.993 313.131 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="137.117" y1="301.534" x2="125.857" y2="304.551" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="130.958,306.994 132.969,302.645 129.053,299.883" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M125.01 303.761 C125.534 303.621 126.072 303.932 126.213 304.455 C126.353 304.979 126.042 305.517 125.519 305.658 C124.995 305.798 124.457 305.487 124.317 304.963 C124.176 304.44 124.487 303.902 125.01 303.761 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="137.117" y1="301.534" x2="128.874" y2="293.291" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="129.308,298.931 134.08,298.497 134.513,293.725" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M129.134 292.163 C129.518 292.547 129.518 293.168 129.134 293.552 C128.751 293.935 128.129 293.935 127.746 293.552 C127.363 293.168 127.363 292.547 127.746 292.163 C128.129 291.78 128.751 291.78 129.134 292.163 Z" fill="#dcf5e3"/>
+          </g>
+          <path d="M138.776 301.979 C138.53 302.894 137.588 303.439 136.672 303.193 C135.756 302.947 135.212 302.006 135.457 301.089 C135.703 300.173 136.645 299.629 137.561 299.874 C138.477 300.12 139.021 301.062 138.776 301.979 Z" fill="#dcf5e3"/>
+        </g>
+        <g>
+          <g>
+            <line x1="360.429" y1="301.534" x2="357.412" y2="290.274" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="354.969,295.375 359.318,297.386 362.08,293.47" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M358.202 289.428 C358.342 289.952 358.031 290.49 357.508 290.63 C356.984 290.771 356.446 290.46 356.306 289.936 C356.165 289.412 356.476 288.874 357 288.734 C357.523 288.593 358.061 288.904 358.202 289.428 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="360.429" y1="301.534" x2="368.672" y2="293.291" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="363.033,293.725 363.466,298.497 368.238,298.931" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M369.8 293.552 C369.417 293.935 368.795 293.935 368.412 293.552 C368.028 293.168 368.028 292.547 368.412 292.163 C368.795 291.78 369.417 291.78 369.8 292.163 C370.183 292.547 370.183 293.168 369.8 293.552 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="360.429" y1="301.534" x2="371.689" y2="304.551" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="368.493,299.883 364.577,302.645 366.588,306.994" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M372.027 305.658 C371.504 305.517 371.193 304.979 371.333 304.455 C371.474 303.932 372.012 303.621 372.536 303.761 C373.059 303.902 373.37 304.44 373.229 304.963 C373.089 305.487 372.551 305.798 372.027 305.658 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="360.429" y1="301.534" x2="363.447" y2="312.793" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="365.89,307.692 361.541,305.682 358.779,309.598" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M362.657 313.64 C362.517 313.116 362.828 312.578 363.351 312.437 C363.875 312.297 364.413 312.608 364.553 313.131 C364.694 313.655 364.383 314.193 363.859 314.334 C363.336 314.474 362.798 314.163 362.657 313.64 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="360.429" y1="301.534" x2="352.187" y2="309.776" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="357.826,309.342 357.393,304.571 352.621,304.137" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M351.059 309.516 C351.442 309.133 352.064 309.133 352.447 309.516 C352.831 309.899 352.831 310.521 352.447 310.904 C352.064 311.287 351.442 311.287 351.059 310.904 C350.676 310.521 350.676 309.899 351.059 309.516 Z" fill="#dcf5e3"/>
+          </g>
+          <g>
+            <line x1="360.429" y1="301.534" x2="349.17" y2="298.517" fill="none" stroke="#dcf5e3" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="352.366,303.184 356.282,300.422 354.271,296.073" fill="none" stroke="#dcf5e3" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M348.832 297.41 C349.355 297.55 349.666 298.088 349.526 298.612 C349.385 299.136 348.847 299.447 348.323 299.306 C347.8 299.166 347.489 298.628 347.629 298.104 C347.77 297.58 348.308 297.269 348.832 297.41 Z" fill="#dcf5e3"/>
+          </g>
+          <path d="M362.089 301.089 C362.334 302.006 361.79 302.947 360.874 303.193 C359.958 303.439 359.016 302.894 358.77 301.979 C358.525 301.062 359.069 300.12 359.985 299.874 C360.901 299.629 361.843 300.173 362.089 301.089 Z" fill="#dcf5e3"/>
+        </g>
+        <circle cx="191.718" cy="213.19" r="3.067" fill="#dcf5e3"/>
+        <circle cx="305.215" cy="213.19" r="3.681" fill="#dcf5e3"/>
+        <circle cx="121.166" cy="273.313" r="2.761" fill="#89c99d" stroke="#dcf5e3" stroke-width="2"/>
+        <circle cx="165.337" cy="274.54" r="2.454" fill="#89c99d" stroke="#dcf5e3" stroke-width="2"/>
+        <circle cx="333.436" cy="281.902" r="2.147" fill="#89c99d" stroke="#dcf5e3" stroke-width="2"/>
+        <circle cx="372.699" cy="272.086" r="3.067" fill="#89c99d" stroke="#dcf5e3" stroke-width="2.2"/>
+      </g>
+      <g>
+        <polygon points="250,358.282 265.158,387.909 296.162,391.353 272.736,414.09 278.937,446.472 250,430.625 221.063,446.472 227.264,414.09 203.838,391.353 234.842,387.909" fill="#f5b82e" stroke="#243612" stroke-width="25" stroke-linejoin="round"/>
+        <polygon points="250,358.282 265.158,387.909 296.162,391.353 272.736,414.09 278.937,446.472 250,430.625 221.063,446.472 227.264,414.09 203.838,391.353 234.842,387.909" fill="#f5b82e" stroke="#243612" stroke-width="6" stroke-linejoin="round"/>
+        <polygon points="250,411.334 250,358.282 234.842,387.909" fill="#fff394"/>
+        <polygon points="250,411.334 265.158,387.909 250,358.282" fill="#ffd23f"/>
+        <polygon points="250,411.334 265.158,387.909 296.162,391.353" fill="#ffe875"/>
+        <polygon points="250,411.334 296.162,391.353 272.736,414.09" fill="#e09019"/>
+        <polygon points="250,411.334 272.736,414.09 278.937,446.472" fill="#f5b027"/>
+        <polygon points="250,411.334 278.937,446.472 250,430.625" fill="#c97110"/>
+        <polygon points="250,411.334 250,430.625 221.063,446.472" fill="#d98216"/>
+        <polygon points="250,411.334 221.063,446.472 227.264,414.09" fill="#f7be32"/>
+        <polygon points="250,411.334 227.264,414.09 203.838,391.353" fill="#e89d1c"/>
+        <polygon points="250,411.334 203.838,391.353 234.842,387.909" fill="#fff08a"/>
+        <polyline points="206.594,392.042 235.531,388.598 250,360.349 264.469,388.598 293.406,392.042" fill="none" stroke="#ffffc4" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+      </g>
+    </g>
+  </g>
+</svg>

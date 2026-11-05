@@ -77,6 +77,7 @@ pub struct MessengerApp {
     pub auto_music: Option<String>,
     pub published_music: Option<String>,
     pub music_pending: Option<(String, Instant)>,
+    pub music_track_changed: bool,
     pub games: HashMap<Uuid, Game>,
     pub authorized_calls: HashSet<Uuid>,
     pub offered_calls: HashMap<Uuid, ActivityKind>,
@@ -164,6 +165,7 @@ impl MessengerApp {
             auto_music: None,
             published_music: None,
             music_pending: None,
+            music_track_changed: false,
             games: HashMap::new(),
             authorized_calls: HashSet::new(),
             offered_calls: HashMap::new(),
@@ -247,6 +249,7 @@ impl MessengerApp {
             auto_music: None,
             published_music: None,
             music_pending: None,
+            music_track_changed: false,
             games: HashMap::new(),
             authorized_calls: HashSet::new(),
             offered_calls: HashMap::new(),
@@ -496,6 +499,7 @@ impl MessengerApp {
         self.hover.clear();
         self.published_music = None;
         self.music_pending = None;
+        self.music_track_changed = self.auto_music.is_some();
         self.conversation_focus.clear();
         self.auto_away = false;
         self.options = Options::default();
@@ -1044,12 +1048,13 @@ impl MessengerApp {
         ctx.request_repaint_after(Duration::from_millis(250));
     }
 
-    /// Publishes the MPRIS track unless the user set something manually.
+    /// A newly detected track replaces a stale or manually entered track.
     fn publish_now_playing(&mut self) {
         let Some(watcher) = &self.now_playing else {
             return;
         };
         while let Some(track) = watcher.changed() {
+            if track.is_some() && track != self.auto_music { self.music_track_changed = true; }
             self.auto_music = track;
         }
         if self
@@ -1070,8 +1075,13 @@ impl MessengerApp {
             &current,
             self.published_music.as_deref(),
             self.auto_music.as_deref(),
+            self.music_track_changed,
         );
+        if enabled && self.auto_music.as_deref() == Some(current.as_str()) {
+            self.music_track_changed = false;
+        }
         if let Some(value) = desired {
+            self.music_track_changed = false;
             self.music_pending = Some((value.clone(), Instant::now()));
             self.send(Action::Profile(UpdateProfileRequest {
                 now_playing: Some(value),

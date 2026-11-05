@@ -100,6 +100,26 @@ pub fn system_locale() -> Option<String> {
     }).ok()
 }
 
+pub fn music_access_granted() -> bool {
+    with_activity(|env, activity| env.call_method(activity, jni::jni_str!("musicAccessGranted"), jni::jni_sig!("()Z"), &[])
+        .and_then(|value| value.z()).map_err(|error| error.to_string())).unwrap_or(false)
+}
+
+pub fn request_music_access() {
+    let _ = with_activity(|env, activity| env.call_method(activity, jni::jni_str!("requestMusicAccess"), jni::jni_sig!("()V"), &[])
+        .map(|_| ()).map_err(|error| error.to_string()));
+}
+
+pub fn current_playing_music() -> Option<String> {
+    with_activity(|env, activity| {
+        let value = env.call_method(activity, jni::jni_str!("currentPlayingMusic"), jni::jni_sig!("()Ljava/lang/String;"), &[])
+            .map_err(|error| error.to_string())?.l().map_err(|error| error.to_string())?;
+        if value.is_null() { return Ok(None); }
+        let value = env.cast_local::<JString>(value).map_err(|error| error.to_string())?;
+        Ok(Some(value.try_to_string(env).map_err(|error| error.to_string())?.chars().filter(|c| !c.is_control()).take(256).collect()))
+    }).ok().flatten()
+}
+
 pub fn start_message_notifications(base: &str, token: &str, account: &str) -> Result<bool, String> {
     with_activity(|env, activity| {
         let base = JObject::from(env.new_string(base).map_err(|e| e.to_string())?);

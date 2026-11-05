@@ -660,10 +660,11 @@ pub fn bytes(name: &str) -> Option<&'static [u8]> {
         "badges/vip.svg" | "badges/vip.png" => {
             Some(include_bytes!("../../assets/nmessenger/badges/vip.svg").as_slice())
         }
-        "badges/criador.svg" | "badges/criador.png" => {
-            Some(include_bytes!("../../assets/nmessenger/badges/criador.svg").as_slice())
+        "badges/creator.svg" | "badges/criador.svg" | "badges/criador.png" => {
+            Some(include_bytes!("../../assets/nmessenger/badges/creator.svg").as_slice())
         }
-        "badges/insignia-programador-construtor.svg"
+        "badges/programmer-builder.svg"
+        | "badges/insignia-programador-construtor.svg"
         | "badges/insignia-programador-construtor.png"
         | "badges/programador-construtor.svg"
         | "badges/programador-construtor.png"
@@ -671,7 +672,7 @@ pub fn bytes(name: &str) -> Option<&'static [u8]> {
         | "badges/construtor.png" => {
             Some(
                 include_bytes!(
-                    "../../assets/nmessenger/badges/insignia-programador-construtor.svg"
+                    "../../assets/nmessenger/badges/programmer-builder.svg"
                 )
                 .as_slice(),
             )
@@ -679,6 +680,11 @@ pub fn bytes(name: &str) -> Option<&'static [u8]> {
         "badges/1year.svg" | "badges/1-ano-de-conta.svg" | "badges/1-ano-de-conta.png" => {
             Some(include_bytes!("../../assets/nmessenger/badges/1year.svg").as_slice())
         }
+        "badges/music-lover.svg" => Some(include_bytes!("../../assets/nmessenger/badges/music-lover.svg").as_slice()),
+        "badges/christmas.svg" => Some(include_bytes!("../../assets/nmessenger/badges/christmas.svg").as_slice()),
+        "badges/new-year.svg" => Some(include_bytes!("../../assets/nmessenger/badges/new-year.svg").as_slice()),
+        "badges/gamer.svg" => Some(include_bytes!("../../assets/nmessenger/badges/gamer.svg").as_slice()),
+        "badges/night-owl.svg" => Some(include_bytes!("../../assets/nmessenger/badges/night-owl.svg").as_slice()),
         "badges/2year.svg" | "badges/2-anos-de-conta.svg" | "badges/2-anos-de-conta.png" => {
             Some(include_bytes!("../../assets/nmessenger/badges/2year.svg").as_slice())
         }

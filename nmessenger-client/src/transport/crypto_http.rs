@@ -27,12 +27,14 @@ impl Api {
     /// Conflicts are retried by reading and merging the newer archive; the
     /// server never receives the OPAQUE export key or plaintext key material.
     #[allow(dead_code)]
-    pub async fn sync_cloud_history(&self, export_key: &[u8]) -> Result<(), String> {
+    pub async fn sync_cloud_history(&self, export_key: &[u8]) -> Result<bool, String> {
         self.sync_cloud_history_with_previous(export_key, None).await
     }
 
-    pub async fn sync_cloud_history_with_previous(&self, export_key: &[u8], previous_key: Option<&[u8]>) -> Result<(), String> {
+    pub async fn sync_cloud_history_with_previous(&self, export_key: &[u8], previous_key: Option<&[u8]>) -> Result<bool, String> {
         let crypto = self.crypto.as_ref().ok_or("Criptografia não iniciada")?;
+        let _sync = crypto.cloud_sync.lock().await;
+        let before = crypto.historical_key_count()?;
         for _ in 0..5 {
             let response = checked(self.request(reqwest::Method::GET, "/encryption/history-backup")
                 .send().await.map_err(|error| error.to_string())?).await?;
@@ -42,6 +44,7 @@ impl Api {
                 let backup: CloudHistoryBackup = super::api::bounded_json(response).await?;
                 if backup.revision <= 0 || backup.ciphertext.len() > 131072 { return Err("Backup de histórico inválido".into()); }
                 let bytes = STANDARD.decode(&backup.ciphertext).map_err(|_| "Backup de histórico inválido")?;
+                let complete = crypto.cloud_history_contains_local(&bytes, export_key).unwrap_or(false);
                 if let Err(error) = crypto.merge_cloud_history(&bytes, export_key).await {
                     if let Some(previous) = previous_key {
                         crypto.merge_cloud_history(&bytes, previous).await?;
@@ -49,6 +52,7 @@ impl Api {
                         return Err(format!("Não foi possível desbloquear a identidade local. Informe a senha anterior para recuperar o histórico. {error}"));
                     }
                 }
+                if complete { return Ok(crypto.historical_key_count()? != before); }
                 backup.revision
             };
             let ciphertext = STANDARD.encode(crypto.seal_cloud_history(export_key)?);
@@ -56,7 +60,7 @@ impl Api {
                 .json(&CloudHistoryBackup { revision, ciphertext }).send().await.map_err(|error| error.to_string())?;
             if response.status() == reqwest::StatusCode::CONFLICT { continue; }
             checked(response).await?;
-            return Ok(());
+            return Ok(crypto.historical_key_count()? != before);
         }
         Err("Não foi possível sincronizar o histórico após alterações simultâneas".into())
     }

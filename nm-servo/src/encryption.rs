@@ -144,6 +144,7 @@ async fn put_history_backup(state: web::Data<AppState>, session: Session, body: 
     sqlx::query("INSERT INTO encrypted_history_backups(user_id,revision,ciphertext) VALUES($1,$2,$3) ON CONFLICT(user_id) DO UPDATE SET revision=EXCLUDED.revision,ciphertext=EXCLUDED.ciphertext,updated_at=now()")
         .bind(session.user_id).bind(revision).bind(&body.ciphertext).execute(&mut *tx).await?;
     tx.commit().await?;
+    state.publish(vec![session.user_id], nm_protocol::ServerEvent::ResyncRequired).await;
     Ok(web::Json(BackupResponse { revision, ciphertext: body.ciphertext.clone() }))
 }
 
