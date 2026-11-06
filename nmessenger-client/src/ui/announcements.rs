@@ -329,10 +329,14 @@ pub fn modal(app: &mut MessengerApp, ctx: &egui::Context) {
 
     let screen = ctx.content_rect();
     let is_mob = crate::platform::is_mobile();
-    let margin_x = if is_mob { 24.0 } else { 36.0 };
+    let margin_x = if is_mob {
+        (screen.width() * 0.08).clamp(24.0, 44.0)
+    } else {
+        36.0
+    };
     let frame_pad_x = 32.0; // 16px de cada lado do inner_margin
     let max_inner = (screen.width() - (margin_x * 2.0) - frame_pad_x).max(180.0);
-    let modal_width = max_inner.min(360.0);
+    let modal_width = max_inner.min(if is_mob { 320.0 } else { 380.0 });
     let modal = egui::Modal::new(egui::Id::unique("announcement-detail-modal"))
         .backdrop_color(Color32::from_black_alpha(130))
         .frame(

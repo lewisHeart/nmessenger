@@ -1,4 +1,4 @@
-//! Rich Aero Profile View dialog with Orkut-style Markdown bio, badges row, and point counter.
+//! Rich Aero Profile View dialog with Markdown bio, badges row, and point counter.
 use super::{dialog, nmessenger, theme};
 use crate::app::MessengerApp;
 use crate::i18n::tr;
@@ -177,7 +177,7 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
 
     ui.add_space(10.0);
 
-    // 3. Biography / "Sobre mim" (Orkut style in Markdown)
+    // 3. Biography / "Sobre mim" (in Markdown)
     ui.label(
         RichText::new(tr("About me", "Sobre mim"))
             .size(12.5)

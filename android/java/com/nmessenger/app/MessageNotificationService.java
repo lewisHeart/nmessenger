@@ -166,7 +166,11 @@ public final class MessageNotificationService extends Service {
         manager.createNotificationChannel(new NotificationChannel("nmessenger_messages", "Mensagens", NotificationManager.IMPORTANCE_DEFAULT));
         NotificationChannel channel = manager.getNotificationChannel("nmessenger_messages");
         if (channel != null && channel.getImportance() == NotificationManager.IMPORTANCE_NONE) return false;
-        Intent open = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).putExtra("conversation", conversation);
+        Intent open = new Intent(this, MainActivity.class)
+            .setAction(Intent.ACTION_MAIN)
+            .addCategory(Intent.CATEGORY_LAUNCHER)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            .putExtra("conversation", conversation);
         PendingIntent content = PendingIntent.getActivity(this, conversation.hashCode(), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Intent read = new Intent(this, MainActivity.class).setAction("com.nmessenger.app.NOTIFICATION_READ")
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).putExtra("conversation", conversation).putExtra("message_id", message).putExtra("push_token", secret);

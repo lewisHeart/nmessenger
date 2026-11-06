@@ -148,7 +148,7 @@ fn content(app: &mut MessengerApp, ui: &mut egui::Ui) -> bool {
         egui::TextEdit::multiline(&mut app.contact_forms.edit_bio)
             .desired_rows(6)
             .desired_width(f32::INFINITY)
-            .hint_text(tr("Write about yourself! Supports headings (#), bold (**), italics (*), images and quotes (>).", "Escreva sobre você no estilo Orkut! Suporta títulos (#), negrito (**), itálico (*), imagens e citações (>)..."))
+            .hint_text(tr("Write about yourself! Supports headings (#), bold (**), italics (*), images and quotes (>).", "Escreva sobre você! Suporta títulos (#), negrito (**), itálico (*), imagens e citações (>)..."))
             .margin(egui::Margin::symmetric(8, 6)),
     );
 

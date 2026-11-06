@@ -1,4 +1,4 @@
-//! Rich Markdown renderer for NMessenger user profiles (Orkut-style description & formatting).
+//! Rich Markdown renderer for NMessenger user profiles.
 use super::nmessenger;
 use crate::{app::MessengerApp, media::images::ImageSource};
 use eframe::egui::{self, Color32, Pos2, Rect, RichText, Stroke, Vec2};
@@ -13,7 +13,7 @@ pub fn render(app: &mut MessengerApp, ui: &mut egui::Ui, text: &str) {
                     .color(Color32::from_rgb(140, 160, 180)),
             );
             ui.label(
-                RichText::new(crate::i18n::tr("You can personalize your profile with Markdown formatting!", "Você pode personalizar seu perfil com formatação Markdown estilo Orkut!"))
+                RichText::new(crate::i18n::tr("You can personalize your profile with Markdown formatting!", "Você pode personalizar seu perfil com formatação Markdown"))
                     .size(10.0)
                     .color(Color32::from_rgb(170, 185, 200)),
             );

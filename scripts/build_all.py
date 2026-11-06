@@ -201,17 +201,22 @@ def package_windows(tag, target_info, dist_dir, binary, formats):
             ]
             run_cmd(cmd)
         elif check_tool("docker"):
-            print(f"Building Windows NSIS Installer via Docker (cdrx/nsis)...")
+            inspect = subprocess.run(["docker", "image", "inspect", "nmessenger-nsis"], capture_output=True)
+            if inspect.returncode != 0:
+                print("Building local nmessenger-nsis docker image...")
+                subprocess.run([
+                    "docker", "build", "-t", "nmessenger-nsis", "-"
+                ], input=b"FROM debian:bookworm-slim\nRUN apt-get update -qq && apt-get install -qq -y --no-install-recommends nsis ca-certificates && rm -rf /var/lib/apt/lists/*\nWORKDIR /work\nENTRYPOINT [\"makensis\"]\n", check=True)
+            print(f"Building Windows NSIS Installer via Docker (nmessenger-nsis): {installer_out}")
             cmd = [
                 "docker", "run", "--rm",
                 "-v", f"{ROOT}:/work",
                 "-w", "/work",
-                "cdrx/nsis",
-                "makensis",
+                "nmessenger-nsis",
                 f"-DVERSION={tag.lstrip('v')}",
                 f"-DPROJECT_ROOT=/work",
-                f"-DBINARY={binary.relative_to(ROOT)}",
-                f"-DOUTPUT=dist/{name}-setup.exe",
+                f"-DBINARY=/work/{binary.relative_to(ROOT)}",
+                f"-DOUTPUT=/work/dist/{name}-setup.exe",
                 "packaging/windows/installer.nsi",
             ]
             run_cmd(cmd)

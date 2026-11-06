@@ -294,6 +294,11 @@ fn menu(app: &mut MessengerApp, ui: &mut egui::Ui) {
         ui.close();
     }
     ui.separator();
+    if ui.button(tr("About NMessenger...", "Sobre o NMessenger...")).clicked() {
+        app.about_open = true;
+        ui.close();
+    }
+    ui.separator();
     ui.menu_button(tr("Theme colors", "Cores da skin"), |ui| {
         for (name, label, color) in [
             ("azul", tr("Aero Blue", "Azul Aero"), Color32::from_rgb(194, 221, 244)),

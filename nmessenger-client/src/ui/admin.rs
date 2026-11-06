@@ -595,39 +595,81 @@ fn overview(app: &MessengerApp, ui: &mut egui::Ui) {
         });
         ui.add_space(8.0);
 
-        ui.horizontal_wrapped(|ui| {
-            ui.label(
-                RichText::new("Espaço em disco utilizado:")
-                    .size(11.5)
-                    .color(nmessenger::MUTED),
-            );
-            ui.label(
-                RichText::new(format!(
-                    "{:.2} MiB",
-                    stats.stored_bytes as f64 / 1048576.0
-                ))
-                .size(11.5)
-                .strong()
-                .color(nmessenger::INK),
-            );
-            ui.label(RichText::new("· Cota por usuário:").size(11.5).color(nmessenger::MUTED));
-            ui.label(
-                RichText::new(format!(
-                    "{:.0} MiB",
-                    stats.user_upload_quota as f64 / 1048576.0
-                ))
-                .size(11.5)
-                .strong()
-                .color(nmessenger::INK),
-            );
-            ui.label(RichText::new("· Duração da sessão:").size(11.5).color(nmessenger::MUTED));
-            ui.label(
-                RichText::new(format!("{} dias", stats.session_ttl_secs / 86400))
+        if is_mob {
+            ui.vertical(|ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(
+                        RichText::new("Espaço em disco utilizado:")
+                            .size(11.5)
+                            .color(nmessenger::MUTED),
+                    );
+                    ui.label(
+                        RichText::new(format!(
+                            "{:.2} MiB",
+                            stats.stored_bytes as f64 / 1048576.0
+                        ))
+                        .size(11.5)
+                        .strong()
+                        .color(nmessenger::INK),
+                    );
+                });
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(RichText::new("Cota por usuário:").size(11.5).color(nmessenger::MUTED));
+                    ui.label(
+                        RichText::new(format!(
+                            "{:.0} MiB",
+                            stats.user_upload_quota as f64 / 1048576.0
+                        ))
+                        .size(11.5)
+                        .strong()
+                        .color(nmessenger::INK),
+                    );
+                });
+                ui.horizontal_wrapped(|ui| {
+                    ui.label(RichText::new("Duração da sessão:").size(11.5).color(nmessenger::MUTED));
+                    ui.label(
+                        RichText::new(format!("{} dias", stats.session_ttl_secs / 86400))
+                            .size(11.5)
+                            .strong()
+                            .color(nmessenger::INK),
+                    );
+                });
+            });
+        } else {
+            ui.horizontal_wrapped(|ui| {
+                ui.label(
+                    RichText::new("Espaço em disco utilizado:")
+                        .size(11.5)
+                        .color(nmessenger::MUTED),
+                );
+                ui.label(
+                    RichText::new(format!(
+                        "{:.2} MiB",
+                        stats.stored_bytes as f64 / 1048576.0
+                    ))
                     .size(11.5)
                     .strong()
                     .color(nmessenger::INK),
-            );
-        });
+                );
+                ui.label(RichText::new("· Cota por usuário:").size(11.5).color(nmessenger::MUTED));
+                ui.label(
+                    RichText::new(format!(
+                        "{:.0} MiB",
+                        stats.user_upload_quota as f64 / 1048576.0
+                    ))
+                    .size(11.5)
+                    .strong()
+                    .color(nmessenger::INK),
+                );
+                ui.label(RichText::new("· Duração da sessão:").size(11.5).color(nmessenger::MUTED));
+                ui.label(
+                    RichText::new(format!("{} dias", stats.session_ttl_secs / 86400))
+                        .size(11.5)
+                        .strong()
+                        .color(nmessenger::INK),
+                );
+            });
+        }
 
         ui.add_space(6.0);
         ui.label(format!("Anúncios publicados: {}", stats.published_announcements));

@@ -1,4 +1,5 @@
 mod activities;
+mod about;
 mod admin;
 mod announcements;
 mod assets;
@@ -123,6 +124,7 @@ pub fn shell(app: &mut MessengerApp, ui: &mut egui::Ui) {
         settings::show(app, &ctx);
         avatar_picker::show(app, &ctx);
         admin::show(app, &ctx);
+        about::show(app, &ctx);
         if !app.options.open {
             announcements::show(app, &ctx);
         }
@@ -137,6 +139,7 @@ pub fn shell(app: &mut MessengerApp, ui: &mut egui::Ui) {
         settings::show(app, &ctx);
         avatar_picker::show(app, &ctx);
         admin::show(app, &ctx);
+        about::show(app, &ctx);
         if !app.options.open {
             announcements::show(app, &ctx);
         }
@@ -183,6 +186,8 @@ fn mobile_back(app: &mut MessengerApp) {
         app.options.avatar_error = None;
     } else if app.options.open {
         app.options.open = false;
+    } else if app.about_open {
+        app.about_open = false;
     } else if app.contact_forms.edit_profile_open {
         app.contact_forms.edit_profile_open = false;
     } else if app.contact_forms.view_profile.is_some() {

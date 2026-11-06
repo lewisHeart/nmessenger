@@ -284,7 +284,7 @@ INSERT INTO badges (slug, name, description, icon, points) VALUES
     ('popular', 'Amigo de Todos', 'Reuniu mais de 500 contatos no NMessenger.', 'badges/community.svg', 30),
     ('orkut-nostalgia', 'Nostalgia Orkut', 'Celebra as amizades e lembranças da época do Orkut.', 'badges/orkut-nostalgia.svg', 25),
     ('vip', 'Destaque da Comunidade', 'Contribuiu de forma especial para a comunidade NMessenger.', 'badges/vip.svg', 50),
-    ('criador', 'Criador', 'Participou da criação e evolução do NMessenger.', 'badges/criador.svg', 75),
+    ('desenvolvedor', 'Desenvolvedor', 'Participou do desenvolvimento e evolução do NMessenger.', 'badges/criador.svg', 75),
     ('1-ano-de-conta', '1 ano de amizade', 'Há um ano fazendo parte do NMessenger.', 'badges/1year.svg', 50),
     ('2-anos-de-conta', '2 anos de amizade', 'Há dois anos compartilhando momentos no NMessenger.', 'badges/2year.svg', 100),
     ('3-anos-de-conta', '3 anos de amizade', 'Há três anos construindo histórias no NMessenger.', 'badges/3year.svg', 150),

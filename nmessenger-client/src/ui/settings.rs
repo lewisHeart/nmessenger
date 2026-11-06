@@ -699,7 +699,8 @@ fn interface(app: &mut MessengerApp, ui: &mut egui::Ui) {
                     .small()
                     .color(nmessenger::MUTED),
             );
-            let default_lbl = if crate::platform::is_mobile() {
+            let is_mob = crate::platform::is_mobile();
+            let default_lbl = if is_mob {
                 "125%"
             } else {
                 tr("125% (Default)", "125% (Padrão)")
@@ -711,6 +712,7 @@ fn interface(app: &mut MessengerApp, ui: &mut egui::Ui) {
                 (1.50, "150%"),
             ] {
                 let active = (app.options.local.ui_scale - scale).abs() < 0.03;
+                let btn_w = if scale == 1.25 && !is_mob { 95.0 } else { 52.0 };
                 let btn = ui.add(
                     egui::Button::new(
                         RichText::new(label)
@@ -736,7 +738,7 @@ fn interface(app: &mut MessengerApp, ui: &mut egui::Ui) {
                         },
                     ))
                     .corner_radius(4)
-                    .min_size(Vec2::new(if scale == 1.0 { 95.0 } else { 48.0 }, 22.0)),
+                    .min_size(Vec2::new(btn_w, 22.0)),
                 );
                 if btn.clicked() {
                     app.options.local.ui_scale = scale;

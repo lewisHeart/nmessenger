@@ -595,7 +595,7 @@ public final class MainActivity extends NativeActivity {
             } catch (Throwable ignored) {}
             return;
         }
-        super.onBackPressed();
+        moveTaskToBack(true);
     }
 
     public String getClipboardText() {

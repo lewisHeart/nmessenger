@@ -98,6 +98,7 @@ pub struct MessengerApp {
     pub auto_away: bool,
     pub previous_presence: Presence,
     pub last_online_alerts: HashMap<Uuid, Instant>,
+    pub about_open: bool,
 }
 
 impl MessengerApp {
@@ -186,6 +187,7 @@ impl MessengerApp {
             auto_away: false,
             previous_presence: Presence::Available,
             last_online_alerts: HashMap::new(),
+            about_open: false,
         }
     }
 
@@ -270,6 +272,7 @@ impl MessengerApp {
             auto_away: false,
             previous_presence: Presence::Available,
             last_online_alerts: HashMap::new(),
+            about_open: false,
         }
     }
 

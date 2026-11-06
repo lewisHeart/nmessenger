@@ -281,6 +281,43 @@ fn draw_login_form(
             && ui.input(|i| i.key_pressed(egui::Key::Enter));
     if !app.login.busy && (button.clicked() || enter) {
         app.sign_in();
+    } else if app.login.busy && button.clicked() {
+        app.login.busy = false;
+        app.send(Action::ClearSavedSession);
+        app.error(tr("Sign in canceled.", "Login cancelado."));
+    }
+
+    if app.login.busy {
+        let cancel_width = 100.0_f32;
+        let cancel_rect = Rect::from_min_size(
+            Pos2::new(r.center().x - cancel_width / 2.0, curr_y),
+            Vec2::new(cancel_width, 24.0),
+        );
+        let cancel_btn = ui
+            .scope_builder(
+                egui::UiBuilder::new()
+                    .max_rect(cancel_rect)
+                    .layout(egui::Layout::centered_and_justified(
+                        egui::Direction::LeftToRight,
+                    )),
+                |ui| {
+                    ui.add(
+                        egui::Button::new(
+                            RichText::new(tr("Cancel", "Cancelar"))
+                                .size(10.5)
+                                .color(nmessenger::MUTED),
+                        )
+                        .fill(Color32::TRANSPARENT),
+                    )
+                },
+            )
+            .inner;
+        if cancel_btn.clicked() {
+            app.login.busy = false;
+            app.send(Action::ClearSavedSession);
+            app.error(tr("Sign in canceled.", "Login cancelado."));
+        }
+        curr_y += 28.0;
     }
 
     // Centralized "Criar conta" link

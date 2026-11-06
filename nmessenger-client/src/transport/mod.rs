@@ -452,7 +452,7 @@ async fn worker(mut commands: async_mpsc::UnboundedReceiver<(u64, Action)>, init
                 watches.lock().unwrap().clear();
                 bus.send(Update::Connection("Entrando…".into()));
                 match tokio::time::timeout(
-                    std::time::Duration::from_secs(90),
+                    std::time::Duration::from_secs(15),
                     api::authenticate(server, email, password, device, name, presence, identity_password),
                 )
                 .await

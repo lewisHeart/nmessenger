@@ -27,7 +27,7 @@ NMessenger brings back the expressive, nostalgic interface of the golden era of 
 
 > [!NOTE]
 > Interface localization is in progress: the sign-in screen and core navigation support system language detection (with Portuguese and English available); other screens and server notices remain in Portuguese.
-> 
+>
 > NMessenger uses its own independent protocol. It is **not** interoperable with the historical Microsoft Messenger network, MSNP, or Escargot servers.
 
 ---
@@ -36,8 +36,8 @@ NMessenger brings back the expressive, nostalgic interface of the golden era of 
 
 <div align="center">
 
-| Contact List | Chat & Conversations |
-| :---: | :---: |
+|                                 Contact List                                  |                               Chat & Conversations                                |
+| :---------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: |
 | <img src="assets/nmessenger.png" alt="NMessenger Contact List" width="280" /> | <img src="assets/nmessenger-chat.png" alt="NMessenger Chat Window" width="580" /> |
 
 </div>
@@ -46,15 +46,15 @@ NMessenger brings back the expressive, nostalgic interface of the golden era of 
 
 ## Features
 
-| Category | Description |
-| :--- | :--- |
-| 💬 **Messaging** | Direct messages, group chats, persistent chat history, local message search, and offline delivery. |
-| 🔒 **E2EE Privacy** | End-to-end encryption for private messages and attachments, with cryptographic keys secured locally in an identity vault. |
-| 🎨 **Personalization** | Custom profile cards, Orkut-style bios, achievement badges, custom avatars, scenes, and animated emoticons. |
-| ⚡ **Interactivity** | Nudges (window shaking with sound), voice notes, file transfers, and delivery receipts. |
-| 🎮 **Activities** | **Game space** for real-time turn-based multiplayer games, plus integrated voice and video calls. |
-| 🖥️ **Screen Sharing** | Native real-time **screen sharing** for Linux/X11 sessions. |
-| 🤖 **Bot Ecosystem** | Dedicated bot accounts and a Rust SDK for sending and receiving encrypted messages through the API. |
+| Category               | Description                                                                                                               |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| 💬 **Messaging**       | Direct messages, group chats, persistent chat history, local message search, and offline delivery.                        |
+| 🔒 **E2EE Privacy**    | End-to-end encryption for private messages and attachments, with cryptographic keys secured locally in an identity vault. |
+| 🎨 **Personalization** | Custom profile cards, achievement badges, custom avatars, scenes, and animated emoticons.                                 |
+| ⚡ **Interactivity**   | Nudges (window shaking with sound), voice notes, file transfers, and delivery receipts.                                   |
+| 🎮 **Activities**      | **Game space** for real-time turn-based multiplayer games, plus integrated voice and video calls.                         |
+| 🖥️ **Screen Sharing**  | Native real-time **screen sharing** for Linux/X11 sessions.                                                               |
+| 🤖 **Bot Ecosystem**   | Dedicated bot accounts and a Rust SDK for sending and receiving encrypted messages through the API.                       |
 
 ---
 
@@ -93,6 +93,7 @@ make client
 Register an account in the sign-in window and connect to `http://127.0.0.1:18087`. Launch a second client to create another account and test friend requests, direct chats, and calls.
 
 To stop the services while preserving persistent data:
+
 ```sh
 make down
 ```
@@ -110,15 +111,18 @@ make infra
 set -a; . ./.env; set +a
 make server
 ```
+
 </details>
 
 <details>
 <summary><b>Building the Client Without Native Audio</b></summary>
 
 For environments without audio servers or ALSA drivers:
+
 ```sh
 cargo run -p nmessenger-client --no-default-features
 ```
+
 </details>
 
 ---
@@ -143,6 +147,7 @@ make build-client
 The Android build pipeline runs natively on Linux x86-64 **without requiring Gradle**.
 
 ### Prerequisites
+
 - JDK with `javac` and `keytool` available in `PATH`.
 - Python 3 and Rust.
 - Android SDK Build Tools 35+ (with `aapt2`, `d8`, `zipalign`, and `apksigner`).
@@ -168,6 +173,7 @@ adb install -r target/android/nmessenger-arm64-v8a-debug-development.apk
 > [!TIP]
 > The APK targets Android 8.0 (API 26+) or newer on ARM64 devices.
 > For desktop x86_64 emulators:
+>
 > ```sh
 > rustup target add x86_64-linux-android
 > make android ANDROID_ARGS="--arch x86_64"
@@ -189,6 +195,7 @@ make android-release
 
 The signed artifact will be generated at:
 `target/android/nmessenger-arm64-v8a-release-production.apk`.
+
 </details>
 
 ---
@@ -273,24 +280,27 @@ make test-stop
 <summary><b>Graphical UI Smoke Test</b></summary>
 
 To run automated desktop interface smoke tests with virtual display rendering:
+
 ```sh
 make smoke
 ```
-*Requires `Xvfb`, `xdotool`, `ffmpeg`, `Python 3`, and PostgreSQL client utilities.*
+
+_Requires `Xvfb`, `xdotool`, `ffmpeg`, `Python 3`, and PostgreSQL client utilities._
+
 </details>
 
 ---
 
 ## Documentation
 
-| Guide | Read About |
-| :--- | :--- |
-| [Architecture & Design](docs/architecture.md) | Client-server architecture, workspace crates, and real-time protocols |
-| [Security & Privacy](docs/security.md) | End-to-end encryption (E2EE), identity vault, and key recovery |
-| [Development](docs/development.md) | Local workstation setup, prerequisites, running tests, and smoke tests |
-| [Operations & Hosting](docs/operations.md) | Production server setup, Docker Compose, Caddy TLS, and backups |
-| [Building & Releases](docs/releases.md) | Multiplatform build matrix, AppImage, Flatpak, NSIS, and Android APKs |
-| [Bot SDK](docs/bots.md) | Creating bots, token authentication, and the Rust bot SDK |
+| Guide                                         | Read About                                                             |
+| :-------------------------------------------- | :--------------------------------------------------------------------- |
+| [Architecture & Design](docs/architecture.md) | Client-server architecture, workspace crates, and real-time protocols  |
+| [Security & Privacy](docs/security.md)        | End-to-end encryption (E2EE), identity vault, and key recovery         |
+| [Development](docs/development.md)            | Local workstation setup, prerequisites, running tests, and smoke tests |
+| [Operations & Hosting](docs/operations.md)    | Production server setup, Docker Compose, Caddy TLS, and backups        |
+| [Building & Releases](docs/releases.md)       | Multiplatform build matrix, AppImage, Flatpak, NSIS, and Android APKs  |
+| [Bot SDK](docs/bots.md)                       | Creating bots, token authentication, and the Rust bot SDK              |
 
 Browse the complete [documentation index](docs/README.md).
 

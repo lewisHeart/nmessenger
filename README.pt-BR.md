@@ -27,7 +27,7 @@ O NMessenger resgata a interface nostálgica e expressiva dos comunicadores inst
 
 > [!NOTE]
 > A localização da interface está em andamento: a tela de login e a navegação principal já suportam detecção de idioma (com português e inglês disponíveis); demais telas e avisos do servidor permanecem em português por padrão.
-> 
+>
 > O NMessenger utiliza um protocolo próprio e independente. Ele **não** é interoperável com a rede histórica do Microsoft Messenger, MSNP ou servidores Escargot.
 
 ---
@@ -36,8 +36,8 @@ O NMessenger resgata a interface nostálgica e expressiva dos comunicadores inst
 
 <div align="center">
 
-| Lista de Contatos | Janela de Conversa |
-| :---: | :---: |
+|                                 Lista de Contatos                                  |                                    Janela de Conversa                                    |
+| :--------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
 | <img src="assets/nmessenger.png" alt="Lista de Contatos NMessenger" width="300" /> | <img src="assets/nmessenger-chat.png" alt="Janela de Conversa NMessenger" width="620" /> |
 
 </div>
@@ -46,15 +46,15 @@ O NMessenger resgata a interface nostálgica e expressiva dos comunicadores inst
 
 ## Recursos
 
-| Categoria | Descrição |
-| :--- | :--- |
-| 💬 **Mensagens** | Conversas diretas, grupos, histórico persistente, busca local de mensagens e entrega offline. |
-| 🔒 **Privacidade E2EE** | Criptografia de ponta a ponta para mensagens privadas e anexos, com chaves protegidas localmente no cofre de identidade. |
-| 🎨 **Personalização** | Cartões de perfil, biografia estilo Orkut, medalhas de conquista, avatares customizados, temas/cenas e emoticons animados. |
-| ⚡ **Interatividade** | Chamar a atenção (tremer a janela com som), mensagens de voz, transferência de arquivos e confirmações de entrega. |
-| 🎮 **Jogos & Atividades** | **Espaço para jogos** multiplayer em tempo real por turnos, além de chamadas de voz e vídeo integradas. |
-| 🖥️ **Compartilhamento de Tela** | **Compartilhamento de tela** nativo em tempo real para sessões Linux/X11. |
-| 🤖 **Ecossistema de Bots** | Contas dedicadas para bots e SDK em Rust para envio e recebimento de mensagens criptografadas via API. |
+| Categoria                       | Descrição                                                                                                                |
+| :------------------------------ | :----------------------------------------------------------------------------------------------------------------------- |
+| 💬 **Mensagens**                | Conversas diretas, grupos, histórico persistente, busca local de mensagens e entrega offline.                            |
+| 🔒 **Privacidade E2EE**         | Criptografia de ponta a ponta para mensagens privadas e anexos, com chaves protegidas localmente no cofre de identidade. |
+| 🎨 **Personalização**           | Cartões de perfil, medalhas de conquista, avatares customizados, temas/cenas e emoticons animados.                       |
+| ⚡ **Interatividade**           | Chamar a atenção (tremer a janela com som), mensagens de voz, transferência de arquivos e confirmações de entrega.       |
+| 🎮 **Jogos & Atividades**       | **Espaço para jogos** multiplayer em tempo real por turnos, além de chamadas de voz e vídeo integradas.                  |
+| 🖥️ **Compartilhamento de Tela** | **Compartilhamento de tela** nativo em tempo real para sessões Linux/X11.                                                |
+| 🤖 **Ecossistema de Bots**      | Contas dedicadas para bots e SDK em Rust para envio e recebimento de mensagens criptografadas via API.                   |
 
 ---
 
@@ -93,6 +93,7 @@ make client
 Cadastre uma conta na janela de login e conecte-se a `http://127.0.0.1:18087`. Abra uma segunda instância do cliente para criar outra conta e testar solicitações de amizade, mensagens e chamadas.
 
 Para parar os serviços preservando os dados persistentes:
+
 ```sh
 make down
 ```
@@ -110,15 +111,18 @@ make infra
 set -a; . ./.env; set +a
 make server
 ```
+
 </details>
 
 <details>
 <summary><b>Compilando o Cliente Sem Áudio Nativo</b></summary>
 
 Para ambientes sem servidor de som ou drivers ALSA:
+
 ```sh
 cargo run -p nmessenger-client --no-default-features
 ```
+
 </details>
 
 ---
@@ -143,6 +147,7 @@ make build-client
 O pipeline de compilação para Android é executado nativamente no Linux x86-64 **sem necessidade de Gradle**.
 
 ### Pré-requisitos
+
 - JDK com `javac` e `keytool` disponíveis no `PATH`.
 - Python 3 e Rust.
 - Android SDK Build Tools 35+ (com `aapt2`, `d8`, `zipalign` e `apksigner`).
@@ -168,6 +173,7 @@ adb install -r target/android/nmessenger-arm64-v8a-debug-development.apk
 > [!TIP]
 > O APK tem como alvo o Android 8.0 (API 26+) ou superior em dispositivos ARM64.
 > Para emuladores x86_64 desktop:
+>
 > ```sh
 > rustup target add x86_64-linux-android
 > make android ANDROID_ARGS="--arch x86_64"
@@ -189,6 +195,7 @@ make android-release
 
 O arquivo assinado será gerado em:
 `target/android/nmessenger-arm64-v8a-release-production.apk`.
+
 </details>
 
 ---
@@ -273,24 +280,27 @@ make test-stop
 <summary><b>Teste de Fumaça (Smoke Test) de Interface Gráfica</b></summary>
 
 Para executar o teste automatizado de interface com display virtual:
+
 ```sh
 make smoke
 ```
-*Requer `Xvfb`, `xdotool`, `ffmpeg`, `Python 3` e utilitários do cliente PostgreSQL.*
+
+_Requer `Xvfb`, `xdotool`, `ffmpeg`, `Python 3` e utilitários do cliente PostgreSQL._
+
 </details>
 
 ---
 
 ## Documentação
 
-| Guia | Conteúdo |
-| :--- | :--- |
-| [Arquitetura & Design](docs/architecture.md) | Arquitetura cliente-servidor, crates do workspace e protocolos em tempo real |
-| [Segurança & Privacidade](docs/security.md) | Criptografia de ponta a ponta (E2EE), cofre de identidade e recuperação de chaves |
-| [Desenvolvimento](docs/development.md) | Configuração local, pré-requisitos, execução de testes e smoke tests de UI |
-| [Operação & Hospedagem](docs/operations.md) | Configuração do servidor em produção, Docker Compose, Caddy TLS e backups |
-| [Compilação & Releases](docs/releases.md) | Matriz multiplataforma, AppImage, Flatpak, NSIS e APKs Android |
-| [SDK para Bots](docs/bots.md) | Criação de contas de bot, autenticação e SDK em Rust |
+| Guia                                         | Conteúdo                                                                          |
+| :------------------------------------------- | :-------------------------------------------------------------------------------- |
+| [Arquitetura & Design](docs/architecture.md) | Arquitetura cliente-servidor, crates do workspace e protocolos em tempo real      |
+| [Segurança & Privacidade](docs/security.md)  | Criptografia de ponta a ponta (E2EE), cofre de identidade e recuperação de chaves |
+| [Desenvolvimento](docs/development.md)       | Configuração local, pré-requisitos, execução de testes e smoke tests de UI        |
+| [Operação & Hospedagem](docs/operations.md)  | Configuração do servidor em produção, Docker Compose, Caddy TLS e backups         |
+| [Compilação & Releases](docs/releases.md)    | Matriz multiplataforma, AppImage, Flatpak, NSIS e APKs Android                    |
+| [SDK para Bots](docs/bots.md)                | Criação de contas de bot, autenticação e SDK em Rust                              |
 
 Consulte o [índice completo da documentação](docs/README.md).
 
@@ -309,4 +319,3 @@ Arquivos e recursos de terceiros incluídos mantêm suas respectivas licenças e
 Gostando do NMessenger? Você pode [apoiar o projeto no Ko-fi](https://ko-fi.com/lauel).
 
 </div>
-
